@@ -22,7 +22,6 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 export class LoginComponent implements OnInit {
 
   public UsuarioForm: FormGroup;
-  public IsWait: boolean;
 
    constructor(private router: Router, private apiAuth: AuthUserService,private toastr: ToastrService, private cifrado: CifradoDatosService, private spinner: SpinnerService) {
     this.UsuarioForm = this.createForm();
