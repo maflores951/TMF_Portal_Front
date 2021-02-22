@@ -18,7 +18,6 @@ const routes: Routes = [
   { path: 'user/RecuperaPass', component: RecuperarPassComponent },
   { path: 'user/AsignarPass/:token', component: AsignarPassComponent },
   { path: 'user/registro', component: RegistroComponent },
-  { path: 'user/perfil', component: PerfilComponent, canActivate: [AuthGuard] },
   { path: 'catalogos/catalogo-parametros', component: ParametrosComponent, canActivate: [AuthGuard] },
   { path: 'catalogos/catalogo-usuarios', component: UsuariosComponent, canActivate: [AuthGuard] },
   { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthGuard] },
