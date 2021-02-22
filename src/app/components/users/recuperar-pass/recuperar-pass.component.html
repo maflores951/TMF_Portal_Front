@@ -1,0 +1,68 @@
+<section id="RecuperaPass" class="mb-5 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 mx-auto main-section">
+          <div class="card_login">
+            <div class="card">
+              <div class="card-body text-center">
+                <form #formLogin="ngForm" [formGroup]="UsuarioForm"  (submit)="RecuperaPass()">
+                  <h1 class="h3 mb-3 font-weight-normal">Recuperar contraseña</h1>
+                  <!--<div class="alert alert-danger" role="alert" *ngIf="isError">
+      Something is wrong!
+    </div>-->
+
+    <div class="overlay">
+      <div class="center">
+          <!-- <mat-progress-spinner diameter=50 
+                              mode="indeterminate" 
+                    color="accent">
+        </mat-progress-spinner>  -->
+        <span class="spinner-grow text-danger"></span>
+      </div>
+      </div>
+
+                  <a>Ingresa tu correo electronico</a>
+                  <p></p>
+                  <div class="form-group">
+                    <input  formControlName="EmailLogin" type="email" id="EmailLogin" name="EmailLogin" class="form-control" placeholder="Email" required>
+  
+                    <div class="alert-danger" *ngIf="EmailLogin.invalid && (EmailLogin.dirty || EmailLogin.touched)">
+  
+                      <div *ngFor="let validation of user_validation_messages.EmailLogin">
+                        <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('EmailLogin').hasError(validation.type) && (UsuarioForm.get('EmailLogin').dirty || UsuarioForm.get('EmailLogin').touched)">
+                          {{validation.message}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--<div class="form-group">
+                    <input [(ngModel)]="UserNumConfirmacion" type="number" id="UserNumConfirmacion" name="UserNumConfirmacion" class="form-control" placeholder="Número de confirmación" required>
+                  </div>
+                  <div class="form-group">
+                    <input [(ngModel)]="password" type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
+                  </div>
+                  <div class="form-group">
+                    <input [(ngModel)]="passwordConfirm" type="password" id="passwordConfirm" name="passwordConfirm" class="form-control" placeholder="Confirmar contraseña" required>
+                  </div>-->
+                  <button type="submit" class="btn btn-lg btn-primary btn-block">Enviar</button>
+  
+                  <!--<div class="form-group">
+      <button class="btn btn-block btn-social btn-facebook" (click)="onLoginFacebook()">
+        <span class="fa fa-facebook"></span>
+        Facebook
+      </button>
+      <button class="btn btn-block btn-social btn-google" (click)= "onLoginGoogle()">
+        <span class="fa fa-google"></span>
+          Google
+      </button>
+    </div>-->
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  

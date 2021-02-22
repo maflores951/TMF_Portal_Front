@@ -1,0 +1,59 @@
+<section class="row mt-5">
+    <div class="col">
+      <p></p>
+      <h1 class="h3 mb-3 font-weight-normal">Tipos de usuario</h1>
+      <table  width="50%">
+  
+        <tr>
+  
+          <td width="20%" ><b>Nombre </b></td>
+  
+          <td width="80%" ><input type="text" name="rolNombre" class="form-control" [(ngModel)]="rolNombre"/></td>
+  
+        </tr>
+  
+      </table>
+      <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#modalRol">
+        Nuevo
+        registro
+      </button>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Id</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">&nbsp;</th>
+            <th scope="col">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let userType of userTypes | filterRol:rolNombre; index as i">
+            <th scope="row">{{i+1}}</th>
+            <td>{{userType.rolId}}</td>
+            <td>{{userType.rolNombre}}</td>
+            <td *ngIf="isAdmin == true; else noOwner">
+              <button class="btn btn-primary" data-toggle="modal" data-target="#modalRol" (click)="onPreUpdateUserType(userType)">Actualizar</button>
+            </td>
+            <ng-template #noOwner>
+              <td>
+                <button class="btn btn-secondary" disabled="true">Actualizar</button>
+              </td>
+            </ng-template>
+  
+            <td *ngIf="isAdmin == true; else noAdmin">
+              <button class="btn btn-danger" (click)="onDeleteUserType(userType)">Eliminar</button>
+            </td>
+            <ng-template #noAdmin>
+              <td>
+                <button class="btn btn-danger" disabled='true'>Eliminar</button>
+              </td>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <app-modal-rol [userUid]='userUid'></app-modal-rol>
+  
+  

@@ -1,0 +1,50 @@
+.main-section {
+    margin-top: 50px;
+  }
+  .form-control.login-user {
+      border: 0px solid #fff !important;
+    }
+    .btn-social{
+      position: relative;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fff;
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+  
+    .btn-facebook{
+      background: #3b5998;
+      
+    }
+  
+    .btn-google{
+      background: #dd4b39;
+    }
+  
+  .noRequired label {
+    font-weight: bold;
+  }
+  
+  .required label {
+    font-weight: bold;
+  }
+  
+    .required label:after {
+      color: #e32;
+      content: ' *';
+      display: inline;
+    }
+  
+  .image-upload > input {
+    display: none;
+  }
+  
+  .image-upload img {
+    width: 150px;
+    cursor: pointer;
+    align-content: center;
+    border-radius: 150px;
+  }
+  

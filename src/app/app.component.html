@@ -1,0 +1,15 @@
+<app-navbar  *ngIf="!IsWait"></app-navbar>
+<app-mat-spinner-overlay overlay="true" *ngIf="IsWait">
+</app-mat-spinner-overlay>
+<div class="container">
+  <!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)"
+               size="medium"
+               color="#fff"
+               type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner> -->
+  <!-- <mat-spinner></mat-spinner> -->
+
+  <router-outlet></router-outlet>
+</div>
+<!-- <app-pie-pagina></app-pie-pagina> -->

@@ -1,0 +1,35 @@
+<section id="profile" class="container">
+    <div class="row mt-5">
+      <div class="offset-lg-4 col-lg-4 col-sm-2 col-10 main-section text-center card">
+        <div class="row">
+          <div class="col-lg-12 col-sm-12 col-12 profile-header"></div>
+        </div>
+        <div class="row user-details">
+          <div class="col-12">
+            <!--<img src="{{usuario.photoUrl}}" class="rounded-circle img-thumbnail" alt="profile">-->
+  
+            <h5>{{user.usuarioNombre}}</h5>
+  
+            <div class="image-upload">
+              <img [src]="user.imageFullPath || 'http://placehold.it/180'"/>
+            </div>
+              <p>
+                {{user.email}}
+              </p>
+  
+              <hr>
+              <p>Nombre: {{user.usuarioNombre}}</p>
+              <p>Apellido paterno: {{user.usuarioApellidoP}}</p>
+              <p>Apellido materno: {{user.usuarioApellidoM}}</p>
+              <!-- <p>Teléfono: {{user.Telephone}}</p> -->
+  
+              <div class="w-33">
+                <button class="btn btn-primary form-actions " data-toggle="modal" data-target="#modalUsuario" (click)="onPreUpdateUsuario()">Modificar</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    </section>
+  <app-modal-usuario [userUid]='userUid'></app-modal-usuario>
+  

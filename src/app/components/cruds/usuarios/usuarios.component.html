@@ -1,0 +1,84 @@
+<section class="row mt-5">
+    <div class="col">
+      <p></p>
+      <h1 class="h3 mb-3 font-weight-normal">Usuarios</h1>
+      <table cellpadding="10" >
+  
+        <tr>
+  
+          <td width="10%"><b>Id</b></td>
+  
+          <td width="40%"><input type="text" name="usuarioId" class="form-control" [(ngModel)]="usuarioId"/></td>
+  
+          <td width="10%"><b>Email</b></td>
+  
+          <td width="40%"><input type="text" name="email" class="form-control" [(ngModel)]="email"/></td>
+  
+        </tr>
+  
+        <tr>
+  
+          <td width="10%"><b>Apellido Paterno</b></td>
+  
+          <td width="40%"><input type="text" name="usuarioApellidoP" class="form-control" [(ngModel)]="usuarioApellidoP"/></td>
+  
+          <td width="10%"><b>Apellido Materno</b></td>
+  
+          <td width="40%"><input type="text" name="usuarioApellidoM" class="form-control" [(ngModel)]="usuarioApellidoM"/></td>
+  
+        </tr>
+  
+      </table>
+      <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#modalUsuario" (click)="onPreUpdateUser(null)">
+        Nuevo
+        registro
+      </button>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Id</th>
+            <th scope="col">Apellido paterno</th>
+            <th scope="col">Apellido materno</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Estatus</th>
+            <th scope="col">Email</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">&nbsp;</th>
+            <th scope="col">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users | filter:{ usuarioId : usuarioId, email : email, usuarioApellidoP : usuarioApellidoP,usuarioApellidoM : usuarioApellidoM } ; index as i ">
+            <th scope="row">{{i+1}}</th>
+            <td>{{user.usuarioId}}</td>
+            <td>{{user.usuarioApellidoP}}</td>
+            <td>{{user.usuarioApellidoM}}</td>
+            <td>{{user.usuarioNombre}}</td>
+            <td>{{user.usuarioEstatusSesion}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.rol.rolNombre}}</td>
+            <td *ngIf="isAdmin == true; else noOwner">
+              <button class="btn btn-primary" data-toggle="modal" data-target="#modalUsuario" (click)="onPreUpdateUser(user)">Actualizar</button>
+            </td>
+            <ng-template #noOwner>
+              <td>
+                <button class="btn btn-secondary" disabled="true">Actualizar</button>
+              </td>
+            </ng-template>
+  
+            <td *ngIf="isAdmin == true; else noAdmin">
+              <button class="btn btn-danger" (click)="onDeleteUser(user)">Eliminar</button>
+            </td>
+            <ng-template #noAdmin>
+              <td>
+                <button class="btn btn-danger" disabled='true'>Eliminar</button>
+              </td>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <app-modal-usuario [userUid]='userUid'></app-modal-usuario>
+  
