@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ConfiguracionSuaComponent } from './components/configuracionSua/configuracion-sua/configuracion-sua.component';
+import { ConfigSuaComponent } from './components/cruds/config-sua/config-sua.component';
 import { ParametrosComponent } from './components/cruds/parametros/parametros.component';
 import { RolesComponent } from './components/cruds/roles/roles.component';
 import { UsuariosComponent } from './components/cruds/usuarios/usuarios.component';
@@ -21,6 +23,7 @@ const routes: Routes = [
   { path: 'catalogos/catalogo-parametros', component: ParametrosComponent, canActivate: [AuthGuard] },
   { path: 'catalogos/catalogo-usuarios', component: UsuariosComponent, canActivate: [AuthGuard] },
   { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthGuard] },
+  { path: 'configuracion/catalogo-sua', component: ConfigSuaComponent, canActivate: [AuthGuard] },
   { path: '**', component: Page404Component }
 ];
 

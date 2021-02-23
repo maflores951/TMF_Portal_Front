@@ -5,6 +5,7 @@ import { TokenResponse } from '../models/tokenResponse';
 import { Usuario } from '../models/usuario';
 import { Parametro } from '../models/parametro';
 import { Rol } from '../models/rol';
+import { ConfiguracionSua } from '../models/Sua/configuracionSua';
 
 
 @Injectable({
@@ -288,5 +289,9 @@ export class DataApiService {
 
   public SelectedRol: Rol = {
     rolId: null
+  };
+
+  public SelectedconfiguracionSua: ConfiguracionSua = {
+    confSuaId: null
   };
 }

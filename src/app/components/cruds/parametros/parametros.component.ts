@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DataApiService } from 'src/app/services/data-api.service';
-// import { SpinnerService } from 'angular-spinners';
 import { Parametro } from 'src/app/models/parametro';
 import { AuthUserService } from 'src/app/services/auth-user.service';
 import { Usuario } from 'src/app/models/usuario';

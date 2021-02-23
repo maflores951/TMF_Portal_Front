@@ -30,8 +30,11 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { FilterParametroPipe } from './pipes/filter-parametro.pipe';
 import { FilterRolPipe } from './pipes/filter-rol.pipe';
 import { MatSpinnerOverlayComponent } from './spinner/mat-spinner-overlay/mat-spinner-overlay.component';
-
-
+import { ConfiguracionSuaComponent } from './components/configuracionSua/configuracion-sua/configuracion-sua.component';
+ import { MatFormFieldModule } from '@angular/material/form-field';
+ import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { ConfigSuaComponent } from './components/cruds/config-sua/config-sua.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +57,8 @@ import { MatSpinnerOverlayComponent } from './spinner/mat-spinner-overlay/mat-sp
     FilterParametroPipe,
     FilterRolPipe,
     MatSpinnerOverlayComponent,
+    ConfiguracionSuaComponent,
+    ConfigSuaComponent,
     
   ],
   imports: [
@@ -66,6 +71,9 @@ import { MatSpinnerOverlayComponent } from './spinner/mat-spinner-overlay/mat-sp
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
     ToastrModule.forRoot(), // ToastrModule added
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

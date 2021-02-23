@@ -1,0 +1,58 @@
+<section class="row mt-5">
+    <div class="col">
+      <p></p>
+      <p></p>
+      <h1 class="h3 mb-3 font-weight-normal">Configuración SUA</h1>
+      <table cellpadding="10" >
+  
+        <tr>
+  
+          <td width="10%"><b>Nombre  </b></td>
+  
+          <td width="40%"><input type="text" name="confSuaNombre" class="form-control" [(ngModel)]="confSuaNombre"/></td>
+  
+        </tr>
+  
+      </table>
+      <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#modalSUA">
+        Nuevo
+        registro
+      </button>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Id</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">&nbsp;</th>
+            <th scope="col">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let configuracionSua of configuracionSuas | filterParametro:{ confSuaNombre : confSuaNombre} ; index as i">
+            <th scope="row">{{i+1}}</th>
+            <td>{{configuracionSua.confSuaId}}</td>
+            <td>{{configuracionSua.confSuaNombre}}</td>
+            <td *ngIf="isAdmin == true; else noOwner">
+              <button class="btn btn-primary" data-toggle="modal" data-target="#modalSUA" (click)="onPreUpdateSua(configuracionSua)">Actualizar</button>
+            </td>
+            <ng-template #noOwner>
+              <td>
+                <button class="btn btn-secondary" disabled="true">Actualizar</button>
+              </td>
+            </ng-template>
+  
+            <td *ngIf="isAdmin == true; else noAdmin">
+              <button class="btn btn-danger" (click)="onDeleteSua(configuracionSua)">Eliminar</button>
+            </td>
+            <ng-template #noAdmin>
+              <td>
+                <button class="btn btn-danger" disabled='true'>Eliminar</button>
+              </td>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <app-configuracion-sua [userUid]='userUid'></app-configuracion-sua>

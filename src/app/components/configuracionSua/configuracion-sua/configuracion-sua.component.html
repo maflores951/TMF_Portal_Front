@@ -1,0 +1,128 @@
+<div class="modal fade" id="modalSUA" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            {{!this.dataApi.SelectedconfiguracionSua.confSuaId ? 'Nuevo registro' : 'Actualizar registro'}}
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+  
+          <form #formSUA="ngForm" (ngSubmit)="onSaveParametro(formSUA)" [formGroup]="UsuarioForm">
+            <input type="hidden" formControlName="confSuaId" name="confSuaId" [(ngModel)]="this.dataApi.SelectedconfiguracionSua.confSuaId">
+            <!--<input type="hidden" name="userUid" [value]="userUid">-->
+  
+            <!-- <div class="form-group required">
+              <label for="ParametroNombre" class="col-form-label">Nombre:</label>
+              <input type="text" class="form-control" name="ParametroNombre" [(ngModel)]="this.dataApi.SelectedParametro.parametroNombre" maxlength="50" formControlName="ParametroNombre" placeholder="Ingrese el nombre del parametro">
+  
+              <div class="alert-danger" *ngIf="ParametroNombre.invalid && (ParametroNombre.dirty || ParametroNombre.touched)">
+  
+                <div *ngFor="let validation of user_validation_messages.ParametroNombre">
+                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('ParametroNombre').hasError(validation.type) && (UsuarioForm.get('ParametroNombre').dirty || UsuarioForm.get('ParametroNombre').touched)">
+                    {{validation.message}}
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group required" [formGroup]="UsuarioForm">
+              <label for="ParametroClave">Clave</label>
+              <input type="text" name="ParametroClave" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroClave" maxlength="6" formControlName="ParametroClave" placeholder="Ingrese la clave del parametro">
+  
+              <div class="alert-danger" *ngIf="ParametroClave.invalid && (ParametroClave.dirty || ParametroClave.touched)">
+  
+                <div *ngFor="let validation of user_validation_messages.ParametroClave">
+                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('ParametroClave').hasError(validation.type) && (UsuarioForm.get('ParametroClave').dirty || UsuarioForm.get('ParametroClave').touched)">
+                    {{validation.message}}
+                  </div>
+                </div>
+              </div>
+            </div> -->
+  
+            <!-- <div class="form-group noRequired">
+              <label for="ParametroDescripcion">Descripción</label>
+              <input type="text" name="ParametroDescripcion" formControlName="ParametroDescripcion" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroDescripcion">
+            </div>
+  
+            <div class="form-group noRequired">
+              <label for="ParametroValorInicial">Valor inicial</label>
+              <input type="text" name="ParametroValorInicial" formControlName="ParametroValorInicial" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroValorInicial">
+            </div>
+  
+            <div class="form-group noRequired">
+              <label for="ParametroValorFinal">Valor final</label>
+              <input type="text" name="ParametroValorFinal" formControlName="ParametroValorFinal" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroValorFinal">
+            </div> -->
+  
+            <div class="modal-footer">
+              <button type="button" (click)="CerrarMSua(formSUA)" class="btn btn-secondary" #btnClose data-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary form-actions">Guardar</button>
+            </div>
+  
+          </form>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+  <!-- <p>fdfsdf</p>
+<p>fdfsdf</p>
+<p>fdfsdf</p>
+<p>fdfsdf</p>
+<p>fdfsdf</p>
+<p>fdfsdf</p>
+
+<h1 mat-dialog-title>Nueva configuración</h1>
+
+<div mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Configuración nombre</mat-label>
+        <input matinput type="text" [(ngModel)]="configuracionSua.confSuaNombre" name="confSuaNombre">
+    </mat-form-field>
+
+    <form [formGroup]="configuracionForm" (ngSubmit)="agregarLinea()">
+        <mat-form-field>
+            <mat-label>Id</mat-label>
+            <input type="text" formControlName="confSuaNId">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input type="text" formControlName="confSuaNNombre">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Tipo</mat-label>
+            <input type="text" formControlName="confSuaNTipo">
+        </mat-form-field>
+        <div>
+            <button type="submit" [disabled]="!configuracionForm.valid" mat-raised-button>+</button>
+        </div>
+    </form>
+</div>
+<div>
+    <h5>Niveles</h5>
+    <table>
+        <tr>
+            <th>No.</th>
+            <th>Archivo</th>
+            <th>Columna</th>
+        </tr>
+        <tr *ngFor="let item of configuracionSuaNivelC">
+            <th>{{item.confSuaNCId}}</th>
+            <th>{{item.ConfiguracionSuaNivel.confSuaNNombre}}</th>
+            <th>{{item.excelColumna.excelColumnaNombre}}</th>
+        </tr>
+    </table>
+</div>
+
+
+<div mat-dialog-actions>
+    <button mat-raised-button (clicl)="close(configuracionForm)">Cancelar</button>
+    <button mat-raised-button color="btn-primary" (click)="guardarConfiguracion()">Gurdar</button>
+
+</div>
+ -->
