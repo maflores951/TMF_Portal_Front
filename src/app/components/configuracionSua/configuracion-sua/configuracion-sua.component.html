@@ -1,69 +1,138 @@
-<div class="modal fade" id="modalSUA" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade"  id="modalSUA" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
+          <h1 class="modal-title" id="exampleModalLabel">
             {{!this.dataApi.SelectedconfiguracionSua.confSuaId ? 'Nuevo registro' : 'Actualizar registro'}}
-          </h5>
+          </h1>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-  
-          <form #formSUA="ngForm" (ngSubmit)="onSaveParametro(formSUA)" [formGroup]="UsuarioForm">
-            <input type="hidden" formControlName="confSuaId" name="confSuaId" [(ngModel)]="this.dataApi.SelectedconfiguracionSua.confSuaId">
+
+            <form #formSua="ngForm" (ngSubmit)="agregarLinea(formSua)" [formGroup]="UsuarioForm">
+                <input type="hidden" formControlName="confSuaId" name="confSuaId" [(ngModel)]="this.dataApi.SelectedconfiguracionSua.confSuaId">
+                <div class="form-group required">
+                <label for="confSuaNombre" class="col-form-label">Configuración nombre</label>
+                <input type="text" class="form-control" [(ngModel)]="this.dataApi.SelectedconfiguracionSua.confSuaNombre" name="confSuaNombre" formControlName="confSuaNombre" placeholder="Ingrese el nombre de la configuración">
+
+                    <div class="alert-danger" *ngIf="confSuaNombre.invalid && (confSuaNombre.dirty || confSuaNombre.touched)">
+    
+                        <div *ngFor="let validation of user_validation_messages.confSuaNombre">
+                        <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('confSuaNombre').hasError(validation.type) && (UsuarioForm.get('confSuaNombre').dirty || UsuarioForm.get('confSuaNombre').touched)">
+                            {{validation.message}}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="card_book">
+                <div class="card">
+                  <div class="card-body">
+          <form #formSua="ngForm" [formGroup]="UsuarioForm">
+            <input type="hidden" formControlName="confSuaNId" name="confSuaId">
             <!--<input type="hidden" name="userUid" [value]="userUid">-->
   
-            <!-- <div class="form-group required">
-              <label for="ParametroNombre" class="col-form-label">Nombre:</label>
-              <input type="text" class="form-control" name="ParametroNombre" [(ngModel)]="this.dataApi.SelectedParametro.parametroNombre" maxlength="50" formControlName="ParametroNombre" placeholder="Ingrese el nombre del parametro">
+            <div class="form-group required">
+              <label for="confSuaNNombre" class="col-form-label">Nombre:</label>
+              <input type="text" class="form-control" name="confSuaNNombre" maxlength="50" formControlName="confSuaNNombre" placeholder="Ingrese el nombre de la columna">
   
-              <div class="alert-danger" *ngIf="ParametroNombre.invalid && (ParametroNombre.dirty || ParametroNombre.touched)">
+              <div class="alert-danger" *ngIf="confSuaNNombre.invalid && (confSuaNNombre.dirty || confSuaNNombre.touched)">
   
-                <div *ngFor="let validation of user_validation_messages.ParametroNombre">
-                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('ParametroNombre').hasError(validation.type) && (UsuarioForm.get('ParametroNombre').dirty || UsuarioForm.get('ParametroNombre').touched)">
+                <div *ngFor="let validation of user_validation_messages.confSuaNNombre">
+                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('confSuaNNombre').hasError(validation.type) && (UsuarioForm.get('confSuaNNombre').dirty || UsuarioForm.get('confSuaNNombre').touched)">
                     {{validation.message}}
                   </div>
                 </div>
               </div>
-            </div>
+            </div> 
   
-            <div class="form-group required" [formGroup]="UsuarioForm">
-              <label for="ParametroClave">Clave</label>
-              <input type="text" name="ParametroClave" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroClave" maxlength="6" formControlName="ParametroClave" placeholder="Ingrese la clave del parametro">
-  
-              <div class="alert-danger" *ngIf="ParametroClave.invalid && (ParametroClave.dirty || ParametroClave.touched)">
-  
-                <div *ngFor="let validation of user_validation_messages.ParametroClave">
-                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('ParametroClave').hasError(validation.type) && (UsuarioForm.get('ParametroClave').dirty || UsuarioForm.get('ParametroClave').touched)">
-                    {{validation.message}}
+            <div class="form-row required">
+                <div class="form-group col-md-6">
+                <label for="tipoPeriodoId" class="col-form-label">Tipo periodo:</label>
+                <input type="text" class="form-control" name="tipoPeriodoId"  maxlength="50" formControlName="tipoPeriodoId" placeholder="Ingrese el tipo de periodo">
+    
+                <div class="alert-danger" *ngIf="tipoPeriodoId.invalid && (tipoPeriodoId.dirty || tipoPeriodoId.touched)">
+    
+                  <div *ngFor="let validation of user_validation_messages.tipoPeriodoId">
+                    <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('tipoPeriodoId').hasError(validation.type) && (UsuarioForm.get('tipoPeriodoId').dirty || UsuarioForm.get('tipoPeriodoId').touched)">
+                      {{validation.message}}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div> -->
-  
-            <!-- <div class="form-group noRequired">
-              <label for="ParametroDescripcion">Descripción</label>
-              <input type="text" name="ParametroDescripcion" formControlName="ParametroDescripcion" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroDescripcion">
+              </div> 
+
+              <div class="form-group col-md-6 required">
+                <label for="excelColumnaId" class="col-form-label">Columna:</label>
+                <input type="text" class="form-control"  name="excelColumnaId" maxlength="50" formControlName="excelColumnaId" placeholder="Ingrese la columna">
+    
+                <div class="alert-danger" *ngIf="excelColumnaId.invalid && (excelColumnaId.dirty || excelColumnaId.touched)">
+    
+                  <div *ngFor="let validation of user_validation_messages.excelColumnaId">
+                    <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('excelColumnaId').hasError(validation.type) && (UsuarioForm.get('excelColumnaId').dirty || UsuarioForm.get('excelColumnaId').touched)">
+                      {{validation.message}}
+                    </div>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+              <div class="agregar">
+                <button type="submit" [disabled]="!UsuarioForm.valid" class="btn btn-primary">Agregar</button>
             </div>
   
-            <div class="form-group noRequired">
-              <label for="ParametroValorInicial">Valor inicial</label>
-              <input type="text" name="ParametroValorInicial" formControlName="ParametroValorInicial" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroValorInicial">
+            <div>
+                <h2>Columnas</h2>
+                <table>
+                    <tr>
+                        <th>No.</th>
+                        <th>Archivo</th>
+                        <th>Columna</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                    <tr *ngFor="let item of suaExcel">
+                        <th>{{item.confSuaNCId}}</th>
+                        <th>{{item.ConfiguracionSuaNivel.confSuaNNombre}}</th>
+                        <th>{{item.excelColumna.excelColumnaNombre}}</th>
+                        <th>
+                            <button class="btn btn-danger" (click)="quitarLinea(formSua)">Eliminar</button>
+                        </th>
+                    </tr>
+                </table>
             </div>
-  
-            <div class="form-group noRequired">
-              <label for="ParametroValorFinal">Valor final</label>
-              <input type="text" name="ParametroValorFinal" formControlName="ParametroValorFinal" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroValorFinal">
-            </div> -->
-  
+
             <div class="modal-footer">
-              <button type="button" (click)="CerrarMSua(formSUA)" class="btn btn-secondary" #btnClose data-dismiss="modal">Cerrar</button>
-              <button type="submit" class="btn btn-primary form-actions">Guardar</button>
+              <button type="button" (click)="limpiar(formSua)" class="btn btn-secondary" #btnClose data-dismiss="modal">Cerrar</button>
+              <button (click)="agregarNivel(formSua)" class="btn btn-primary form-actions">Guardar</button>
             </div>
   
           </form>
+                  </div>
+                </div>
+            </div>
+          <div>
+            <h2>Niveles</h2>
+            <table>
+                <tr *ngFor="let item of configuracionSuaNivel">
+                    <table>
+                        <td>{{item.confSuaNId}} </td>
+                        <td>{{item.confSuaNNombre}}</td>
+                        <td> <button class="btn btn-danger">Eliminar</button></td>
+                    </table>
+                    <th>--------</th>
+                    <th>{{item.SuaExcel.suaExcelId}}</th>
+                    <th>{{item.SuaExcel.tipoPeriodo.tipoPeriodoNombre}}</th>
+                    <th>{{item.SuaExcel.excelColumna.excelColumnaNombre}}</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" (click)="CerrarMSua(formSua)" class="btn btn-secondary" #btnClose data-dismiss="modal">Cerrar</button>
+            <button (click)="guardarConfiguracion(formSua)" class="btn btn-primary form-actions">Guardar configuración</button>
+          </div>
         </div>
   
       </div>

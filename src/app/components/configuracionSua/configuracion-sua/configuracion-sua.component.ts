@@ -1,8 +1,8 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
 import { ConfiguracionSuaNivel } from 'src/app/models/Sua/configuracionSuaNivel';
-import { ConfiguracionSuaNivelC } from 'src/app/models/Sua/configuracionSuaNivelC';
+import { SuaExcel } from 'src/app/models/Sua/SuaExcel';
 import { ConfiguracionSuaService } from 'src/app/services/configuracion-sua.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
@@ -16,68 +16,75 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 export class ConfiguracionSuaComponent implements OnInit {
   constructor( public dataApi: DataApiService, private spinner: SpinnerService) 
   {
-    this.configuracionSuaNivelC = [];
+    this.configuracionSuaNivel = [];
+    this.suaExcel = [];
   }
 
   @ViewChild('btnClose', { static: false }) btnClose: ElementRef;
   @Input() userUid: number;
 
   public configuracionSua : ConfiguracionSua;
-  public configuracionSuaNivel: ConfiguracionSuaNivel;
-  public configuracionSuaNivelC : ConfiguracionSuaNivelC[];
+  public configuracionSuaNivel: ConfiguracionSuaNivel[];
+  public suaExcel: SuaExcel[];
 
   public UsuarioForm: FormGroup;
 
-  // get ParametroId() { return this.UsuarioForm.get('ParametroId'); }
-  // get ParametroNombre() { return this.UsuarioForm.get('ParametroNombre'); }
-  // get ParametroClave() { return this.UsuarioForm.get('ParametroClave'); }
-  // get ParametroDescripcion() { return this.UsuarioForm.get('ParametroDescripcion'); }
-  // get ParametroValorInicial() { return this.UsuarioForm.get('ParametroValorInicial'); }
-  // get ParametroValorFinal() { return this.UsuarioForm.get('ParametroValorFinal'); }
+  get confSuaNombre() { return this.UsuarioForm.get('confSuaNombre'); }
+  get confSuaNNombre() { return this.UsuarioForm.get('confSuaNNombre'); }
+  get tipoPeriodoId() { return this.UsuarioForm.get('tipoPeriodoId'); }
+  get excelColumnaId() { return this.UsuarioForm.get('excelColumnaId'); }
 
-  // user_validation_messages = {
-  //   'ParametroNombre': [
-  //     {
-  //       type: 'required',
-  //       message: 'El nombre del parametro es requerido'
-  //     },
-  //     {
-  //       type: 'minlength',
-  //       message: 'El nombre del parametro debe de contener mínimo 4 caracteres'
-  //     }
-  //   ],
-  //   'ParametroClave': [
-  //     {
-  //       type: 'required',
-  //       message: 'La clave del parametro es requerida'
-  //     },
-  //     {
-  //       type: 'minlength',
-  //       message: 'La clave del parametro debe de contener 6 caracteres'
-  //     }
-  //   ]
-  // }
+  user_validation_messages = {
+    'confSuaNombre': [
+      {
+        type: 'required',
+        message: 'El nombre del de la configuración es requerido'
+      },
+      {
+        type: 'minlength',
+        message: 'El nombre de la configuración debe de contener mínimo 4 caracteres'
+      }
+    ],
+    'confSuaNNombre': [
+      {
+        type: 'required',
+        message: 'El nombre de la columna es requerido'
+      },
+      {
+        type: 'minlength',
+        message: 'La nombre de la columna debe de contener mínimo 4 caracteres'
+      }
+    ],
+    'tipoPeriodoId': [
+      {
+        type: 'required',
+        message: 'El tipo de periodo es requerido'
+      }
+    ],
+    'excelColumnaId': [
+      {
+        type: 'required',
+        message: 'La columna es requerida'
+      }
+    ]
+  }
 
-  // createForm() {
-  //   return new FormGroup({
-  //     ParametroNombre: new FormControl('',
-  //       [Validators.required,
-  //       Validators.minLength(4)
-  //       ]),
-  //     ParametroClave: new FormControl('',
-  //       [Validators.required,
-  //       Validators.minLength(6)
-  //       ]),
-  //     ParametroDescripcion: new FormControl('',
-  //       []),
-  //     ParametroValorInicial: new FormControl('',
-  //       []),
-  //     ParametroValorFinal: new FormControl('',
-  //       []),
-  //     ParametroId: new FormControl('',
-  //       []),
-  //   });
-  // }
+  createForm() {
+    return new FormGroup({
+      confSuaNombre: new FormControl('',
+        [Validators.required,
+        Validators.minLength(4)
+        ]),
+      confSuaNNombre: new FormControl('',
+        [Validators.required,
+        Validators.minLength(6)
+        ]),
+      tipoPeriodoId: new FormControl('',
+        [Validators.required]),
+      excelColumnaId: new FormControl('',
+        [Validators.required]),
+    });
+  }
 
   ngOnInit(): void {
   }
@@ -86,11 +93,24 @@ export class ConfiguracionSuaComponent implements OnInit {
     this.spinner.validarEspera(estatus);
   }
 
-  agregarLinea(){
+  agregarLinea(formSua){
     // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
-  guardarConfiguracion(){
+  quitarLinea(formSua){
+    // this.configuracionSuaNivelC.push(this.configuracionForm.value);
+  }
+
+  limpiar(formSua){
+    // this.configuracionSuaNivelC.push(this.configuracionForm.value);
+  }
+
+  agregarNivel(formSua){
+    // this.configuracionSuaNivelC.push(this.configuracionForm.value);
+  }
+
+
+  guardarConfiguracion(formSua){
     // this.configuracionSuaNivel.configuracionSuaNivelC = this.configuracionSuaNivelC;
     // this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
     //   if (response.exito === 1){
@@ -99,7 +119,7 @@ export class ConfiguracionSuaComponent implements OnInit {
     // });
   }
 
-  onSaveParametro(formParametro): void {
+  onSaveSUA(formParametro): void {
     this.cambiarEstatusSpinner(true);
     // if (this.UsuarioForm.valid) {
     //   if (this.UsuarioForm.value.ParametroId == null) {
