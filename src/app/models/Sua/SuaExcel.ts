@@ -1,16 +1,19 @@
+import { EmpleadoColumna } from "../Empleado/EmpleadoColumna";
 import { ExcelColumna } from "../Excel/ExcelColumna";
-import { TipoPeriodo } from "../TipoPeriodo";
+import { ConfiguracionSuaNivel } from "./configuracionSuaNivel";
 
 export interface SuaExcel {
-    suaExcelId: number;
+    suaExcelId?: number;
 
     tipoPeriodoId: number;
 
     excelColumnaId?: number;
 
+    excelColumna?: ExcelColumna;
+
     confSuaNId?: number;
 
-    tipoPeriodo?: TipoPeriodo;
+    configuracionSuaNivel?: ConfiguracionSuaNivel;
 
-    excelColumna?: ExcelColumna;
+    empleadoColumna?: EmpleadoColumna[];
   }

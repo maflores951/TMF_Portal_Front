@@ -1,11 +1,14 @@
+import { ConfiguracionSua } from "./configuracionSua";
 import { SuaExcel } from "./SuaExcel";
 
 export interface ConfiguracionSuaNivel {
-    confSuaNId: number;
+    configuracionSuaNivelId?: number;
   
     confSuaNNombre?: string;
 
     confSuaId?: number;
+
+    configuracionSua?: ConfiguracionSua;
 
     suaExcel?: SuaExcel[];
   }

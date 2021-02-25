@@ -14,8 +14,9 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 })
 
 export class ConfiguracionSuaComponent implements OnInit {
-  constructor( public dataApi: DataApiService, private spinner: SpinnerService) 
+  constructor( public dataApi: DataApiService, private spinner: SpinnerService, public configuracionSuaService: ConfiguracionSuaService) 
   {
+    this.UsuarioForm = this.createForm();
     this.configuracionSuaNivel = [];
     this.suaExcel = [];
   }
@@ -28,6 +29,10 @@ export class ConfiguracionSuaComponent implements OnInit {
   public suaExcel: SuaExcel[];
 
   public UsuarioForm: FormGroup;
+  public contadorExcel: number;
+
+  public modelSuaExcel :SuaExcel;
+  public modelSuaNivel :ConfiguracionSuaNivel;
 
   get confSuaNombre() { return this.UsuarioForm.get('confSuaNombre'); }
   get confSuaNNombre() { return this.UsuarioForm.get('confSuaNNombre'); }
@@ -93,30 +98,62 @@ export class ConfiguracionSuaComponent implements OnInit {
     this.spinner.validarEspera(estatus);
   }
 
+  //Se agrega el primer renglon del excel
   agregarLinea(formSua){
+    // console.log(formSua);
+     this.modelSuaExcel  = {
+      tipoPeriodoId: parseInt(formSua.value.tipoPeriodoId),
+      excelColumnaId: parseInt(formSua.value.excelColumnaId)
+    }
+    this.suaExcel.push(this.modelSuaExcel);
     // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
-  quitarLinea(formSua){
+  quitarLinea(id){
+    this.suaExcel.splice(id, 1); // 1 es la cantidad de elemento a eliminar
+    //  console.log(id);
+    // this.suaExcel
     // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
   limpiar(formSua){
+     this.suaExcel = [];
     // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
   agregarNivel(formSua){
+    if (this.suaExcel != []){
+      this.modelSuaNivel = {
+        confSuaNNombre : formSua.value.confSuaNNombre,
+        suaExcel : this.suaExcel
+      }
+      this.configuracionSuaNivel.push(this.modelSuaNivel);
+    }
+    // this.configuracionSuaNivelC.push(this.configuracionForm.value);
+  }
+
+  quitarNivel(id){
+    this.configuracionSuaNivel.splice(id, 1); // 1 es la cantidad de elemento a eliminar
+    //  console.log(id);
+    // this.suaExcel
     // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
 
   guardarConfiguracion(formSua){
-    // this.configuracionSuaNivel.configuracionSuaNivelC = this.configuracionSuaNivelC;
-    // this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
-    //   if (response.exito === 1){
-    //     console.log("Entra");
-    //   }
-    // });
+    // console.log(formSua.value);
+     this.configuracionSua = {
+      confSuaNombre : formSua.value.confSuaNombre,
+      confSuaEstatus : false,
+      configuracionSuaNivel : this.configuracionSuaNivel
+     }
+
+    console.log(JSON.stringify(this.configuracionSua));
+    this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
+      if (response.exito === 1){
+        console.log("Entra");
+      }
+    });
   }
 
   onSaveSUA(formParametro): void {

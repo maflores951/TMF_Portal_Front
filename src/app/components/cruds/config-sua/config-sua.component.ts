@@ -68,7 +68,7 @@ export class ConfigSuaComponent implements OnInit {
     const confirmacion = confirm('¿Quiere eliminar el registro?');
     if (confirmacion) {
       configuracionSua.confSuaEstatus = true;
-      this.dataApi.Put('/ConfigSua', configuracionSua.confSuaId, configuracionSua)
+      this.dataApi.Put('/ConfigSua', configuracionSua.configuracionSuaId, configuracionSua)
 
       setTimeout(() => {
         this.getCurrentUser();

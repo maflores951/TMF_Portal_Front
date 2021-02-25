@@ -1,12 +1,13 @@
 import { ConfiguracionSuaNivel } from "./configuracionSuaNivel";
 
 export interface ConfiguracionSua {
-    confSuaId: number;
+    configuracionSuaId?: number;
 
     confSuaNombre?: string;
 
+    confSuaEstatus?: boolean;
+
     configuracionSuaNivel?: ConfiguracionSuaNivel[];
 
-    confSuaEstatus?: boolean;
   }
   

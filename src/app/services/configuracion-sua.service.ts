@@ -15,7 +15,7 @@ const httpOption ={
 })
 export class ConfiguracionSuaService {
 
-  url: string = "";
+  url: string = "https://localhost:44319/api/Sua";
 
   constructor(private _http:
     HttpClient) { }

@@ -5,7 +5,7 @@ export interface ExcelTipo {
   
     excelTipoNombre?: string;
   
-    excelTipoDescripcion?: string | null;
+    excelTipoDescripcion?: string;
 
     excelColumna?: ExcelColumna[];
   }

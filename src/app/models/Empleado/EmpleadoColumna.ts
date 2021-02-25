@@ -1,18 +1,17 @@
-import { ExcelColumna } from "../Excel/ExcelColumna";
+import { SuaExcel } from "../Sua/SuaExcel";
+import { EmpleadoColumnaV } from "./EmpleadoColumnaV";
 
 export interface EmpleadoColumna {
     empleadoColumnaId: number;
   
-    empleadoColumnaMes?: string;
+    empleadoColumnaMes?: number;
 
     empleadoColumnaAnio?: number;
 
-    empleadoColumnaTipo?: number;
+    suaExcelId?: number;
 
-    empleadoColumnaNo?: number;
+    suaExcel?: SuaExcel;
 
-    excelColumnaId?: number;
-
-    excelColumna?: ExcelColumna;
+    empleadoColumnaV?: EmpleadoColumnaV[];
   }
   

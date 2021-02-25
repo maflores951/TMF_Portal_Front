@@ -292,6 +292,6 @@ export class DataApiService {
   };
 
   public SelectedconfiguracionSua: ConfiguracionSua = {
-    confSuaId: null
+    configuracionSuaId: null
   };
 }

@@ -1,10 +1,10 @@
-import { EmpleadoColumna } from "../Empleado/EmpleadoColumna";
+import { SuaExcel } from "../Sua/SuaExcel";
 
 export interface ExcelColumna {
     excelColumnaId: number;
   
     excelColumnaNombre?: string;
 
-    empleadoColumna?: EmpleadoColumna[];
+    suaExcel?: SuaExcel[];
   }
   
