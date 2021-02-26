@@ -17,7 +17,12 @@ export class ConfiguracionSuaComponent implements OnInit {
   constructor( public dataApi: DataApiService, private spinner: SpinnerService, public configuracionSuaService: ConfiguracionSuaService) 
   {
     this.UsuarioForm = this.createForm();
-    this.configuracionSuaNivel = [];
+    // console.log(this.dataApi.SelectedconfiguracionSua);
+    // if (this.dataApi.SelectedconfiguracionSua){
+    //   this.configuracionSuaNivel = this.dataApi.SelectedconfiguracionSua.configuracionSuaNivel;
+    // } else{
+    //   this.configuracionSuaNivel = [];
+    // }
     this.suaExcel = [];
   }
 
@@ -25,7 +30,7 @@ export class ConfiguracionSuaComponent implements OnInit {
   @Input() userUid: number;
 
   public configuracionSua : ConfiguracionSua;
-  public configuracionSuaNivel: ConfiguracionSuaNivel[];
+  public configuracionSuaNivel : ConfiguracionSuaNivel[];
   public suaExcel: SuaExcel[];
 
   public UsuarioForm: FormGroup;
@@ -34,6 +39,7 @@ export class ConfiguracionSuaComponent implements OnInit {
   public modelSuaExcel :SuaExcel;
   public modelSuaNivel :ConfiguracionSuaNivel;
 
+  get configuracionSuaId() { return this.UsuarioForm.get('configuracionSuaId'); }
   get confSuaNombre() { return this.UsuarioForm.get('confSuaNombre'); }
   get confSuaNNombre() { return this.UsuarioForm.get('confSuaNNombre'); }
   get tipoPeriodoId() { return this.UsuarioForm.get('tipoPeriodoId'); }
@@ -88,10 +94,15 @@ export class ConfiguracionSuaComponent implements OnInit {
         [Validators.required]),
       excelColumnaId: new FormControl('',
         [Validators.required]),
+        configuracionSuaId: new FormControl(''),
     });
   }
 
   ngOnInit(): void {
+    this.dataApi.cargarModalConfObservable.subscribe(response => {
+      // console.log(JSON.stringify(response));
+      this.configuracionSuaNivel = response;
+    });
   }
 
   cambiarEstatusSpinner(estatus : boolean){
@@ -142,18 +153,39 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   guardarConfiguracion(formSua){
     // console.log(formSua.value);
+     
+     if (this.dataApi.SelectedconfiguracionSua.configuracionSuaId >= 0){
      this.configuracionSua = {
-      confSuaNombre : formSua.value.confSuaNombre,
-      confSuaEstatus : false,
-      configuracionSuaNivel : this.configuracionSuaNivel
+        configuracionSuaId : this.dataApi.SelectedconfiguracionSua.configuracionSuaId,
+        confSuaNombre : formSua.value.confSuaNombre,
+        confSuaEstatus : false,
+        configuracionSuaNivel : this.configuracionSuaNivel
+       }
+      //  console.log(JSON.stringify(this.configuracionSua));
+      // this.dataApi.Put('/ConfiguracionSuas', this.configuracionSua.configuracionSuaId, this.configuracionSua);
+      this.dataApi.Post('/ConfiguracionSuas', this.configuracionSua).subscribe(response => {
+         console.log(JSON.stringify(response) + '*********');
+        // this.configuracionSuaNivel = response;
+        this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
+          if (response.exito === 1){
+            console.log("Entra");
+          }
+        });
+      });
+     }else{
+      this.configuracionSua = {
+        confSuaNombre : formSua.value.confSuaNombre,
+        confSuaEstatus : false,
+        configuracionSuaNivel : this.configuracionSuaNivel
+       }
+      console.log(JSON.stringify(this.configuracionSua));
+      this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
+        if (response.exito === 1){
+          console.log("Entra");
+        }
+      });
      }
-
-    console.log(JSON.stringify(this.configuracionSua));
-    this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
-      if (response.exito === 1){
-        console.log("Entra");
-      }
-    });
+    
   }
 
   onSaveSUA(formParametro): void {
@@ -189,6 +221,7 @@ export class ConfiguracionSuaComponent implements OnInit {
   }
 
   CerrarMSua(formSUA): void {
+    this.configuracionSuaNivel = [];
     formSUA.resetForm();
   }
 

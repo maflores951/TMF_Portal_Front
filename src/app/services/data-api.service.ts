@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
+import { Observable, from, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams, HttpClientModule } from '@angular/common/http';
 import { TokenResponse } from '../models/tokenResponse';
 import { Usuario } from '../models/usuario';
 import { Parametro } from '../models/parametro';
 import { Rol } from '../models/rol';
 import { ConfiguracionSua } from '../models/Sua/configuracionSua';
+import { ConfiguracionSuaNivel } from '../models/Sua/configuracionSuaNivel';
 
 
 @Injectable({
@@ -290,6 +291,14 @@ export class DataApiService {
   public SelectedRol: Rol = {
     rolId: null
   };
+
+  private cargarModalConfSubject = new Subject<ConfiguracionSuaNivel[]>();
+  cargarModalConfObservable = this.cargarModalConfSubject.asObservable();
+
+  validarEspera(modal : ConfiguracionSuaNivel[]){
+    // this.IsWait = estatus;
+    this.cargarModalConfSubject.next(modal);
+  }
 
   public SelectedconfiguracionSua: ConfiguracionSua = {
     configuracionSuaId: null

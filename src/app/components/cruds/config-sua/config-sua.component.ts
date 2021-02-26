@@ -58,7 +58,7 @@ export class ConfigSuaComponent implements OnInit {
   }
 
   getListConfigSua() {
-    this.dataApi.GetList('/ConfigSua').subscribe(ConfigSuaList => {
+    this.dataApi.GetList('/ConfiguracionSuas').subscribe(ConfigSuaList => {
        this.configuracionSuas = ConfigSuaList;
       // console.log("Entra parametros " + this.parametros[0].parametroClave);
     }, error => console.error(error));
@@ -68,17 +68,24 @@ export class ConfigSuaComponent implements OnInit {
     const confirmacion = confirm('¿Quiere eliminar el registro?');
     if (confirmacion) {
       configuracionSua.confSuaEstatus = true;
-      this.dataApi.Put('/ConfigSua', configuracionSua.configuracionSuaId, configuracionSua)
+      this.dataApi.Put('/ConfiguracionSuas', configuracionSua.configuracionSuaId, configuracionSua)
 
       setTimeout(() => {
-        this.getCurrentUser();
+        this.getListConfigSua();
       }, 500);
 
     }
   }
 
   onPreUpdateSua(configuracionSua: ConfiguracionSua) {
-     this.dataApi.SelectedconfiguracionSua = Object.assign({}, configuracionSua);
+    if (configuracionSua == null){
+          this.dataApi.validarEspera([]);
+          this.dataApi.SelectedconfiguracionSua = Object.assign({}, configuracionSua);
+    }else{
+          this.dataApi.validarEspera(configuracionSua.configuracionSuaNivel);
+          this.dataApi.SelectedconfiguracionSua = Object.assign({}, configuracionSua);
   }
+    }
+
 
  }

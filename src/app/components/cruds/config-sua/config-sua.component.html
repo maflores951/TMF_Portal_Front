@@ -14,7 +14,7 @@
         </tr>
   
       </table>
-      <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#modalSUA">
+      <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#modalSUA" (click)="onPreUpdateSua(null)">
         Nuevo
         registro
       </button>
@@ -29,9 +29,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let configuracionSua of configuracionSuas | filterParametro:{ confSuaNombre : confSuaNombre} ; index as i">
+          <tr *ngFor="let configuracionSua of configuracionSuas; index as i">
             <th scope="row">{{i+1}}</th>
-            <td>{{configuracionSua.confSuaId}}</td>
+            <td>{{configuracionSua.configuracionSuaId}}</td>
             <td>{{configuracionSua.confSuaNombre}}</td>
             <td *ngIf="isAdmin == true; else noOwner">
               <button class="btn btn-primary" data-toggle="modal" data-target="#modalSUA" (click)="onPreUpdateSua(configuracionSua)">Actualizar</button>
