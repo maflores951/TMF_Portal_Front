@@ -267,7 +267,7 @@ export class ModalUsuarioComponent implements OnInit {
       } else {
         this.user = this.UsuarioForm.value;
         if (this.file != null) {
-          console.log("Entra imagen")
+          // console.log("Entra imagen")
           let file = this.file;
           let reader = new FileReader();
           reader.readAsDataURL(file);

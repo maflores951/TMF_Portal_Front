@@ -7,6 +7,8 @@ export interface ExcelTipo {
   
     excelTipoDescripcion?: string;
 
+    excelTipoPeriodo?: number;
+
     excelColumna?: ExcelColumna[];
   }
   

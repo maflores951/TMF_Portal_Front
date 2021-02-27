@@ -11,7 +11,7 @@
         </div>
         <div class="modal-body">
 
-            <form #formSua="ngForm" (ngSubmit)="agregarLinea(formSua)" [formGroup]="UsuarioForm">
+            <form #formSua="ngForm" [formGroup]="configSuaForm">
                 <input type="hidden" formControlName="configuracionSuaId" name="configuracionSuaId" [(ngModel)]="this.dataApi.SelectedconfiguracionSua.configuracionSuaId">
                 <div class="form-group required">
                 <label for="confSuaNombre" class="col-form-label">Configuración nombre</label>
@@ -20,7 +20,7 @@
                     <div class="alert-danger" *ngIf="confSuaNombre.invalid && (confSuaNombre.dirty || confSuaNombre.touched)">
     
                         <div *ngFor="let validation of user_validation_messages.confSuaNombre">
-                        <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('confSuaNombre').hasError(validation.type) && (UsuarioForm.get('confSuaNombre').dirty || UsuarioForm.get('confSuaNombre').touched)">
+                        <div style="font-size: smaller !important;" *ngIf="configSuaForm.get('confSuaNombre').hasError(validation.type) && (configSuaForm.get('confSuaNombre').dirty || configSuaForm.get('confSuaNombre').touched)">
                             {{validation.message}}
                         </div>
                         </div>
@@ -31,7 +31,7 @@
             <div class="card_book">
                 <div class="card">
                   <div class="card-body">
-          <form #formSua="ngForm" [formGroup]="UsuarioForm">
+          <form #formSuaNivel="ngForm" [formGroup]="configSuaNivelForm">
             <input type="hidden" formControlName="configuracionSuaNivelId" name="configuracionSuaNivelId">
             <!--<input type="hidden" name="userUid" [value]="userUid">-->
   
@@ -42,22 +42,31 @@
               <div class="alert-danger" *ngIf="confSuaNNombre.invalid && (confSuaNNombre.dirty || confSuaNNombre.touched)">
   
                 <div *ngFor="let validation of user_validation_messages.confSuaNNombre">
-                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('confSuaNNombre').hasError(validation.type) && (UsuarioForm.get('confSuaNNombre').dirty || UsuarioForm.get('confSuaNNombre').touched)">
+                  <div style="font-size: smaller !important;" *ngIf="configSuaNivelForm.get('confSuaNNombre').hasError(validation.type) && (configSuaNivelForm.get('confSuaNNombre').dirty || configSuaNivelForm.get('confSuaNNombre').touched)">
                     {{validation.message}}
                   </div>
                 </div>
               </div>
             </div> 
+          </form>
   
+            <form #formSuaExcel="ngForm" [formGroup]="suaExcelForm">
             <div class="form-row required">
                 <div class="form-group col-md-6">
                 <label for="tipoPeriodoId" class="col-form-label">Tipo periodo:</label>
-                <input type="text" class="form-control" name="tipoPeriodoId"  maxlength="50" formControlName="tipoPeriodoId" placeholder="Ingrese el tipo de periodo">
+                <!-- <input type="text" class="form-control" name="tipoPeriodoId"  maxlength="50" formControlName="tipoPeriodoId" placeholder="Ingrese el tipo de periodo"> -->
+                <select name="tipoPeriodoId" class="form-control" formControlName="tipoPeriodoId" style="width: 100%;
+                margin: 8px 0 0 0;">
+                  <!-- <option [value]="i.excelTipoId" *ngFor="let i of periodoTipos">{{i.excelTipoNombre}}</option> -->
+                  <option value="1">SUA</option>
+                  <option value="2">EMA</option>
+                  <option value="2">EBA</option>
+                </select>
     
                 <div class="alert-danger" *ngIf="tipoPeriodoId.invalid && (tipoPeriodoId.dirty || tipoPeriodoId.touched)">
     
                   <div *ngFor="let validation of user_validation_messages.tipoPeriodoId">
-                    <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('tipoPeriodoId').hasError(validation.type) && (UsuarioForm.get('tipoPeriodoId').dirty || UsuarioForm.get('tipoPeriodoId').touched)">
+                    <div style="font-size: smaller !important;" *ngIf="suaExcelForm.get('tipoPeriodoId').hasError(validation.type) && (suaExcelForm.get('tipoPeriodoId').dirty || suaExcelForm.get('tipoPeriodoId').touched)">
                       {{validation.message}}
                     </div>
                   </div>
@@ -66,12 +75,30 @@
 
               <div class="form-group col-md-6 required">
                 <label for="excelColumnaId" class="col-form-label">Columna:</label>
-                <input type="text" class="form-control"  name="excelColumnaId" maxlength="50" formControlName="excelColumnaId" placeholder="Ingrese la columna">
+                <!-- <input type="text" class="form-control"  name="excelColumnaId" maxlength="50" formControlName="excelColumnaId" placeholder="Ingrese la columna"> -->
+                <div class="ng-autocomplete">
+                  <ng-autocomplete 
+                  name="excelColumnaId" formControlName="excelColumnaId" 
+                    [data]="excelList"
+                    [searchKeyword]="keyword"
+                    placeholder="Ingresa el nombre de la columna"
+                    [itemTemplate]="itemTemplate"
+                    [notFoundTemplate]="notFoundTemplate">                                 
+                  </ng-autocomplete>
+                  
+                  <ng-template #itemTemplate let-item>
+                  <a [innerHTML]="item.excelColumnaNombre"></a>
+                  </ng-template>
+                  
+                  <ng-template #notFoundTemplate let-notFound>
+                  <div [innerHTML]="notFound"></div>
+                  </ng-template>
+                  </div>
     
                 <div class="alert-danger" *ngIf="excelColumnaId.invalid && (excelColumnaId.dirty || excelColumnaId.touched)">
     
                   <div *ngFor="let validation of user_validation_messages.excelColumnaId">
-                    <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('excelColumnaId').hasError(validation.type) && (UsuarioForm.get('excelColumnaId').dirty || UsuarioForm.get('excelColumnaId').touched)">
+                    <div style="font-size: smaller !important;" *ngIf="suaExcelForm.get('excelColumnaId').hasError(validation.type) && (suaExcelForm.get('excelColumnaId').dirty || suaExcelForm.get('excelColumnaId').touched)">
                       {{validation.message}}
                     </div>
                   </div>
@@ -80,12 +107,12 @@
             </div>
 
               <div class="agregar">
-                <button (click)="agregarLinea(formSua)" [disabled]="!UsuarioForm.valid" class="btn btn-primary">Agregar</button>
+                <button (click)="agregarLinea(formSuaExcel)"  class="btn btn-primary">Agregar</button>
             </div>
   
             <div>
                 <h2>Columnas</h2>
-                <table>
+                <table class="table table-hover">
                     <tr>
                         <th>No.</th>
                         <th>Archivo</th>
@@ -104,8 +131,8 @@
             </div>
 
             <div class="modal-footer">
-              <button type="button" (click)="limpiar(formSua)" class="btn btn-secondary">Limpiar</button>
-              <button (click)="agregarNivel(formSua)" class="btn btn-primary form-actions">Guardar</button>
+              <button type="button" (click)="limpiar()" class="btn btn-secondary">Limpiar</button>
+              <button (click)="agregarNivel(formSuaNivel)" class="btn btn-primary form-actions">Guardar</button>
             </div>
   
           </form>
@@ -114,19 +141,21 @@
             </div>
           <div>
             <h2>Niveles</h2>
-            <table>
+            <table class="table table-hover">
                 <tr *ngFor="let item of configuracionSuaNivel ; let id = index">
-                  <table> 
+                  <table class="table table-hover"> 
                         <tr>
-                        <td>{{id+1}} </td>
-                        <td>{{item.confSuaNNombre}}</td>
-                        <td> <button (click)="quitarNivel(id)" class="btn btn-danger">Eliminar</button></td>
+                        <th width="10%">{{id+1}} </th>
+                        <th width="20%">{{item.confSuaNNombre}}</th>
+                        <th scope="col">&nbsp;</th>
+                        <button (click)="quitarNivel(id)" class="btn btn-danger">Eliminar</button>
                       </tr>
                       
                           <tr *ngFor="let itemSua of item.suaExcel ; let id = index">
-                              <th>{{id+1}}</th>
-                              <th>{{itemSua.tipoPeriodoId}}</th>
-                              <th>{{itemSua.excelColumnaId}}</th>
+                            <th scope="col">&nbsp;</th>
+                              <td >{{id+1}}</td>
+                              <td>{{itemSua.tipoPeriodoId}}</td>
+                              <td>{{itemSua.excelColumnaId}}</td>
                           </tr>
                       </table>
                     
@@ -136,8 +165,8 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" (click)="CerrarMSua(formSua)" class="btn btn-secondary" #btnClose data-dismiss="modal">Cerrar</button>
-            <button (click)="guardarConfiguracion(formSua)" class="btn btn-primary form-actions">Guardar configuración</button>
+            <button type="button" (click)="CerrarMSua(formSua,formSuaNivel,formSuaExcel)" class="btn btn-secondary" #btnClose data-dismiss="modal">Cerrar</button>
+            <button (click)="guardarConfiguracion(formSua,formSuaNivel,formSuaExcel)" class="btn btn-primary form-actions">Guardar configuración</button>
           </div>
         </div>
   

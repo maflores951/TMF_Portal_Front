@@ -29,7 +29,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let configuracionSua of configuracionSuas; index as i">
+          <tr *ngFor="let configuracionSua of configuracionSuas | filterSua:confSuaNombre; index as i">
             <th scope="row">{{i+1}}</th>
             <td>{{configuracionSua.configuracionSuaId}}</td>
             <td>{{configuracionSua.confSuaNombre}}</td>

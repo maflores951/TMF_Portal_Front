@@ -58,3 +58,7 @@
     .agregar{
       text-align: right;
     }
+
+    .ng-autocomplete {
+      width: 400px;
+  }

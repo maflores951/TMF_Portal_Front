@@ -35,6 +35,9 @@ import { ConfiguracionSuaComponent } from './components/configuracionSua/configu
  import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { ConfigSuaComponent } from './components/cruds/config-sua/config-sua.component';
+import { FilterSuaPipe } from './pipes/filter-sua.pipe';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+
 
 @NgModule({
   declarations: [
@@ -59,6 +62,7 @@ import { ConfigSuaComponent } from './components/cruds/config-sua/config-sua.com
     MatSpinnerOverlayComponent,
     ConfiguracionSuaComponent,
     ConfigSuaComponent,
+    FilterSuaPipe,
     
   ],
   imports: [
@@ -73,7 +77,8 @@ import { ConfigSuaComponent } from './components/cruds/config-sua/config-sua.com
     ToastrModule.forRoot(), // ToastrModule added
     MatTableModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    AutocompleteLibModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

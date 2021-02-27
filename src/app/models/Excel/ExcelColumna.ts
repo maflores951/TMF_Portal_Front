@@ -5,6 +5,8 @@ export interface ExcelColumna {
   
     excelColumnaNombre?: string;
 
+    excelTipoId: number;
+
     suaExcel?: SuaExcel[];
   }
   
