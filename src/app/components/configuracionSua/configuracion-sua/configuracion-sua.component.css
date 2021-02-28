@@ -59,6 +59,9 @@
       text-align: right;
     }
 
-    .ng-autocomplete {
-      width: 400px;
-  }
+    /* .ng-autocomplete {
+      width: 100%;
+      height: 10%;
+      border: 1px solid #ccc;
+      padding-top: 10%;
+  } */

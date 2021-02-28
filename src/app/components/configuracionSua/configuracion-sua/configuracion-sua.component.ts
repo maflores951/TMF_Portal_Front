@@ -19,8 +19,7 @@ import { NavbarComponent } from '../../navbar/navbar/navbar.component';
 })
 
 export class ConfiguracionSuaComponent implements OnInit {
-  constructor( public dataApi: DataApiService, private spinner: SpinnerService, public configuracionSuaService: ConfiguracionSuaService, private toastr: ToastrService) 
-  {
+  constructor(public dataApi: DataApiService, private spinner: SpinnerService, public configuracionSuaService: ConfiguracionSuaService, private toastr: ToastrService) {
     this.configSuaForm = this.createFormSua();
     this.configSuaNivelForm = this.createFormNivel();
     this.suaExcelForm = this.createFormExcel();
@@ -38,8 +37,8 @@ export class ConfiguracionSuaComponent implements OnInit {
   @ViewChild('btnClose', { static: false }) btnClose: ElementRef;
   @Input() userUid: number;
 
-  public configuracionSua : ConfiguracionSua;
-  public configuracionSuaNivel : ConfiguracionSuaNivel[];
+  public configuracionSua: ConfiguracionSua;
+  public configuracionSuaNivel: ConfiguracionSuaNivel[];
   public suaExcel: SuaExcel[];
 
   public periodoTipos: ExcelTipo[];
@@ -52,12 +51,14 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   public contadorExcel: number;
 
-  public modelSuaExcel :SuaExcel;
-  public modelSuaNivel :ConfiguracionSuaNivel;
+  public modelSuaExcel: SuaExcel;
+  public modelSuaNivel: ConfiguracionSuaNivel;
 
-  public excelList : ExcelColumna[];
+  public excelList: ExcelColumna[];
 
-  
+  public excelListFiltro: ExcelColumna[];
+
+
 
   get configuracionSuaId() { return this.configSuaForm.get('configuracionSuaId'); }
   get confSuaNombre() { return this.configSuaForm.get('confSuaNombre'); }
@@ -66,13 +67,23 @@ export class ConfiguracionSuaComponent implements OnInit {
   get excelColumnaId() { return this.suaExcelForm.get('excelColumnaId'); }
 
   public keyword = 'excelColumnaNombre';
-  // public keywors = [];
+
+  public excelTipos: ExcelTipo[] = [{ "excelTipoId": 1, "excelTipoNombre": "Sua" },
+  { "excelTipoId": 2, "excelTipoNombre": "EMA" },
+  { "excelTipoId": 3, "excelTipoNombre": "EBA" }];
+  // cocheSelected: Coche;
+
   public data = [];
+
+  // public  nrSelect = '{excelTipoId : 0, excelTipoNombre : "Selecciona un tipo de archivo"}';
 
   getListExcelColumna() {
     this.dataApi.GetList('/ExcelColumnas').subscribe(excelList => {
       console.log(" ***** " + JSON.stringify(excelList));
-       this.excelList = excelList;
+      this.excelListFiltro = excelList;
+      this.excelList = excelList;
+      this.capturar();
+
       // console.log("Entra parametros " + this.parametros[0].parametroClave);
     }, error => console.error(error));
   }
@@ -118,13 +129,13 @@ export class ConfiguracionSuaComponent implements OnInit {
         [Validators.required,
         Validators.minLength(4)
         ]),
-        configuracionSuaId: new FormControl('',)
+      configuracionSuaId: new FormControl('',)
     });
   }
 
   createFormNivel() {
     return new FormGroup({
-           confSuaNNombre: new FormControl('',
+      confSuaNNombre: new FormControl('',
         [Validators.required,
         Validators.minLength(6)
         ])
@@ -133,11 +144,11 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   createFormExcel() {
     return new FormGroup({
-            tipoPeriodoId: new FormControl('',
+      tipoPeriodoId: new FormControl('',
         [Validators.required]),
       excelColumnaId: new FormControl('',
         [Validators.required]),
-        configuracionSuaId: new FormControl(''),
+      configuracionSuaId: new FormControl(''),
     });
   }
 
@@ -147,117 +158,157 @@ export class ConfiguracionSuaComponent implements OnInit {
       this.configuracionSuaNivel = response;
     });
 
+    this.opcionSeleccionado = this.excelTipos[0];
+    // this.opcionSeleccionado = new ExcelTipo;
     // this.periodoTipos.push({excelTipoId:1,excelTipoNombre:"Sua",excelTipoPeriodo:1});
     // this.periodoTipos.push({excelTipoId:2,excelTipoNombre:"EMA",excelTipoPeriodo:2});
     // this.periodoTipos.push({excelTipoId:3,excelTipoNombre:"EBA",excelTipoPeriodo:1});
   }
 
-  cambiarEstatusSpinner(estatus : boolean){
+  public opcionSeleccionado: ExcelTipo;
+  public ngExcelColumna: string;
+
+
+  capturar() {
+    // console.log(JSON.stringify(this.ngExcelColumna) + ' *****');
+    // console.log(JSON.stringify(this.opcionSeleccionado.excelTipoId) + "++++++");
+    // console.log(JSON.stringify(this.excelList)+ " ****"); 
+    // let colombianos = personas.filter(persona => persona.pais === 'Colombia');
+    this.excelList = this.excelListFiltro.filter(excelColumna => {
+      // console.log(JSON.stringify(excelColumna));
+      if (excelColumna.excelTipoId === this.opcionSeleccionado.excelTipoId) {
+        // filtroExcel.push(excelColumna);
+        return excelColumna;
+      }
+
+    });
+
+    this.ngExcelColumna = "";
+    //  console.log(JSON.stringify(this.opcionSeleccionado));
+  }
+
+  cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
 
-  selectEvent(event) {
-    console.log(event.excelColumnaId);
-     this.suaExcelForm.value.excelColumnaId = event.excelColumnaId;
-  }
-s
+  // selectEvent(event) {
+  //   console.log(event.excelColumnaId);
+  //    this.suaExcelForm.value.excelColumnaId = event.excelColumnaId;
+  // }
+
   //Se agrega el primer renglon del excel
-  agregarLinea(formSua){
-    console.log(JSON.stringify(formSua.value));
-    if(this.suaExcelForm.valid){
+  agregarLinea(formSua) {
+    console.log(JSON.stringify(formSua.value.excelColumnaId.excelColumnaId));
+    if (this.suaExcelForm.valid) {
 
-     this.modelSuaExcel  = {
-      tipoPeriodoId: parseInt(formSua.value.tipoPeriodoId),
-      excelColumnaId: parseInt(formSua.value.excelColumnaId)
-    }
-    var bandera = false;
-      if(this.suaExcel.length === 0){
-        this.suaExcel.push(this.modelSuaExcel);
-      }else{
-        for(var i = 0; i < this.suaExcel.length; i++) {
-          if (this.suaExcel[i].tipoPeriodoId == parseInt(formSua.value.tipoPeriodoId) &&
-          this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId) ) {
-            this.toastr.error('Error en los datos solicitados', 'Error', {
-                  timeOut: 3000});
-                  bandera = true;
+      if (formSua.value.excelColumnaId.excelColumnaId >= 1) {
+
+
+        this.modelSuaExcel = {
+          tipoPeriodoId: parseInt(formSua.value.tipoPeriodoId.excelTipoId),
+          excelColumnaId: parseInt(formSua.value.excelColumnaId.excelColumnaId),
+          excelTipo: formSua.value.tipoPeriodoId,
+          excelColumna: formSua.value.excelColumnaId
+        }
+        var bandera = false;
+        if (this.suaExcel.length === 0) {
+          this.suaExcel.push(this.modelSuaExcel);
+        } else {
+          for (var i = 0; i < this.suaExcel.length; i++) {
+            if (this.suaExcel[i].tipoPeriodoId == parseInt(formSua.value.tipoPeriodoId.excelTipoId) &&
+              this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
+              this.toastr.error('Error en los datos solicitados', 'Error', {
+                timeOut: 3000
+              });
+              bandera = true;
               break;
+            }
           }
+          if (bandera == false) {
+            this.suaExcel.push(this.modelSuaExcel);
+          }
+        }
+      } else {
+        this.toastr.error('La columna ingresada no esta registrada', 'Error', {
+          timeOut: 3000
+        });
+        bandera = true;
       }
-      if(bandera == false){
-        this.suaExcel.push(this.modelSuaExcel);
-      }
-    }
-  }else{
-    this.toastr.error('Ingrese "Tipo de archivo" y "Nombre de la columna"', 'Error', {
-      timeOut: 3000});
+    } else {
+      this.toastr.error('Ingrese "Tipo de archivo" y "Nombre de la columna"', 'Error', {
+        timeOut: 3000
+      });
       bandera = true;
-  }
+    }
   }
 
-  quitarLinea(id){
+  quitarLinea(id) {
     this.suaExcel.splice(id, 1); // 1 es la cantidad de elemento a eliminar
     //  console.log(id);
     // this.suaExcel
     // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
-  limpiar(){
-     this.suaExcel = [];
+  limpiar() {
+    this.suaExcel = [];
     // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
-  agregarNivel(formSua){
+  agregarNivel(formSua) {
     var bandera = false;
     var suaExcelNivel = this.suaExcel;
     // console.log(this.configSuaNivelForm.valid);
     // console.log(JSON.stringify(this.configSuaNivelForm.value));
     this.modelSuaNivel = {
-      confSuaNNombre : formSua.value.confSuaNNombre,
-      suaExcel : suaExcelNivel
+      confSuaNNombre: formSua.value.confSuaNNombre,
+      suaExcel: suaExcelNivel
     }
-    if(this.configSuaNivelForm.valid){
-      if(this.configuracionSuaNivel.length <= 0){
-        if (this.suaExcel.length > 0){
-         
+    if (this.configSuaNivelForm.valid) {
+      if (this.configuracionSuaNivel.length <= 0) {
+        if (this.suaExcel.length > 0) {
+
           this.configuracionSuaNivel.push(this.modelSuaNivel);
           this.suaExcel = [];
           bandera = true;
-        }else{
+        } else {
           this.toastr.error('Debe de agregar filas antes', 'Error', {
-            timeOut: 3000});
-            bandera = true;
+            timeOut: 3000
+          });
+          bandera = true;
         }
-      }else{
-        for(var i = 0; i < this.configuracionSuaNivel.length; i++) {
+      } else {
+        for (var i = 0; i < this.configuracionSuaNivel.length; i++) {
           if (this.configuracionSuaNivel[i].confSuaNNombre == formSua.value.confSuaNNombre) {
             this.toastr.error('Error en los datos solicitados', 'Error', {
-                  timeOut: 3000});
-                  bandera = true;
-              break;
-            }
-          }
-          if(bandera == false){
-            this.configuracionSuaNivel.push(this.modelSuaNivel);
-            this.suaExcel = [];
-          }
-      }
-        }else{
-          this.toastr.error('El nombre del nivel no debe de estar vacio y debe de tener minimo 4 caracteres', 'Error', {
-            timeOut: 3000});
+              timeOut: 3000
+            });
             bandera = true;
+            break;
+          }
         }
+        if (bandera == false) {
+          this.configuracionSuaNivel.push(this.modelSuaNivel);
+          this.suaExcel = [];
+        }
+      }
+    } else {
+      this.toastr.error('El nombre del nivel no debe de estar vacio y debe de tener minimo 4 caracteres', 'Error', {
+        timeOut: 3000
+      });
+      bandera = true;
+    }
 
-  
+
     // this.configuracionSuaNivel.push(this.modelSuaNivel);
-      // this.suaExcel = [];
+    // this.suaExcel = [];
 
     // var suaExcelNivel = this.suaExcel;
     // console.log(JSON.stringify(this.suaExcel));
-   
+
     // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
-  quitarNivel(id){
+  quitarNivel(id) {
     this.configuracionSuaNivel.splice(id, 1); // 1 es la cantidad de elemento a eliminar
     //  console.log(id);
     // this.suaExcel
@@ -265,116 +316,120 @@ s
   }
 
 
-  guardarConfiguracion(formSua,formSuaNivel,formSuaExcel){
-     console.log(JSON.stringify(this.configSuaForm.value));
-     console.log(this.configSuaForm.valid);
+  guardarConfiguracion(formSua, formSuaNivel, formSuaExcel) {
+    console.log(JSON.stringify(this.configSuaForm.value));
+    console.log(this.configSuaForm.valid);
     this.cambiarEstatusSpinner(true);
     // var confSuaNombre = formSua.value.confSuaNombre;
-      if (this.configSuaForm.valid){
-    if(this.configuracionSuaNivel.length > 0){
-        if (this.dataApi.SelectedconfiguracionSua.configuracionSuaId >= 0){
+    if (this.configSuaForm.valid) {
+      if (this.configuracionSuaNivel.length > 0) {
+        if (this.dataApi.SelectedconfiguracionSua.configuracionSuaId >= 0) {
           this.configuracionSua = {
-             configuracionSuaId : this.dataApi.SelectedconfiguracionSua.configuracionSuaId,
-             confSuaNombre : formSua.value.confSuaNombre,
-             confSuaEstatus : false,
-             configuracionSuaNivel : this.configuracionSuaNivel
-            }
-           //  console.log(JSON.stringify(this.configuracionSua));
-           // this.dataApi.Put('/ConfiguracionSuas', this.configuracionSua.configuracionSuaId, this.configuracionSua);
-           this.dataApi.Post('/ConfiguracionSuas', this.configuracionSua).subscribe(response => {
-              console.log(JSON.stringify(response) + '*********');
-              
-             // this.configuracionSuaNivel = response;
-             this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
-               if (response.exito === 1){
-                this.Cerrar(formSua,formSuaNivel,formSuaExcel);
-                 this.cambiarEstatusSpinner(false);
-               }else{
-                this.toastr.error('Error en el servidor intentelo más tarde', 'Error', {
-                  timeOut: 3000});
-               }
-             });
-           });
-          }else{
-           this.configuracionSua = {
-             confSuaNombre : formSua.value.confSuaNombre,
-             confSuaEstatus : false,
-             configuracionSuaNivel : this.configuracionSuaNivel
-            }
-          //  console.log(JSON.stringify(this.configuracionSua));
-           this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
-             if (response.exito === 1){
-              this.Cerrar(formSua,formSuaNivel,formSuaExcel);
-               this.cambiarEstatusSpinner(false);
-             }else{
-              this.toastr.error('Error en el servidor intentelo más tarde', 'Error', {
-                timeOut: 3000});
-             }
-           });
+            configuracionSuaId: this.dataApi.SelectedconfiguracionSua.configuracionSuaId,
+            confSuaNombre: formSua.value.confSuaNombre,
+            confSuaEstatus: false,
+            configuracionSuaNivel: this.configuracionSuaNivel
           }
-      }else{
+          //  console.log(JSON.stringify(this.configuracionSua));
+          // this.dataApi.Put('/ConfiguracionSuas', this.configuracionSua.configuracionSuaId, this.configuracionSua);
+          this.dataApi.Post('/ConfiguracionSuas', this.configuracionSua).subscribe(response => {
+            console.log(JSON.stringify(response) + '*********');
+
+            // this.configuracionSuaNivel = response;
+            this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
+              if (response.exito === 1) {
+                this.Cerrar(formSua, formSuaNivel, formSuaExcel);
+                this.cambiarEstatusSpinner(false);
+              } else {
+                this.toastr.error('Error en el servidor intentelo más tarde', 'Error', {
+                  timeOut: 3000
+                });
+              }
+            });
+          });
+        } else {
+          this.configuracionSua = {
+            confSuaNombre: formSua.value.confSuaNombre,
+            confSuaEstatus: false,
+            configuracionSuaNivel: this.configuracionSuaNivel
+          }
+          //  console.log(JSON.stringify(this.configuracionSua));
+          this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
+            if (response.exito === 1) {
+              this.Cerrar(formSua, formSuaNivel, formSuaExcel);
+              this.cambiarEstatusSpinner(false);
+            } else {
+              this.toastr.error('Error en el servidor intentelo más tarde', 'Error', {
+                timeOut: 3000
+              });
+            }
+          });
+        }
+      } else {
         this.cambiarEstatusSpinner(false);
         this.toastr.error('Debe de agregar un nivel para poder continuar', 'Error', {
-          timeOut: 3000});
+          timeOut: 3000
+        });
       }
 
-    }else{
+    } else {
       this.cambiarEstatusSpinner(false);
       this.toastr.error('El nombre de configuración es incorrecto', 'Error', {
-        timeOut: 3000});
-    }  
+        timeOut: 3000
+      });
+    }
   }
 
   // onSaveSUA(formParametro): void {
   //   this.cambiarEstatusSpinner(true);
-    // if (this.UsuarioForm.valid) {
-    //   if (this.UsuarioForm.value.ParametroId == null) {
-    //     this.UsuarioForm.value.ParametroId = 0;
-    //     this.UsuarioForm.value.ParametroEstatusDelete = false;
-    //     this.dataApi.Post('/Parametros', this.UsuarioForm.value).subscribe(result => {
-    //       this.cambiarEstatusSpinner(false);
-    //       alert("Registro exitoso");
-    //     }, error => {
-    //       this.cambiarEstatusSpinner(false);
-    //       alert("Errores en el servidor intente más tarde");
-    //     });
-    //   } else {
-        
-    //     this.parametro = this.UsuarioForm.value;
-    //     this.UsuarioForm.value.ParametroEstatusDelete = false;
-    //     this.dataApi.Put('/Parametros', this.UsuarioForm.value.ParametroId, this.parametro);
-    //   }
-    //   setTimeout(() => {
-    //   this.cambiarEstatusSpinner(false);
-    //   formParametro.resetForm();
-    //   ParametrosComponent.updateParametros.next(true);
-    //   this.btnClose.nativeElement.click();
-    // }, 600)
-    // } else {
-    //   this.cambiarEstatusSpinner(false);
-    //   alert("Errores en el formulario, revise la información ingresada");
-    // }
+  // if (this.UsuarioForm.valid) {
+  //   if (this.UsuarioForm.value.ParametroId == null) {
+  //     this.UsuarioForm.value.ParametroId = 0;
+  //     this.UsuarioForm.value.ParametroEstatusDelete = false;
+  //     this.dataApi.Post('/Parametros', this.UsuarioForm.value).subscribe(result => {
+  //       this.cambiarEstatusSpinner(false);
+  //       alert("Registro exitoso");
+  //     }, error => {
+  //       this.cambiarEstatusSpinner(false);
+  //       alert("Errores en el servidor intente más tarde");
+  //     });
+  //   } else {
+
+  //     this.parametro = this.UsuarioForm.value;
+  //     this.UsuarioForm.value.ParametroEstatusDelete = false;
+  //     this.dataApi.Put('/Parametros', this.UsuarioForm.value.ParametroId, this.parametro);
+  //   }
+  //   setTimeout(() => {
+  //   this.cambiarEstatusSpinner(false);
+  //   formParametro.resetForm();
+  //   ParametrosComponent.updateParametros.next(true);
+  //   this.btnClose.nativeElement.click();
+  // }, 600)
+  // } else {
+  //   this.cambiarEstatusSpinner(false);
+  //   alert("Errores en el formulario, revise la información ingresada");
+  // }
 
   // }
 
-  CerrarMSua(formSua,formSuaNivel,formSuaExcel): void {
+  CerrarMSua(formSua, formSuaNivel, formSuaExcel): void {
     this.configuracionSuaNivel = [];
     formSua.resetForm();
     formSuaNivel.resetForm();
     formSuaExcel.resetForm();
   }
 
-  Cerrar(formSua,formSuaNivel,formSuaExcel){
+  Cerrar(formSua, formSuaNivel, formSuaExcel) {
     setTimeout(() => {
       this.cambiarEstatusSpinner(false);
       formSua.resetForm();
       formSuaNivel.resetForm();
       formSuaExcel.resetForm();
-    this.suaExcelForm.reset();
-    this.configSuaForm.reset();
-    this.configSuaNivelForm.reset();
-    ConfigSuaComponent.updateConfigSua.next(true);
-    NavbarComponent.updateUserStatus.next(true);
+      this.suaExcelForm.reset();
+      this.configSuaForm.reset();
+      this.configSuaNivelForm.reset();
+      ConfigSuaComponent.updateConfigSua.next(true);
+      NavbarComponent.updateUserStatus.next(true);
       this.btnClose.nativeElement.click();
     }, 600)
   }

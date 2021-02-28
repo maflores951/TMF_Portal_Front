@@ -55,14 +55,19 @@
                 <div class="form-group col-md-6">
                 <label for="tipoPeriodoId" class="col-form-label">Tipo periodo:</label>
                 <!-- <input type="text" class="form-control" name="tipoPeriodoId"  maxlength="50" formControlName="tipoPeriodoId" placeholder="Ingrese el tipo de periodo"> -->
-                <select name="tipoPeriodoId" class="form-control" formControlName="tipoPeriodoId" style="width: 100%;
-                margin: 8px 0 0 0;">
-                  <!-- <option [value]="i.excelTipoId" *ngFor="let i of periodoTipos">{{i.excelTipoNombre}}</option> -->
-                  <option value="1">SUA</option>
-                  <option value="2">EMA</option>
-                  <option value="2">EBA</option>
-                </select>
+                <!-- <select name="tipoPeriodoId" class="form-control" formControlName="tipoPeriodoId" style="width: 100%;
+                padding: 8px;">
+                  
+                  <option value="{excelTipoId : 1, excelTipoNombre : Sua}">SUA</option>
+                  <option value="{excelTipoId : 2, excelTipoNombre : EMA}">EMA</option>
+                  <option value="{excelTipoId : 3, excelTipoNombre : EBA}">EBA</option>
+                </select> -->
     
+                <select id="opcionSeleccionado" name="tipoPeriodoId" class="form-control" formControlName="tipoPeriodoId" [(ngModel)]="opcionSeleccionado" (change)="capturar()">
+                   <!-- <option value="" selected="true" disabled="disabled">Selecciona un tipo de archivo</option>  -->
+                  <option *ngFor="let excelTipo of excelTipos; let index = index" [ngValue]="excelTipo">{{excelTipo.excelTipoNombre}}</option>
+                  </select>
+
                 <div class="alert-danger" *ngIf="tipoPeriodoId.invalid && (tipoPeriodoId.dirty || tipoPeriodoId.touched)">
     
                   <div *ngFor="let validation of user_validation_messages.tipoPeriodoId">
@@ -76,8 +81,10 @@
               <div class="form-group col-md-6 required">
                 <label for="excelColumnaId" class="col-form-label">Columna:</label>
                 <!-- <input type="text" class="form-control"  name="excelColumnaId" maxlength="50" formControlName="excelColumnaId" placeholder="Ingrese la columna"> -->
-                <div class="ng-autocomplete">
-                  <ng-autocomplete 
+                <!-- <div class="ng-autocomplete"> -->
+                  <ng-autocomplete  style="width: 100%;
+                  "
+                  [(ngModel)]="ngExcelColumna"
                   name="excelColumnaId" formControlName="excelColumnaId" 
                     [data]="excelList"
                     [searchKeyword]="keyword"
@@ -85,15 +92,16 @@
                     [itemTemplate]="itemTemplate"
                     [notFoundTemplate]="notFoundTemplate">                                 
                   </ng-autocomplete>
-                  
+                <!-- </div> -->
+                
                   <ng-template #itemTemplate let-item>
                   <a [innerHTML]="item.excelColumnaNombre"></a>
                   </ng-template>
                   
                   <ng-template #notFoundTemplate let-notFound>
-                  <div [innerHTML]="notFound"></div>
-                  </ng-template>
-                  </div>
+                  <!-- <div "not Found"></div> -->
+                  <b>No se encontro el registro</b>
+                   </ng-template>
     
                 <div class="alert-danger" *ngIf="excelColumnaId.invalid && (excelColumnaId.dirty || excelColumnaId.touched)">
     
@@ -121,8 +129,8 @@
                     </tr>
                     <tr *ngFor="let item of suaExcel ; let id = index">
                         <th>{{id+1}}</th>
-                        <th>{{item.tipoPeriodoId}}</th>
-                        <th>{{item.excelColumnaId}}</th>
+                        <th>{{item.excelTipo.excelTipoNombre}}</th>
+                        <th>{{item.excelColumna.excelColumnaNombre}}</th>
                         <th>
                             <button class="btn btn-danger" (click)="quitarLinea(id)">Eliminar</button>
                         </th>
@@ -154,8 +162,8 @@
                           <tr *ngFor="let itemSua of item.suaExcel ; let id = index">
                             <th scope="col">&nbsp;</th>
                               <td >{{id+1}}</td>
-                              <td>{{itemSua.tipoPeriodoId}}</td>
-                              <td>{{itemSua.excelColumnaId}}</td>
+                              <td>{{itemSua.excelTipo.excelTipoNombre}}</td>
+                              <td>{{itemSua.excelColumna.excelColumnaNombre}}</td>
                           </tr>
                       </table>
                     

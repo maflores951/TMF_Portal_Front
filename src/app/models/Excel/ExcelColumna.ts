@@ -1,4 +1,5 @@
 import { SuaExcel } from "../Sua/SuaExcel";
+import { ExcelTipo } from "./ExcelTipo";
 
 export interface ExcelColumna {
     excelColumnaId: number;
@@ -6,6 +7,8 @@ export interface ExcelColumna {
     excelColumnaNombre?: string;
 
     excelTipoId: number;
+
+   
 
     suaExcel?: SuaExcel[];
   }
