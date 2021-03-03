@@ -70,7 +70,7 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   public excelTipos: ExcelTipo[] = [{ "excelTipoId": 1, "excelTipoNombre": "Sua" },
   { "excelTipoId": 2, "excelTipoNombre": "EMA" },
-  { "excelTipoId": 3, "excelTipoNombre": "EBA" }];
+  { "excelTipoId": 5, "excelTipoNombre": "EBA" }];
   // cocheSelected: Coche;
 
   public data = [];

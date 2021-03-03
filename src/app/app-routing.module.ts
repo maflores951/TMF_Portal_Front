@@ -5,6 +5,7 @@ import { ConfigSuaComponent } from './components/cruds/config-sua/config-sua.com
 import { ParametrosComponent } from './components/cruds/parametros/parametros.component';
 import { RolesComponent } from './components/cruds/roles/roles.component';
 import { UsuariosComponent } from './components/cruds/usuarios/usuarios.component';
+import { CargarExcelComponent } from './components/excel/cargar-excel/cargar-excel.component';
 import { HomeComponent } from './components/home/home/home.component';
 import { Page404Component } from './components/page404/page404.component';
 import { AsignarPassComponent } from './components/users/asignar-pass/asignar-pass.component';
@@ -24,7 +25,9 @@ const routes: Routes = [
   { path: 'catalogos/catalogo-usuarios', component: UsuariosComponent, canActivate: [AuthGuard] },
   { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthGuard] },
   { path: 'configuracion/catalogo-sua', component: ConfigSuaComponent, canActivate: [AuthGuard] },
+  { path: 'configuracion/cargarDatos', component: CargarExcelComponent, canActivate: [AuthGuard] },
   { path: '**', component: Page404Component }
+ 
 ];
 
 @NgModule({

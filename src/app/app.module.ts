@@ -37,6 +37,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ConfigSuaComponent } from './components/cruds/config-sua/config-sua.component';
 import { FilterSuaPipe } from './pipes/filter-sua.pipe';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import { CargarExcelComponent } from './components/excel/cargar-excel/cargar-excel.component';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     ConfiguracionSuaComponent,
     ConfigSuaComponent,
     FilterSuaPipe,
+    CargarExcelComponent,
     
   ],
   imports: [

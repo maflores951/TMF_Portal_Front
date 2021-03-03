@@ -1,0 +1,161 @@
+<section id="TMFGroup" class=" mt-5">
+
+  <!-- <div class="container">
+    <div class="row">
+      <div class="col-md-12 form-group">        
+        <input 
+          type="file" 
+          class="form-control" 
+          (change)="CargarExcelSua($event)" 
+          placeholder="Upload file" 
+          accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">        
+      </div>
+    </div>
+  </div> -->
+
+<h1>Carga de excel</h1>
+
+<div class="container">
+
+  <table cellpadding="10" >
+  
+    <tr>
+
+      <td width="5%"><b>Periodo</b></td>
+
+      <td width="30%"><select id="tipoPeriodo" name="tipoPeriodo" class="form-control" [(ngModel)]="selectPeriodo" (change)="tipoPeriodo()">
+        <option *ngFor="let tipoPeriodo of tipoPeriodos; let index = index" [ngValue]="tipoPeriodo">{{tipoPeriodo.tipoPeriodoNombre}}</option>
+        </select></td>
+
+      <td width="5%"><b>Mes</b></td>
+
+      <td width="30%"><select id="meses" name="meses" class="form-control" [(ngModel)]="selectMes" (change)="mes()">
+        <option *ngFor="let mes of meses; let index = index" [ngValue]="mes">{{mes.mesNombre}}</option>
+        </select></td>
+
+      <td width="5%"><b>Año</b></td>
+
+      <td width="30%"><select id="anios" name="anios" class="form-control" [(ngModel)]="selectAnio" (change)="anio()">
+        <option *ngFor="let anio of anios; let index = index" [ngValue]="anio">{{anio.anioValor}}</option>
+        </select></td>
+
+    </tr>
+
+  </table>
+</div>
+
+<p></p>
+    <table class="table  ">
+      <tr>
+       
+         <!-- <th scope="col"> -->
+          <div class="container">
+            <!-- <div class="row"> -->
+
+              <!-- <div class="card_book"> -->
+                <div class="card">
+                  <!-- <div class="card-body text-center"> -->
+                    <th>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12 form-group">   
+                            <label class="control-label">Template</label>     
+                            <input 
+                              type="file" 
+                              class="form-control" 
+                              (change)="CargarTem($event)" 
+                              placeholder="Cargar archivo" 
+                              accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">        
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+            
+                    <th>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12 form-group">
+                            <label class="control-label">SUA</label>          
+                            <input 
+                              type="file" 
+                              class="form-control" 
+                              (change)="CargarExcelSua($event)" 
+                              placeholder="Cargar archivo" 
+                              accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">        
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+            
+                    <th>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12 form-group">     
+                            <label class="control-label">EMA o EBA</label>      
+                            <input 
+                              type="file" 
+                              class="form-control" 
+                              (change)="CargarEMA($event)" 
+                              placeholder="Cargar archivo" 
+                              accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">        
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                  <!-- </div> -->
+                </div>
+                <p></p>
+                <button (click)="CargarDatos()" class="btn btn-lg btn-primary btn-block">Ingresar</button>
+              <!-- </div> -->
+            <!-- </div> -->
+          </div>
+        <!-- </th> -->
+
+
+
+       <!-- <th scope="col">
+          <div class="container">
+            <div class="row">
+
+              <div class="card_book">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <p>
+
+                    </p>
+                    <h4 class="card-title">Descargar reporte</h4>
+                    <p class="card-text">
+                      Seleccione el reporte que requiere descargar.
+                    </p>
+
+                    <a routerLink="user/perfil" class="btn btn-block btn-primary">Seleccionar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </th> -->
+
+        <!-- <th scope="col">
+          <div class="container">
+            <div class="row">
+              <div class="card_book">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <p>
+
+                    </p>
+                    <h4 class="card-title">Registrar usuario</h4>
+                    <p class="card-text">
+                      Registre información de sus empleados para que puedan acceder a las funciones del sistema.
+                    </p>
+                    <a routerLink="user/registro" class="btn btn-block btn-primary">Registrar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </th> -->
+      </tr>
+    </table>
+  </section>
