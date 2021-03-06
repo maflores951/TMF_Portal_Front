@@ -83,13 +83,18 @@ export class UsuariosComponent implements OnInit {
 
   onPreUpdateUser(user: Usuario) {
     //  console.log(user.imageFullPath + ' ***');
-    if (user.imageFullPath == null){
-      user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
-    } else{
-      // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath;
-      user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+    if (user == null){
+      this.dataApi.SelectedUsuario = Object.assign({}, user);
+    }else{
+      if (user.imageFullPath == null){
+        user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+      } else{
+        // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath;
+        user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+      }
+      this.dataApi.SelectedUsuario = Object.assign({}, user);
     }
-    this.dataApi.SelectedUsuario = Object.assign({}, user);
+   
   }
 
 }

@@ -3,6 +3,8 @@ import { EmpleadoColumnaV } from "./EmpleadoColumnaV";
 
 export interface EmpleadoColumna {
     empleadoColumnaId: number;
+
+    empleadoColumnaNo?: string;
   
     empleadoColumnaMes?: number;
 
@@ -12,6 +14,12 @@ export interface EmpleadoColumna {
 
     suaExcel?: SuaExcel;
 
-    empleadoColumnaV?: EmpleadoColumnaV[];
+    empleadoColumnaValor?: string;
+
+    excelColumnaNombre?: string;
+
+    configuracionSuaId?: number;
+
+    // empleadoColumnaV?: EmpleadoColumnaV[];
   }
   

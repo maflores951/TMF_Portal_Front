@@ -38,6 +38,8 @@ import { ConfigSuaComponent } from './components/cruds/config-sua/config-sua.com
 import { FilterSuaPipe } from './pipes/filter-sua.pipe';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { CargarExcelComponent } from './components/excel/cargar-excel/cargar-excel.component';
+import { ReporteCompararSuaComponent } from './components/reportes/reporte-comparar-sua/reporte-comparar-sua.component';
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 
 @NgModule({
@@ -65,6 +67,7 @@ import { CargarExcelComponent } from './components/excel/cargar-excel/cargar-exc
     ConfigSuaComponent,
     FilterSuaPipe,
     CargarExcelComponent,
+    ReporteCompararSuaComponent,
     
   ],
   imports: [
@@ -80,7 +83,8 @@ import { CargarExcelComponent } from './components/excel/cargar-excel/cargar-exc
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    MatTableExporterModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

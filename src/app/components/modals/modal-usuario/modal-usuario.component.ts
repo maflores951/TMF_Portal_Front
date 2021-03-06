@@ -313,7 +313,6 @@ export class ModalUsuarioComponent implements OnInit {
 
   CerrarMU(formUsuario): void {
     this.imageSrc = ""
-
     formUsuario.resetForm();
     this.UsuarioForm.reset();
   }

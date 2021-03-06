@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ExcelColumna } from 'src/app/models/Excel/ExcelColumna';
 import { JsonToExel } from 'src/app/models/Excel/JsonToExcel';
+import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
 import { DataApiService } from 'src/app/services/data-api.service';
+import { SpinnerService } from 'src/app/services/spinner.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -10,11 +12,41 @@ import * as XLSX from 'xlsx';
   templateUrl: './cargar-excel.component.html',
   styleUrls: ['./cargar-excel.component.css']
 })
+
+
+
 export class CargarExcelComponent implements OnInit {
 
-  constructor(public dataApi: DataApiService, private toastr: ToastrService) { }
+  @ViewChild('myInputTem')
+  myInputTem: ElementRef;
+  @ViewChild('myInputSua')
+  myInputSua: ElementRef;
+  @ViewChild('myInputEma')
+  myInputEma: ElementRef;
+
+
+
+  constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService,) {
+    this.getListConfiguracionSua()
+  }
 
   ngOnInit(): void {
+  }
+
+  public configuracionSuas: ConfiguracionSua[];
+
+  public configuracionSua: ConfiguracionSua;
+
+  public getListConfiguracionSua() {
+    this.dataApi.GetList('/ConfiguracionSuas').subscribe(confSuaList => {
+      // console.log(" ***** " + JSON.stringify(excelList));
+      this.configuracionSuas = confSuaList;
+      this.configuracionSua = confSuaList[0];
+      // this.excelList = confSuaList;
+      // this.capturar();
+
+      // console.log("Entra parametros " + this.parametros[0].parametroClave);
+    }, error => console.error(error));
   }
 
   public name = 'This is XLSX TO JSON CONVERTER';
@@ -68,24 +100,29 @@ export class CargarExcelComponent implements OnInit {
     return selectAnio;
   };
 
+  public indexTemplate: number;
+  public indexSua: number;
+  public indexEma: number;
+  // public mes() {
 
-  public mes() {
+  // };
 
-  };
+  // public anio() {
 
-  public anio() {
+  // };
 
-  };
+  // public tipoPeriodo() {
 
-  public tipoPeriodo() {
-
-  };
+  // };
   // CargarExcelSua(event){
   //   let filesData = event.target.files;
   //   console.log(filesData[0]);
   // }
 
   public data: Object;
+  public temporalJson = [];
+  public suaJson = [];
+  public emaJson = [];
 
   public modificaEncabezado(dataString) {
     console.log(dataString.indexOf('"', 2));
@@ -109,40 +146,47 @@ export class CargarExcelComponent implements OnInit {
 
       var first_sheet_name = workBook.SheetNames[0];
 
-      var address_of_cell = 'A5';
+      // var address_of_cell = 'A5';
+
+
+      console.log(first_sheet_name);
 
       /* Get worksheet */
       var worksheet = workBook.Sheets[first_sheet_name];
+
       // console.log(worksheet);
       /* Find desired cell */
-      var desired_cell = worksheet[address_of_cell];
+      // var desired_cell = worksheet[address_of_cell];
       // console.log(desired_cell);
       /* Get the value */
-      var desired_value = (desired_cell ? desired_cell.v : undefined);
+      // var desired_value = (desired_cell ? desired_cell.v : undefined);
       // console.log(desired_value);
 
 
 
-      jsonData = workBook.SheetNames.reduce((initial, name) => {
+      // jsonData = workBook.SheetNames.reduce((initial, name) => {
 
 
-        const sheet = workBook.Sheets[name];
-        initial[name] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      //   const sheet = workBook.Sheets[name];
+      //   initial[name] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
 
 
-        return initial;
-      }, {});
-      const dataString = JSON.stringify(jsonData);
+      //   return initial;
+      // }, {});
+      //Los nombres de las columnas se recuperan bien
+      jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+      // const dataString = JSON.stringify(jsonData);
+      this.temporalJson = jsonData;
+      this.ValidarArregloColumnas(jsonData, 2);
+      // var jsonTemplate = this.modificaEncabezado(dataString);
+      // console.log(jsonTemplate);
 
-      var jsonTemplate = this.modificaEncabezado(dataString);
-      console.log(jsonTemplate);
 
-
-      // console.log(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
-      console.log(jsonTemplate.Sua[0]);
-      const b = jsonTemplate.Sua[0];
-      console.log(b[0] + " ******");
+      // // console.log(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
+      // console.log(jsonTemplate.Sua[0]);
+      // const b = jsonTemplate.Sua[0];
+      // console.log(b[0] + " ******");
       // document.getElementById('output').innerHTML = dataString.slice(0, 300).concat("...");
       // this.setDownload(dataString);
     }
@@ -160,47 +204,62 @@ export class CargarExcelComponent implements OnInit {
       workBook = XLSX.read(data, { type: 'binary' });
 
       var first_sheet_name = workBook.SheetNames[3];
-      // console.log(first_sheet_name + ' ++++++++');
-      var address_of_cell = 'A5';
 
-      /* Get worksheet */
-      var worksheet = workBook.Sheets[first_sheet_name];
-
-      /* Find desired cell */
-      var desired_cell = worksheet[address_of_cell];
-      // console.log(desired_cell);
-      /* Get the value */
-      var desired_value = (desired_cell ? desired_cell.v : undefined);
-      // console.log(desired_value);
-
-
-
-      //       jsonData = workBook.SheetNames.reduce((initial, name) => {
-
-      // console.log(JSON.stringify(initial) + " *****");
-      //         const sheet = workBook.Sheets[3];
-      //         initial[name] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-
-
-      //         return initial;
-      //       }, {});
-
-      //al recuperar la celda directamente no es necesario quitar el nombre de la pestaña
-      //Los encabezados se recuperan sin problema
-      jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      const dataString = JSON.stringify(jsonData);
-      console.log(dataString);
-      // const p = JSON.parse(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
-
-      // console.log(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
-      console.log(jsonData[0]);
-      const b = jsonData[0];
-      console.log(b[0] + " ******");
-      // document.getElementById('output').innerHTML = dataString.slice(0, 300).concat("...");
-      // this.setDownload(dataString);
+      console.log(first_sheet_name + " *****");
+      if (first_sheet_name === undefined) {
+        this.toastr.error('El archivo "SUA" debe de comensar con la columna "Número de Afiliación"', 'Error', {
+          timeOut: 3000
+        });
+        this.myInputSua.nativeElement.value = '';
+      } else {
+        var worksheet = workBook.Sheets[first_sheet_name];
+        jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        this.suaJson = jsonData;
+        this.ValidarArregloColumnas(jsonData, 4);
+      }
     }
     reader.readAsBinaryString(file);
+
+    // console.log(first_sheet_name + ' ++++++++');
+    // var address_of_cell = 'A5';
+
+    /* Get worksheet */
+
+
+    /* Find desired cell */
+    // var desired_cell = worksheet[address_of_cell];
+    // console.log(desired_cell);
+    /* Get the value */
+    // var desired_value = (desired_cell ? desired_cell.v : undefined);
+    // console.log(desired_value);
+
+
+
+    //       jsonData = workBook.SheetNames.reduce((initial, name) => {
+
+    // console.log(JSON.stringify(initial) + " *****");
+    //         const sheet = workBook.Sheets[3];
+    //         initial[name] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+
+
+    //         return initial;
+    //       }, {});
+
+    //al recuperar la celda directamente no es necesario quitar el nombre de la pestaña
+    //Los encabezados se recuperan sin problema
+
+    // const dataString = JSON.stringify(jsonData);
+    // console.log(dataString);
+    // const p = JSON.parse(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
+
+    // console.log(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
+    // console.log(jsonData[0]);
+    // const b = jsonData[0];
+    // console.log(b[0] + " ******");
+    // document.getElementById('output').innerHTML = dataString.slice(0, 300).concat("...");
+    // this.setDownload(dataString);
+
   }
 
   public CargarEMA(ev) {
@@ -209,55 +268,131 @@ export class CargarExcelComponent implements OnInit {
     let jsonDataV = null;
     const reader = new FileReader();
     const file = ev.target.files[0];
-    reader.onload = (event) => {
-      const data = reader.result;
-      workBook = XLSX.read(data, { type: 'binary' });
 
-      var first_sheet_name = workBook.SheetNames[2];
+    if (this.selectPeriodo.tipoPeriodoId === 1) {
+      reader.onload = (event) => {
+        const data = reader.result;
+        workBook = XLSX.read(data, { type: 'binary' });
 
-      var address_of_cell = 'A5';
+        var first_sheet_name = workBook.SheetNames[1];
 
-      /* Get worksheet */
-      var worksheet = workBook.Sheets[first_sheet_name];
-      // console.log(worksheet + " $$$$$");
-      /* Find desired cell */
-      var desired_cell = worksheet[address_of_cell];
-      // console.log(desired_cell);
-      /* Get the value */
-      var desired_value = (desired_cell ? desired_cell.v : undefined);
-      // console.log(desired_value);
+        // var address_of_cell = 'A5';
+
+        /* Get worksheet */
+        var worksheet = workBook.Sheets[first_sheet_name];
+        if (first_sheet_name === undefined) {
+          this.toastr.error('El archivo "EMA" debe de comensar con la columna "NSS"', 'Error', {
+            timeOut: 3000
+          });
+          this.myInputEma.nativeElement.value = '';
+        } else {
+          var worksheet = workBook.Sheets[first_sheet_name];
+          jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+          this.suaJson = jsonData;
+          this.ValidarArregloColumnas(jsonData, 5);
+        }
+        /* Find desired cell */
+        // var desired_cell = worksheet[address_of_cell];
+        // console.log(desired_cell);
+        /* Get the value */
+        // var desired_value = (desired_cell ? desired_cell.v : undefined);
+        // console.log(desired_value);
 
 
 
-      // jsonData = workBook.SheetNames.reduce((initial, name) => {
+        // jsonData = workBook.SheetNames.reduce((initial, name) => {
 
 
-      //   const sheet = workBook.Sheets[name];
-      //   initial[name] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+        //   const sheet = workBook.Sheets[name];
+        //   initial[name] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
 
 
-      //   return initial;
-      // }, {});
+        //   return initial;
+        // }, {});
 
 
-      //Los encabezados son correctos.
-      jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      const dataString = JSON.stringify(jsonData);
+        //Los encabezados son correctos.
 
-      //Template mensual solo es una pestaña y los cabezales salen correctos.
-      // console.log(dataString);
-      // console.log(dataString.indexOf(""));
-      const p = JSON.parse(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
-      this.CargarArregloColumnas(p, 5);
-      // console.log(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
-      // console.log(p[0]);
-      const b = p[0];
-      // console.log(b[0] + " ******");
-      // document.getElementById('output').innerHTML = dataString.slice(0, 300).concat("...");
-      // this.setDownload(dataString);
+        // const dataString = JSON.stringify(jsonData);
+        // this.ValidarArregloColumnas(jsonData, 5);
+        this.emaJson = jsonData;
+        //Template mensual solo es una pestaña y los cabezales salen correctos.
+        // console.log(dataString);
+        // console.log(dataString.indexOf(""));
+        // const p = JSON.parse(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
+        // this.CargarArregloColumnas(p, 5);
+        // console.log(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
+        // console.log(p[0]);
+        // const b = p[0];
+        // console.log(b[0] + " ******");
+        // document.getElementById('output').innerHTML = dataString.slice(0, 300).concat("...");
+        // this.setDownload(dataString);
+      }
+      reader.readAsBinaryString(file);
+    } else {
+      reader.onload = (event) => {
+        const data = reader.result;
+        workBook = XLSX.read(data, { type: 'binary' });
+
+        var first_sheet_name = workBook.SheetNames[2];
+
+        // var address_of_cell = 'A5';
+
+        /* Get worksheet */
+        var worksheet = workBook.Sheets[first_sheet_name];
+        var worksheet = workBook.Sheets[first_sheet_name];
+        if (first_sheet_name === undefined) {
+          this.toastr.error('El archivo "EBA" debe de comensar con la columna "NSS"', 'Error', {
+            timeOut: 3000
+          });
+          this.myInputEma.nativeElement.value = '';
+        } else {
+          var worksheet = workBook.Sheets[first_sheet_name];
+          jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+          this.suaJson = jsonData;
+          this.ValidarArregloColumnas(jsonData, 6);
+        }
+        /* Find desired cell */
+        // var desired_cell = worksheet[address_of_cell];
+        // console.log(desired_cell);
+        /* Get the value */
+        // var desired_value = (desired_cell ? desired_cell.v : undefined);
+        // console.log(desired_value);
+
+
+
+        // jsonData = workBook.SheetNames.reduce((initial, name) => {
+
+
+        //   const sheet = workBook.Sheets[name];
+        //   initial[name] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+
+
+        //   return initial;
+        // }, {});
+
+
+        //Los encabezados son correctos.
+        // jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        // const dataString = JSON.stringify(jsonData);
+        // this.ValidarArregloColumnas(jsonData, 6);
+        this.emaJson = jsonData;
+        //Template mensual solo es una pestaña y los cabezales salen correctos.
+        // console.log(dataString);
+        // console.log(dataString.indexOf(""));
+        // const p = JSON.parse(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
+        // this.CargarArregloColumnas(p, 5);
+        // console.log(dataString.replace('Template Revision SUA Bimestral', 'Sua'));
+        // console.log(p[0]);
+        // const b = p[0];
+        // console.log(b[0] + " ******");
+        // document.getElementById('output').innerHTML = dataString.slice(0, 300).concat("...");
+        // this.setDownload(dataString);
+      }
+      reader.readAsBinaryString(file);
     }
-    reader.readAsBinaryString(file);
   }
 
   setDownload(data) {
@@ -269,9 +404,82 @@ export class CargarExcelComponent implements OnInit {
     }, 1000)
   }
 
+  cambiarEstatusSpinner(estatus: boolean) {
+    this.spinner.validarEspera(estatus);
+  }
+
+  public CrearEmpleadoColumnas() {
+    for (let index = this.indexTemplate + 1; index < this.temporalJson.length; index++) {
+      const element = this.temporalJson[index];
+      // console.log(JSON.stringify(element) + " %%%%%%%");
+      if (element.length > 0) {
+        for (let indexValor = 0; indexValor < element.length; indexValor++) {
+          //  console.log(element[indexValor] + " %%%%%%%");
+          if (element[1] != undefined) {
+            if (element[1] != "") {
+              // console.log("Entra if");
+              // console.log(element + " %%%%%%%");
+              var empleadoColumna = {
+                empleadoColumnaMes: this.selectMes.mesId,
+                empleadoColumnaAnio: this.selectAnio.anioId,
+                empleadoColumnaValor: element[indexValor],
+                excelColumnaNombre: this.columnaNombresTemplate[indexValor],
+                configuracionSuaId: this.configuracionSua.configuracionSuaId,
+                empleadoColumnaNo: element[0]
+              }
+            }
+            // console.log(JSON.stringify(empleadoColumna) + " %%%%%%%");
+
+            this.dataApi.Post('/EmpleadoColumnas', empleadoColumna).subscribe(result => {
+              this.toastr.success('Datos registrados con exito', 'Exito', {
+                timeOut: 3000
+              });
+            }, error => {
+              this.toastr.error('Error en los datos solicitados', 'Error', {
+                timeOut: 3000
+              });
+            });
+          }
+        }
+      }
+    }
+  }
+
+
+public tiempo = 0;
 
   public CargarDatos() {
+    this.cambiarEstatusSpinner(true);
     // this.CargarColumnas();
+    if (this.temporalJson.length > 0) {
+      if (this.suaJson.length > 0) {
+        if (this.emaJson.length > 0) {
+          this.toastr.success('Valida bien', 'Exito', {
+            timeOut: 3000
+          });
+
+          this.CrearEmpleadoColumnas();
+          // var tiempo = 10000;
+          setTimeout(() => {
+            this.cambiarEstatusSpinner(false);
+          }, this.tiempo);
+
+
+        } else {
+          this.toastr.error('Debe de cargar el excel "EMA o EBA"', 'Error', {
+            timeOut: 3000
+          });
+        }
+      } else {
+        this.toastr.error('Debe de cargar el excel "SUA"', 'Error', {
+          timeOut: 3000
+        });
+      }
+    } else {
+      this.toastr.error('Debe de cargar el excel "Template"', 'Error', {
+        timeOut: 3000
+      });
+    }
   }
 
   public CargarColumnas(columnas, excelTipo) {
@@ -297,13 +505,145 @@ export class CargarExcelComponent implements OnInit {
 
   }
 
+  public columnaNombresTemplate = [];
+  public columnaNombresSua = [];
+  public columnaNombresEma = [];
+
+  public ValidarArregloColumnas(jsonExcel, excelTipo) {
+    this.tiempo =  jsonExcel.length * 600;
+    for (let index = 0; index < jsonExcel.length; index++) {
+      const element = jsonExcel[index];
+      if (excelTipo == 4) {
+        console.log(element.length);
+        if (element.length > 7) {
+          console.log(element[0]);
+          if (element[0] == "Número de Afiliación") {
+            // this.CargarColumnas(element, excelTipo);
+            this.indexSua = index;
+            this.columnaNombresSua = element;
+            console.log(this.indexSua + ' SUA');
+            break;
+          } else {
+            this.toastr.error('El archivo "SUA" debe de comensar con la columna "Número de Afiliación"', 'Error', {
+              timeOut: 3000
+            });
+            this.myInputSua.nativeElement.value = '';
+          }
+          // console.log(element[0] + " 99999");
+        }
+        // }else{
+        //   this.toastr.error('El archivo "SUA2" debe de comensar con la columna "Número de Afiliación"', 'Error', {
+        //     timeOut: 3000
+        //   });
+        //   this.myInputSua.nativeElement.value = '';
+        // }
+      } else {
+        console.log(element.length + ' ' + excelTipo);
+        if (element.length > 1) {
+          if (excelTipo == 2 || excelTipo == 3) {
+            console.log(element[0]);
+            if (element[0] == "No. S.S.") {
+              // this.CargarColumnas(element, excelTipo);
+              this.indexTemplate = index;
+              this.columnaNombresTemplate = element;
+              console.log(this.indexTemplate + ' template');
+              break;
+            } else {
+              this.toastr.error('El archivo "Template" debe de comensar con la columna "No. S.S."', 'Error', {
+                timeOut: 3000
+              });
+              this.myInputTem.nativeElement.value = '';
+              break;
+            }
+          } else {
+            if (element[0] == "NSS") {
+              // this.CargarColumnas(element, excelTipo);
+              this.indexEma = index;
+              console.log(this.indexEma + ' EMA');
+              this.columnaNombresEma = element;
+              break;
+            } else {
+              this.toastr.error('El archivo "EMA" o "EBA" debe de comensar con la columna "NSS"', 'Error', {
+                timeOut: 3000
+              });
+              this.myInputEma.nativeElement.value = '';
+              break;
+            }
+          }
+          // break;
+        }
+      }
+    }
+  }
+
+  public CargarColumnasTem() {
+    if (this.selectPeriodo.tipoPeriodoId === 1) {
+      this.CargarArregloColumnas(this.temporalJson, 2);
+    } else {
+      this.CargarArregloColumnas(this.temporalJson, 3);
+    }
+  }
+
+  public CargarColumnasSua() {
+    this.CargarArregloColumnas(this.suaJson, 4);
+  }
+
+  public CargarColumnasEma() {
+    if (this.selectPeriodo.tipoPeriodoId === 1) {
+      this.CargarArregloColumnas(this.emaJson, 5);
+    } else {
+      this.CargarArregloColumnas(this.emaJson, 6);
+    }
+  }
+
   public CargarArregloColumnas(jsonExcel, excelTipo) {
     for (let index = 0; index < jsonExcel.length; index++) {
       const element = jsonExcel[index];
-      if (element.length > 1) {
-        // console.log(element[0] + " 99999");
-        this.CargarColumnas(element, excelTipo);
-        break;
+      if (excelTipo == 4) {
+        console.log(element.length);
+        if (element.length > 7) {
+          if (element[0] == "Número de Afiliación") {
+            this.CargarColumnas(element, excelTipo);
+            break;
+          } else {
+            this.toastr.error('El archivo "SUA" debe de comensar con la columna "Número de Afiliación"', 'Error', {
+              timeOut: 3000
+            });
+            this.myInputSua.nativeElement.value = '';
+          }
+          // console.log(element[0] + " 99999");
+        }
+        // }else{
+        //   this.toastr.error('El archivo "SUA" debe de comensar con la columna "Número de Afiliación"', 'Error', {
+        //     timeOut: 3000
+        //   });
+        //   this.myInputSua.nativeElement.value = '';
+        // }
+      } else {
+        if (element.length > 1) {
+          if (excelTipo == 2 || excelTipo == 3) {
+            if (element[0] == "No. S.S.") {
+              this.CargarColumnas(element, excelTipo);
+              break;
+            } else {
+              this.toastr.error('El archivo "Template" debe de comensar con la columna "No. S.S."', 'Error', {
+                timeOut: 3000
+              });
+              this.myInputTem.nativeElement.value = '';
+            }
+          } else {
+            if (element[0] == "NSS") {
+              this.CargarColumnas(element, excelTipo);
+              break;
+            } else {
+              this.toastr.error('El archivo "EMA" o "EBA" debe de comensar con la columna "NSS"', 'Error', {
+                timeOut: 3000
+              });
+              this.myInputEma.nativeElement.value = '';
+            }
+          }
+          break;
+        }
       }
     }
   }

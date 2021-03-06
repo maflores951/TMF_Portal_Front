@@ -8,6 +8,7 @@ import { UsuariosComponent } from './components/cruds/usuarios/usuarios.componen
 import { CargarExcelComponent } from './components/excel/cargar-excel/cargar-excel.component';
 import { HomeComponent } from './components/home/home/home.component';
 import { Page404Component } from './components/page404/page404.component';
+import { ReporteCompararSuaComponent } from './components/reportes/reporte-comparar-sua/reporte-comparar-sua.component';
 import { AsignarPassComponent } from './components/users/asignar-pass/asignar-pass.component';
 import { LoginComponent } from './components/users/login/login.component';
 import { PerfilComponent } from './components/users/perfil/perfil.component';
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthGuard] },
   { path: 'configuracion/catalogo-sua', component: ConfigSuaComponent, canActivate: [AuthGuard] },
   { path: 'configuracion/cargarDatos', component: CargarExcelComponent, canActivate: [AuthGuard] },
+  { path: 'reportes/reporteSua', component: ReporteCompararSuaComponent, canActivate: [AuthGuard] },
   { path: '**', component: Page404Component }
  
 ];
