@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { EmpleadoColumna } from 'src/app/models/Empleado/EmpleadoColumna';
 import { ExcelColumna } from 'src/app/models/Excel/ExcelColumna';
 import { JsonToExel } from 'src/app/models/Excel/JsonToExcel';
 import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
@@ -27,6 +28,7 @@ export class CargarExcelComponent implements OnInit {
 
 
   constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService,) {
+    this.empleadoColumnas = [];
     this.getListConfiguracionSua()
   }
 
@@ -124,6 +126,10 @@ export class CargarExcelComponent implements OnInit {
   public suaJson = [];
   public emaJson = [];
 
+  public excelTipoIdTemplate: number;
+  public excelTipoIdSua: number;
+  public excelTipoIdEma: number;
+
   public modificaEncabezado(dataString) {
     console.log(dataString.indexOf('"', 2));
     var encabezadoInicio = dataString.indexOf('"', 2);
@@ -178,7 +184,14 @@ export class CargarExcelComponent implements OnInit {
       jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
       // const dataString = JSON.stringify(jsonData);
       this.temporalJson = jsonData;
-      this.ValidarArregloColumnas(jsonData, 2);
+
+      if (this.selectPeriodo.tipoPeriodoId === 1) {
+        this.excelTipoIdTemplate = 2;
+        this.ValidarArregloColumnas(jsonData, 2);
+      } else {
+        this.excelTipoIdTemplate = 3;
+        this.ValidarArregloColumnas(jsonData, 3);
+      }
       // var jsonTemplate = this.modificaEncabezado(dataString);
       // console.log(jsonTemplate);
 
@@ -215,6 +228,7 @@ export class CargarExcelComponent implements OnInit {
         var worksheet = workBook.Sheets[first_sheet_name];
         jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         this.suaJson = jsonData;
+        this.excelTipoIdSua = 4;
         this.ValidarArregloColumnas(jsonData, 4);
       }
     }
@@ -288,7 +302,8 @@ export class CargarExcelComponent implements OnInit {
         } else {
           var worksheet = workBook.Sheets[first_sheet_name];
           jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-          this.suaJson = jsonData;
+          this.emaJson = jsonData;
+          this.excelTipoIdEma = 5;
           this.ValidarArregloColumnas(jsonData, 5);
         }
         /* Find desired cell */
@@ -316,7 +331,7 @@ export class CargarExcelComponent implements OnInit {
 
         // const dataString = JSON.stringify(jsonData);
         // this.ValidarArregloColumnas(jsonData, 5);
-        this.emaJson = jsonData;
+        // this.emaJson = jsonData;
         //Template mensual solo es una pestaña y los cabezales salen correctos.
         // console.log(dataString);
         // console.log(dataString.indexOf(""));
@@ -350,7 +365,8 @@ export class CargarExcelComponent implements OnInit {
         } else {
           var worksheet = workBook.Sheets[first_sheet_name];
           jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-          this.suaJson = jsonData;
+          this.emaJson = jsonData;
+          this.excelTipoIdEma = 6;
           this.ValidarArregloColumnas(jsonData, 6);
         }
         /* Find desired cell */
@@ -378,7 +394,7 @@ export class CargarExcelComponent implements OnInit {
         // jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         // const dataString = JSON.stringify(jsonData);
         // this.ValidarArregloColumnas(jsonData, 6);
-        this.emaJson = jsonData;
+        // this.emaJson = jsonData;
         //Template mensual solo es una pestaña y los cabezales salen correctos.
         // console.log(dataString);
         // console.log(dataString.indexOf(""));
@@ -408,45 +424,57 @@ export class CargarExcelComponent implements OnInit {
     this.spinner.validarEspera(estatus);
   }
 
-  public CrearEmpleadoColumnas() {
-    for (let index = this.indexTemplate + 1; index < this.temporalJson.length; index++) {
-      const element = this.temporalJson[index];
+  public empleadoColumnas: EmpleadoColumna[];
+
+  public CrearEmpleadoColumnas(indexInicio, json, columnaNombres, excelTipoId) {
+    // console.log(indexInicio + " &&&&&&&&");
+    // console.log(JSON.stringify(json) + "========");
+    // console.log(json.length + " +++++++++");
+    // console.log(JSON.stringify(columnaNombres) + " #######");
+    // console.log(columnaNombres.length);
+    for (let index = indexInicio + 1; index < json.length; index++) {
+      const element = json[index];
+      // console.log(element.length+ " *******");
       // console.log(JSON.stringify(element) + " %%%%%%%");
+
       if (element.length > 0) {
-        for (let indexValor = 0; indexValor < element.length; indexValor++) {
-          //  console.log(element[indexValor] + " %%%%%%%");
+        for (let indexValor = 0; indexValor < columnaNombres.length; indexValor++) {
+
+          // console.log(JSON.stringify(element) + " *******");
+
           if (element[1] != undefined) {
             if (element[1] != "") {
               // console.log("Entra if");
-              // console.log(element + " %%%%%%%");
-              var empleadoColumna = {
+              // console.log(columnaNombres.length + " *******");
+              var empleadoColumna: EmpleadoColumna = {
                 empleadoColumnaMes: this.selectMes.mesId,
                 empleadoColumnaAnio: this.selectAnio.anioId,
                 empleadoColumnaValor: element[indexValor],
-                excelColumnaNombre: this.columnaNombresTemplate[indexValor],
+                excelColumnaNombre: columnaNombres[indexValor],
                 configuracionSuaId: this.configuracionSua.configuracionSuaId,
-                empleadoColumnaNo: element[0]
+                empleadoColumnaNo: element[0].toString(),
+                excelTipoId: excelTipoId 
               }
-            }
-            // console.log(JSON.stringify(empleadoColumna) + " %%%%%%%");
 
-            this.dataApi.Post('/EmpleadoColumnas', empleadoColumna).subscribe(result => {
-              this.toastr.success('Datos registrados con exito', 'Exito', {
-                timeOut: 3000
-              });
-            }, error => {
-              this.toastr.error('Error en los datos solicitados', 'Error', {
-                timeOut: 3000
-              });
-            });
+              // console.log(JSON.stringify(empleadoColumna) + " $$$$$$$$$$$");
+
+              this.empleadoColumnas.push(empleadoColumna);
+             
+            }
+
           }
         }
       }
+      // break;
+
     }
+   
   }
 
 
-public tiempo = 0;
+  public tiempoTemplate = 0;
+  public tiempoSua = 0;
+  public tiempoEma = 0;
 
   public CargarDatos() {
     this.cambiarEstatusSpinner(true);
@@ -457,12 +485,41 @@ public tiempo = 0;
           this.toastr.success('Valida bien', 'Exito', {
             timeOut: 3000
           });
+          var tiempoTotal = this.tiempoTemplate + this.tiempoSua + this.tiempoEma;
+          // setTimeout(() => {
+          this.CrearEmpleadoColumnas(this.indexTemplate, this.temporalJson, this.columnaNombresTemplate, this.excelTipoIdTemplate);
+          // }, this.tiempoTemplate);
 
-          this.CrearEmpleadoColumnas();
-          // var tiempo = 10000;
+          // setTimeout(() => {
+          this.CrearEmpleadoColumnas(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
+          // },1000);
+
+          // setTimeout(() => {
+          this.CrearEmpleadoColumnas(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
+          // }, 2000);
+
+          var tiempo = 10000;
           setTimeout(() => {
-            this.cambiarEstatusSpinner(false);
-          }, this.tiempo);
+            
+            // console.log(JSON.stringify(this.empleadoColumnas));
+            this.dataApi.Post('/EmpleadoColumnas',  this.empleadoColumnas).subscribe(result => {
+              this.cambiarEstatusSpinner(false);
+            this.myInputTem.nativeElement.value = '';
+            this.myInputSua.nativeElement.value = '';
+            this.myInputEma.nativeElement.value = '';
+            this.temporalJson = [];
+            this.suaJson = [];
+            this.emaJson = [];
+            this.empleadoColumnas = [];
+              this.toastr.success('Datos registrados con exito', 'Exito', {
+                timeOut: 3000
+              });
+            }, error => {
+              this.toastr.error('Error en los datos solicitados', 'Error', {
+                timeOut: 3000
+              });
+            });
+          }, 5000);
 
 
         } else {
@@ -510,7 +567,7 @@ public tiempo = 0;
   public columnaNombresEma = [];
 
   public ValidarArregloColumnas(jsonExcel, excelTipo) {
-    this.tiempo =  jsonExcel.length * 600;
+
     for (let index = 0; index < jsonExcel.length; index++) {
       const element = jsonExcel[index];
       if (excelTipo == 4) {
@@ -521,7 +578,8 @@ public tiempo = 0;
             // this.CargarColumnas(element, excelTipo);
             this.indexSua = index;
             this.columnaNombresSua = element;
-            console.log(this.indexSua + ' SUA');
+            // console.log(this.indexSua + ' SUA');
+            this.tiempoSua = jsonExcel.length * 900;
             break;
           } else {
             this.toastr.error('El archivo "SUA" debe de comensar con la columna "Número de Afiliación"', 'Error', {
@@ -546,7 +604,8 @@ public tiempo = 0;
               // this.CargarColumnas(element, excelTipo);
               this.indexTemplate = index;
               this.columnaNombresTemplate = element;
-              console.log(this.indexTemplate + ' template');
+              // console.log(this.indexTemplate + ' template');
+              this.tiempoTemplate = jsonExcel.length * 900;
               break;
             } else {
               this.toastr.error('El archivo "Template" debe de comensar con la columna "No. S.S."', 'Error', {
@@ -559,8 +618,9 @@ public tiempo = 0;
             if (element[0] == "NSS") {
               // this.CargarColumnas(element, excelTipo);
               this.indexEma = index;
-              console.log(this.indexEma + ' EMA');
+              // console.log(this.indexEma + ' EMA');
               this.columnaNombresEma = element;
+              this.tiempoEma = jsonExcel.length * 900;
               break;
             } else {
               this.toastr.error('El archivo "EMA" o "EBA" debe de comensar con la columna "NSS"', 'Error', {

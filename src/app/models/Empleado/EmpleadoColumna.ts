@@ -2,7 +2,7 @@ import { SuaExcel } from "../Sua/SuaExcel";
 import { EmpleadoColumnaV } from "./EmpleadoColumnaV";
 
 export interface EmpleadoColumna {
-    empleadoColumnaId: number;
+    empleadoColumnaId?: number;
 
     empleadoColumnaNo?: string;
   
@@ -19,6 +19,8 @@ export interface EmpleadoColumna {
     excelColumnaNombre?: string;
 
     configuracionSuaId?: number;
+
+    excelTipoId?: number;
 
     // empleadoColumnaV?: EmpleadoColumnaV[];
   }
