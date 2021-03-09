@@ -27,7 +27,7 @@ export class CargarExcelComponent implements OnInit {
 
 
 
-  constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService,) {
+  constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService) {
     this.empleadoColumnas = [];
     this.getListConfiguracionSua()
   }
@@ -501,7 +501,7 @@ export class CargarExcelComponent implements OnInit {
           var tiempo = 10000;
           setTimeout(() => {
             
-            // console.log(JSON.stringify(this.empleadoColumnas));
+             console.log(JSON.stringify(this.empleadoColumnas));
             this.dataApi.Post('/EmpleadoColumnas',  this.empleadoColumnas).subscribe(result => {
               this.cambiarEstatusSpinner(false);
             this.myInputTem.nativeElement.value = '';

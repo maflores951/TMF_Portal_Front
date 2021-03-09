@@ -68,9 +68,9 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   public keyword = 'excelColumnaNombre';
 
-  public excelTipos: ExcelTipo[] = [{ "excelTipoId": 1, "excelTipoNombre": "Sua" },
-  { "excelTipoId": 2, "excelTipoNombre": "EMA" },
-  { "excelTipoId": 5, "excelTipoNombre": "EBA" }];
+  public excelTipos: ExcelTipo[] = [{ "excelTipoId": 2, "excelTipoNombre": "Template" },
+  { "excelTipoId": 4, "excelTipoNombre": "SUA" },
+  { "excelTipoId": 5, "excelTipoNombre": "EMA" }];
   // cocheSelected: Coche;
 
   public data = [];

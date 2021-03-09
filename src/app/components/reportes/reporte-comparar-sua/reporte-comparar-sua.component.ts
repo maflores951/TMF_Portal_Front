@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { DataApiService } from 'src/app/services/data-api.service';
+import { ToastrService } from 'ngx-toastr';
+import { SpinnerService } from 'src/app/services/spinner.service';
+import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
 
 @Component({
   selector: 'app-reporte-comparar-sua',
@@ -10,11 +13,73 @@ import { DataApiService } from 'src/app/services/data-api.service';
 })
 export class ReporteCompararSuaComponent implements OnInit {
 
-  constructor(public dataApi: DataApiService) { }
+  constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService,) { 
+    this.getListConfiguracionSua()
+  }
 
   ngOnInit(): void {
   }
 
+  public configuracionSuas: ConfiguracionSua[];
+
+  public configuracionSua: ConfiguracionSua;
+  
+  public getListConfiguracionSua() {
+    this.dataApi.GetList('/ConfiguracionSuas').subscribe(confSuaList => {
+      // console.log(" ***** " + JSON.stringify(excelList));
+      this.configuracionSuas = confSuaList;
+      this.configuracionSua = confSuaList[0];
+      // this.excelList = confSuaList;
+      // this.capturar();
+
+      // console.log("Entra parametros " + this.parametros[0].parametroClave);
+    }, error => console.error(error));
+  }
+
+  public tipoPeriodos = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },
+  { "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]
+
+  public selectPeriodo = this.tipoPeriodos[0];
+
+  public meses = [{ "mesId": 1, "mesNombre": "Enero" },
+  { "mesId": 2, "mesNombre": "Febrero" },
+  { "mesId": 3, "mesNombre": "Marzo" },
+  { "mesId": 4, "mesNombre": "Abril" },
+  { "mesId": 5, "mesNombre": "Mayo" },
+  { "mesId": 6, "mesNombre": "Junio" },
+  { "mesId": 7, "mesNombre": "Julio" },
+  { "mesId": 8, "mesNombre": "Agosto" },
+  { "mesId": 9, "mesNombre": "Septiembre" },
+  { "mesId": 10, "mesNombre": "Octubre" },
+  { "mesId": 11, "mesNombre": "Noviembre" },
+  { "mesId": 12, "mesNombre": "Diciembre" },
+  ];
+
+  public selectMes = this.meses[0];
+
+  public anios = this.recuperaAnios();
+
+  public selectAnio = this.anios[0];
+
+  public recuperaAnios() {
+    var selectAnio = [];
+
+
+    var anio = new Date().getFullYear();
+
+    // var anioMenos = anio - 2;
+
+    for (let index = 1; index < 5; index++) {
+      var itemAnio = {
+        anioId: index,
+        anioValor: anio++
+      }
+
+      selectAnio.push(itemAnio);
+    }
+
+    return selectAnio;
+  };
 
   public GenerarReporte(){
     const reader = new FileReader();
@@ -23,19 +88,7 @@ export class ReporteCompararSuaComponent implements OnInit {
 
     // XLSX.writeFile(wb, 'out.xlsb');
 
-    var data = [{
-      "empleadoColumnaMes": 1,
-      "empleadoColumnaAnio": 1,
-      "empleadoColumnaValor": 647474.11,
-      "excelColumnaNombre": "CUOTAS OP IMSS",
-      "configuracionSuaId": 1
-    },{
-      "empleadoColumnaMes": 2,
-      "empleadoColumnaAnio": 2,
-      "empleadoColumnaValor": 647474.22,
-      "excelColumnaNombre": "CUOTAS OP IMSS",
-      "configuracionSuaId": 1
-    },{f: 'A2+A3'}]
+   
     // reader.readAsBinaryString(file);
     // this.setDownload(data);
     // this.exportAsExcelFile(data,"ReporteSua");
@@ -43,7 +96,7 @@ export class ReporteCompararSuaComponent implements OnInit {
     password: "1234"
 
     }
-    this.dataApi.Post('/User/excel',auth).subscribe(result => {
+    this.dataApi.GetList('/Sua/Excel').subscribe(result => {
       // this.cambiarEstatusSpinner(false);
       alert("Registro exitoso");
       var variable = result;
@@ -59,7 +112,7 @@ export class ReporteCompararSuaComponent implements OnInit {
       var byteArray = new Uint8Array(byteNumbers);
       //  var blob = new Blob([byteArray], { type: 'application/pdf' });
       const data: Blob = new Blob([byteArray], { type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-      FileSaver.saveAs(data, "Productos.xlsx");
+      FileSaver.saveAs(data, "Comparativo.xlsx");
       // console.log(variable);
       // return variable ;
     }, error => {

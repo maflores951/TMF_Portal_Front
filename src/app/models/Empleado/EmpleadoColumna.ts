@@ -1,5 +1,5 @@
+import { ExcelColumna } from "../Excel/ExcelColumna";
 import { SuaExcel } from "../Sua/SuaExcel";
-import { EmpleadoColumnaV } from "./EmpleadoColumnaV";
 
 export interface EmpleadoColumna {
     empleadoColumnaId?: number;
@@ -10,9 +10,9 @@ export interface EmpleadoColumna {
 
     empleadoColumnaAnio?: number;
 
-    suaExcelId?: number;
+    // suaExcelId?: number;
 
-    suaExcel?: SuaExcel;
+    // suaExcel?: SuaExcel;
 
     empleadoColumnaValor?: string;
 
@@ -21,6 +21,10 @@ export interface EmpleadoColumna {
     configuracionSuaId?: number;
 
     excelTipoId?: number;
+
+    excelColumnaId?: number;
+
+    excelColumna?: ExcelColumna;
 
     // empleadoColumnaV?: EmpleadoColumnaV[];
   }
