@@ -426,6 +426,11 @@ export class CargarExcelComponent implements OnInit {
 
   public empleadoColumnas: EmpleadoColumna[];
 
+  public PadLeft(value, length) {
+    return (value.toString().length < length) ? this.PadLeft("0" + value, length) :
+      value;
+  }
+
   public CrearEmpleadoColumnas(indexInicio, json, columnaNombres, excelTipoId) {
     // console.log(indexInicio + " &&&&&&&&");
     // console.log(JSON.stringify(json) + "========");
@@ -446,20 +451,25 @@ export class CargarExcelComponent implements OnInit {
             if (element[1] != "") {
               // console.log("Entra if");
               // console.log(columnaNombres.length + " *******");
+              if (indexValor == 0) {
+                var valor = this.PadLeft(element[0].toString(), 11);
+              } else {
+                var valor = element[indexValor];
+              }
               var empleadoColumna: EmpleadoColumna = {
                 empleadoColumnaMes: this.selectMes.mesId,
                 empleadoColumnaAnio: this.selectAnio.anioId,
-                empleadoColumnaValor: element[indexValor],
+                empleadoColumnaValor: valor,//element[indexValor],
                 excelColumnaNombre: columnaNombres[indexValor],
                 configuracionSuaId: this.configuracionSua.configuracionSuaId,
-                empleadoColumnaNo: element[0].toString(),
-                excelTipoId: excelTipoId 
+                empleadoColumnaNo: this.PadLeft(element[0].toString(), 11),
+                excelTipoId: excelTipoId
               }
 
               // console.log(JSON.stringify(empleadoColumna) + " $$$$$$$$$$$");
 
               this.empleadoColumnas.push(empleadoColumna);
-             
+
             }
 
           }
@@ -468,7 +478,7 @@ export class CargarExcelComponent implements OnInit {
       // break;
 
     }
-   
+
   }
 
 
@@ -500,17 +510,17 @@ export class CargarExcelComponent implements OnInit {
 
           var tiempo = 10000;
           setTimeout(() => {
-            
-             console.log(JSON.stringify(this.empleadoColumnas));
-            this.dataApi.Post('/EmpleadoColumnas',  this.empleadoColumnas).subscribe(result => {
+
+            console.log(JSON.stringify(this.empleadoColumnas));
+            this.dataApi.Post('/EmpleadoColumnas', this.empleadoColumnas).subscribe(result => {
               this.cambiarEstatusSpinner(false);
-            this.myInputTem.nativeElement.value = '';
-            this.myInputSua.nativeElement.value = '';
-            this.myInputEma.nativeElement.value = '';
-            this.temporalJson = [];
-            this.suaJson = [];
-            this.emaJson = [];
-            this.empleadoColumnas = [];
+              this.myInputTem.nativeElement.value = '';
+              this.myInputSua.nativeElement.value = '';
+              this.myInputEma.nativeElement.value = '';
+              this.temporalJson = [];
+              this.suaJson = [];
+              this.emaJson = [];
+              this.empleadoColumnas = [];
               this.toastr.success('Datos registrados con exito', 'Exito', {
                 timeOut: 3000
               });

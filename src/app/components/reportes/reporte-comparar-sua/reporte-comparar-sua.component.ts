@@ -81,7 +81,12 @@ export class ReporteCompararSuaComponent implements OnInit {
     return selectAnio;
   };
 
+  cambiarEstatusSpinner(estatus: boolean) {
+    this.spinner.validarEspera(estatus);
+  }
+
   public GenerarReporte(){
+    this.cambiarEstatusSpinner(true);
     const reader = new FileReader();
 
     // var wb = XLSX.utils.book_new();
@@ -92,15 +97,17 @@ export class ReporteCompararSuaComponent implements OnInit {
     // reader.readAsBinaryString(file);
     // this.setDownload(data);
     // this.exportAsExcelFile(data,"ReporteSua");
-    var auth = { email : "maflores",
-    password: "1234"
-
+    var parametros = { ConfiguracionSuaId : this.configuracionSua.configuracionSuaId,
+    EmpleadoColumnaMes: this.selectMes.mesId,
+    EmpleadoColumnaAnio: this.selectAnio.anioId
     }
-    this.dataApi.GetList('/Sua/Excel').subscribe(result => {
-      // this.cambiarEstatusSpinner(false);
+
+    console.log(JSON.stringify(parametros));
+    this.dataApi.Post('/Sua/Excel', parametros).subscribe(result => {
       alert("Registro exitoso");
+      this.cambiarEstatusSpinner(false);
       var variable = result;
-      console.log(variable.data);
+      // console.log(variable.data);
       const byteCharacters = atob(variable.data);
 
       const byteNumbers = new Array(byteCharacters.length);
@@ -116,7 +123,7 @@ export class ReporteCompararSuaComponent implements OnInit {
       // console.log(variable);
       // return variable ;
     }, error => {
-      // this.cambiarEstatusSpinner(false);
+       this.cambiarEstatusSpinner(false);
       alert("Errores en el servidor intente más tarde");
     });
   }
