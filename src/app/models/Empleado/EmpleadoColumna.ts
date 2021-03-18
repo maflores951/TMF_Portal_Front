@@ -18,7 +18,7 @@ export interface EmpleadoColumna {
 
     excelColumnaNombre?: string;
 
-    configuracionSuaId?: number;
+    // configuracionSuaId?: number;
 
     excelTipoId?: number;
 

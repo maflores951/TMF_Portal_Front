@@ -30,7 +30,7 @@ export class CargarExcelComponent implements OnInit {
 
   constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService) {
     this.empleadoColumnas = [];
-    this.getListConfiguracionSua()
+    // this.getListConfiguracionSua()
   }
 
   ngOnInit(): void {
@@ -40,17 +40,17 @@ export class CargarExcelComponent implements OnInit {
 
   public configuracionSua: ConfiguracionSua;
 
-  public getListConfiguracionSua() {
-    this.dataApi.GetList('/ConfiguracionSuas').subscribe(confSuaList => {
-       console.log(" ***** " + JSON.stringify(confSuaList));
-      this.configuracionSuas = confSuaList;
-      this.configuracionSua = confSuaList[0];
-      // this.excelList = confSuaList;
-      // this.capturar();
+  // public getListConfiguracionSua() {
+  //   this.dataApi.GetList('/ConfiguracionSuas').subscribe(confSuaList => {
+  //      console.log(" ***** " + JSON.stringify(confSuaList));
+  //     this.configuracionSuas = confSuaList;
+  //     this.configuracionSua = confSuaList[0];
+  //     // this.excelList = confSuaList;
+  //     // this.capturar();
 
-      // console.log("Entra parametros " + this.parametros[0].parametroClave);
-    }, error => console.error(error));
-  }
+  //     // console.log("Entra parametros " + this.parametros[0].parametroClave);
+  //   }, error => console.error(error));
+  // }
 
   public name = 'This is XLSX TO JSON CONVERTER';
   public willDownload = false;
@@ -476,7 +476,7 @@ export class CargarExcelComponent implements OnInit {
                 empleadoColumnaAnio: this.selectAnio.anioId,
                 empleadoColumnaValor: valor,//element[indexValor],
                 excelColumnaNombre: columnaNombres[indexValor],
-                configuracionSuaId: this.configuracionSua.configuracionSuaId,
+                // configuracionSuaId: this.configuracionSua.configuracionSuaId,
                 empleadoColumnaNo: this.PadLeft(element[0].toString(), 11),
                 excelTipoId: excelTipoId
               }
@@ -514,14 +514,14 @@ export class CargarExcelComponent implements OnInit {
             var validaEmpleadoColumna : EmpleadoColumna = {
               empleadoColumnaMes: this.selectMes.mesId,
               empleadoColumnaAnio: this.selectAnio.anioId,
-              configuracionSuaId: this.configuracionSua.configuracionSuaId,
+              // configuracionSuaId: this.configuracionSua.configuracionSuaId,
               excelTipoId:   2
             }
           }else{
             var validaEmpleadoColumna : EmpleadoColumna = {
               empleadoColumnaMes: this.selectMes.mesId,
               empleadoColumnaAnio: this.selectAnio.anioId,
-              configuracionSuaId: this.configuracionSua.configuracionSuaId,
+              // configuracionSuaId: this.configuracionSua.configuracionSuaId,
               excelTipoId:   3
             }
           }
