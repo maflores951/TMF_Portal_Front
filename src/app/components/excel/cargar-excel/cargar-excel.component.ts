@@ -6,6 +6,7 @@ import { JsonToExel } from 'src/app/models/Excel/JsonToExcel';
 import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
+import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -41,7 +42,7 @@ export class CargarExcelComponent implements OnInit {
 
   public getListConfiguracionSua() {
     this.dataApi.GetList('/ConfiguracionSuas').subscribe(confSuaList => {
-      // console.log(" ***** " + JSON.stringify(excelList));
+       console.log(" ***** " + JSON.stringify(confSuaList));
       this.configuracionSuas = confSuaList;
       this.configuracionSua = confSuaList[0];
       // this.excelList = confSuaList;
@@ -92,10 +93,10 @@ export class CargarExcelComponent implements OnInit {
 
     for (let index = 1; index < 5; index++) {
       var itemAnio = {
-        anioId: index,
-        anioValor: anio++
+        anioId: anio,
+        anioValor: anio
       }
-
+      anio++
       selectAnio.push(itemAnio);
     }
 
@@ -113,9 +114,20 @@ export class CargarExcelComponent implements OnInit {
 
   // };
 
-  // public tipoPeriodo() {
+  public tipoPeriodo() {
+    this.myInputTem.nativeElement.value = '';
+    this.myInputSua.nativeElement.value = '';
+    this.myInputEma.nativeElement.value = '';
+    this.temporalJson = [];
+    this.suaJson = [];
+    this.emaJson = [];
+    this.empleadoColumnas = [];
+    this.excelTipoIdSua = 0;
+    this.excelTipoIdTemplate = 0;
+    this.excelTipoIdEma = 0;
+  };
 
-  // };
+
   // CargarExcelSua(event){
   //   let filesData = event.target.files;
   //   console.log(filesData[0]);
@@ -224,6 +236,7 @@ export class CargarExcelComponent implements OnInit {
           timeOut: 3000
         });
         this.myInputSua.nativeElement.value = '';
+        this.suaJson = [];
       } else {
         var worksheet = workBook.Sheets[first_sheet_name];
         jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
@@ -299,6 +312,7 @@ export class CargarExcelComponent implements OnInit {
             timeOut: 3000
           });
           this.myInputEma.nativeElement.value = '';
+          this.emaJson = [];
         } else {
           var worksheet = workBook.Sheets[first_sheet_name];
           jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
@@ -362,6 +376,7 @@ export class CargarExcelComponent implements OnInit {
             timeOut: 3000
           });
           this.myInputEma.nativeElement.value = '';
+          this.emaJson = [];
         } else {
           var worksheet = workBook.Sheets[first_sheet_name];
           jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
@@ -495,6 +510,26 @@ export class CargarExcelComponent implements OnInit {
           this.toastr.success('Valida bien', 'Exito', {
             timeOut: 3000
           });
+          if(this.selectPeriodo.tipoPeriodoId == 1){
+            var validaEmpleadoColumna : EmpleadoColumna = {
+              empleadoColumnaMes: this.selectMes.mesId,
+              empleadoColumnaAnio: this.selectAnio.anioId,
+              configuracionSuaId: this.configuracionSua.configuracionSuaId,
+              excelTipoId:   2
+            }
+          }else{
+            var validaEmpleadoColumna : EmpleadoColumna = {
+              empleadoColumnaMes: this.selectMes.mesId,
+              empleadoColumnaAnio: this.selectAnio.anioId,
+              configuracionSuaId: this.configuracionSua.configuracionSuaId,
+              excelTipoId:   3
+            }
+          }
+
+
+          this.dataApi.Post('/EmpleadoColumnas/ValidarColumnas', validaEmpleadoColumna).subscribe(result => {
+           console.log(JSON.stringify(result));
+         if(result.exito == 0){
           var tiempoTotal = this.tiempoTemplate + this.tiempoSua + this.tiempoEma;
           // setTimeout(() => {
           this.CrearEmpleadoColumnas(this.indexTemplate, this.temporalJson, this.columnaNombresTemplate, this.excelTipoIdTemplate);
@@ -521,28 +556,94 @@ export class CargarExcelComponent implements OnInit {
               this.suaJson = [];
               this.emaJson = [];
               this.empleadoColumnas = [];
+              this.excelTipoIdSua = 0;
+              this.excelTipoIdTemplate = 0;
+              this.excelTipoIdEma = 0;
               this.toastr.success('Datos registrados con exito', 'Exito', {
                 timeOut: 3000
               });
             }, error => {
+              this.cambiarEstatusSpinner(false);
               this.toastr.error('Error en los datos solicitados', 'Error', {
                 timeOut: 3000
               });
             });
           }, 5000);
+         }else{
+          Swal.fire({
+            title: 'Ya existe registro de columnas para este periodo, si continua las columnas se actualizarán, ¿Quiere continuar?',
+            showDenyButton: true,
+            confirmButtonText: `Continuar`,
+            denyButtonText: `Cancelar`,
+            icon: 'question'
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              var tiempoTotal = this.tiempoTemplate + this.tiempoSua + this.tiempoEma;
+              // setTimeout(() => {
+              this.CrearEmpleadoColumnas(this.indexTemplate, this.temporalJson, this.columnaNombresTemplate, this.excelTipoIdTemplate);
+              // }, this.tiempoTemplate);
+    
+              // setTimeout(() => {
+              this.CrearEmpleadoColumnas(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
+              // },1000);
+    
+              // setTimeout(() => {
+              this.CrearEmpleadoColumnas(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
+              // }, 2000);
+    
+              var tiempo = 10000;
+              setTimeout(() => {
+    
+                console.log(JSON.stringify(this.empleadoColumnas));
+                this.dataApi.Post('/EmpleadoColumnas', this.empleadoColumnas).subscribe(result => {
+                  this.cambiarEstatusSpinner(false);
+                  this.myInputTem.nativeElement.value = '';
+                  this.myInputSua.nativeElement.value = '';
+                  this.myInputEma.nativeElement.value = '';
+                  this.temporalJson = [];
+                  this.suaJson = [];
+                  this.emaJson = [];
+                  this.empleadoColumnas = [];
+                  this.excelTipoIdSua = 0;
+                  this.excelTipoIdTemplate = 0;
+                  this.excelTipoIdEma = 0;
+                  this.toastr.success('Datos registrados con exito', 'Exito', {
+                    timeOut: 3000
+                  });
+                }, error => {
+                  this.cambiarEstatusSpinner(false);
+                  this.toastr.error('Error en los datos solicitados', 'Error', {
+                    timeOut: 3000
+                  });
+                });
+              }, 5000);
+            } else if (result.isDenied) {
+               Swal.fire('Carga de información cancelada', '', 'error')
+               this.cambiarEstatusSpinner(false);
+            }
+          })
+
+         }
+          });
+
+         
 
 
         } else {
+          this.cambiarEstatusSpinner(false);
           this.toastr.error('Debe de cargar el excel "EMA o EBA"', 'Error', {
             timeOut: 3000
           });
         }
       } else {
+        this.cambiarEstatusSpinner(false);
         this.toastr.error('Debe de cargar el excel "SUA"', 'Error', {
           timeOut: 3000
         });
       }
     } else {
+      this.cambiarEstatusSpinner(false);
       this.toastr.error('Debe de cargar el excel "Template"', 'Error', {
         timeOut: 3000
       });
@@ -596,6 +697,7 @@ export class CargarExcelComponent implements OnInit {
               timeOut: 3000
             });
             this.myInputSua.nativeElement.value = '';
+            this.suaJson = [];
           }
           // console.log(element[0] + " 99999");
         }
@@ -622,6 +724,7 @@ export class CargarExcelComponent implements OnInit {
                 timeOut: 3000
               });
               this.myInputTem.nativeElement.value = '';
+              this.temporalJson = [];
               break;
             }
           } else {
@@ -637,6 +740,7 @@ export class CargarExcelComponent implements OnInit {
                 timeOut: 3000
               });
               this.myInputEma.nativeElement.value = '';
+              this.emaJson = [];
               break;
             }
           }
@@ -647,23 +751,110 @@ export class CargarExcelComponent implements OnInit {
   }
 
   public CargarColumnasTem() {
-    if (this.selectPeriodo.tipoPeriodoId === 1) {
-      this.CargarArregloColumnas(this.temporalJson, 2);
-    } else {
-      this.CargarArregloColumnas(this.temporalJson, 3);
+    if(this.temporalJson.length > 0){
+      if (this.selectPeriodo.tipoPeriodoId === 1) {
+        Swal.fire({
+          title: 'Cargara las columnas del template mensual, ¿Quiere continuar?',
+          showDenyButton: true,
+          confirmButtonText: `Continuar`,
+          denyButtonText: `Cancelar`,
+          icon: 'question'
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            this.CargarArregloColumnas(this.temporalJson, 2);
+          } else if (result.isDenied) {
+            // Swal.fire('Changes are not saved', '', 'info')
+          }
+        })
+       
+      } else {
+        Swal.fire({
+          title: 'Cargara las columnas del template bimestral, ¿Quiere continuar?',
+          showDenyButton: true,
+          confirmButtonText: `Continuar`,
+          denyButtonText: `Cancelar`,
+          icon: 'question'
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            this.CargarArregloColumnas(this.temporalJson, 3);
+          } else if (result.isDenied) {
+            // Swal.fire('Changes are not saved', '', 'info')
+          }
+        })
+      }
+    }else{
+      this.toastr.error('Ingrese un archivo valido para poder cargar las columnas.', 'Error', {
+        timeOut: 3000
+      });
     }
+   
   }
 
   public CargarColumnasSua() {
-    this.CargarArregloColumnas(this.suaJson, 4);
+    if(this.suaJson.length > 0){
+      Swal.fire({
+        title: 'Cargara las columnas del archivo SUA, ¿Quiere continuar?',
+        showDenyButton: true,
+        confirmButtonText: `Continuar`,
+        denyButtonText: `Cancelar`,
+        icon: 'question'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.CargarArregloColumnas(this.suaJson, 4);
+        } else if (result.isDenied) {
+          // Swal.fire('Changes are not saved', '', 'info')
+        }
+      })
+     
+    }else{
+      this.toastr.error('Ingrese un archivo valido para poder cargar las columnas.', 'Error', {
+        timeOut: 3000
+      });
+    }
+    
   }
 
   public CargarColumnasEma() {
-    if (this.selectPeriodo.tipoPeriodoId === 1) {
-      this.CargarArregloColumnas(this.emaJson, 5);
-    } else {
-      this.CargarArregloColumnas(this.emaJson, 6);
+    if(this.emaJson.length > 0){
+      if (this.selectPeriodo.tipoPeriodoId === 1) {
+        Swal.fire({
+          title: 'Cargara las columnas del archivo EMA, ¿Quiere continuar?',
+          showDenyButton: true,
+          confirmButtonText: `Continuar`,
+          denyButtonText: `Cancelar`,
+          icon: 'question'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.CargarArregloColumnas(this.emaJson, 5);
+          } else if (result.isDenied) {
+            // Swal.fire('Changes are not saved', '', 'info')
+          }
+        })
+       
+      } else {
+        Swal.fire({
+          title: 'Cargara las columnas del archivo EBA, ¿Quiere continuar?',
+          showDenyButton: true,
+          confirmButtonText: `Continuar`,
+          denyButtonText: `Cancelar`,
+          icon: 'question'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.CargarArregloColumnas(this.emaJson, 6);
+          } else if (result.isDenied) {
+            // Swal.fire('Changes are not saved', '', 'info')
+          }
+        })
+        
+      }
+    }else{
+      this.toastr.error('Ingrese un archivo valido para poder cargar las columnas.', 'Error', {
+        timeOut: 3000
+      });
     }
+   
   }
 
   public CargarArregloColumnas(jsonExcel, excelTipo) {
@@ -680,6 +871,7 @@ export class CargarExcelComponent implements OnInit {
               timeOut: 3000
             });
             this.myInputSua.nativeElement.value = '';
+            this.suaJson = [];
           }
           // console.log(element[0] + " 99999");
         }
@@ -700,6 +892,7 @@ export class CargarExcelComponent implements OnInit {
                 timeOut: 3000
               });
               this.myInputTem.nativeElement.value = '';
+              this.temporalJson = [];
             }
           } else {
             if (element[0] == "NSS") {
@@ -710,6 +903,7 @@ export class CargarExcelComponent implements OnInit {
                 timeOut: 3000
               });
               this.myInputEma.nativeElement.value = '';
+              this.emaJson = [];
             }
           }
           break;

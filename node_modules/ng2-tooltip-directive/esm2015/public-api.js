@@ -1,0 +1,8 @@
+/*
+ * Public API Surface of ng2-tooltip-directive
+ */
+export * from './lib/tooltip.component';
+export * from './lib/tooltip.directive';
+export * from './lib/tooltip.module';
+export * from './lib/tooltip-options.interface';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3Byb2plY3RzL25nMi10b29sdGlwLWRpcmVjdGl2ZS9zcmMvcHVibGljLWFwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7R0FFRztBQUVILGNBQWMseUJBQXlCLENBQUM7QUFDeEMsY0FBYyx5QkFBeUIsQ0FBQztBQUN4QyxjQUFjLHNCQUFzQixDQUFDO0FBQ3JDLGNBQWMsaUNBQWlDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogUHVibGljIEFQSSBTdXJmYWNlIG9mIG5nMi10b29sdGlwLWRpcmVjdGl2ZVxuICovXG5cbmV4cG9ydCAqIGZyb20gJy4vbGliL3Rvb2x0aXAuY29tcG9uZW50JztcbmV4cG9ydCAqIGZyb20gJy4vbGliL3Rvb2x0aXAuZGlyZWN0aXZlJztcbmV4cG9ydCAqIGZyb20gJy4vbGliL3Rvb2x0aXAubW9kdWxlJztcbmV4cG9ydCAqIGZyb20gJy4vbGliL3Rvb2x0aXAtb3B0aW9ucy5pbnRlcmZhY2UnOyJdfQ==

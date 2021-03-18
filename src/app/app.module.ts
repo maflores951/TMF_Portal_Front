@@ -40,6 +40,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { CargarExcelComponent } from './components/excel/cargar-excel/cargar-excel.component';
 import { ReporteCompararSuaComponent } from './components/reportes/reporte-comparar-sua/reporte-comparar-sua.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { TooltipModule } from 'ng2-tooltip-directive';
 
 
 @NgModule({
@@ -84,7 +85,8 @@ import { MatTableExporterModule } from 'mat-table-exporter';
     MatFormFieldModule,
     MatInputModule,
     AutocompleteLibModule,
-    MatTableExporterModule
+    MatTableExporterModule,
+    TooltipModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

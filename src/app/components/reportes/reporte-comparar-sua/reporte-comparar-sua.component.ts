@@ -71,10 +71,10 @@ export class ReporteCompararSuaComponent implements OnInit {
 
     for (let index = 1; index < 5; index++) {
       var itemAnio = {
-        anioId: index,
-        anioValor: anio++
+        anioId: anio,
+        anioValor: anio
       }
-
+      anio++
       selectAnio.push(itemAnio);
     }
 

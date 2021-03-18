@@ -9,8 +9,10 @@ import { SuaExcel } from 'src/app/models/Sua/SuaExcel';
 import { ConfiguracionSuaService } from 'src/app/services/configuracion-sua.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
+import Swal from 'sweetalert2';
 import { ConfigSuaComponent } from '../../cruds/config-sua/config-sua.component';
 import { NavbarComponent } from '../../navbar/navbar/navbar.component';
+
 
 @Component({
   selector: 'app-configuracion-sua',
@@ -58,7 +60,14 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   public excelListFiltro: ExcelColumna[];
 
-
+public Ayuda(){
+  Swal.fire({
+    title: "Combinar columnas",
+    html: "Para poder comparar un conjunto de columnas del mismo archivo, se deben agregar dentro del mismo nivel:<p>-Las columnas numéricas se suman y el resultado es el que se compara.</p>  <p>-Las columnas con caracteres se concatenan agregando un espacio entre cada palabra.</p>",
+    confirmButtonText: `Salir`,
+    icon: 'info'
+  })
+}
 
   get configuracionSuaId() { return this.configSuaForm.get('configuracionSuaId'); }
   get confSuaNombre() { return this.configSuaForm.get('confSuaNombre'); }
@@ -68,9 +77,11 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   public keyword = 'excelColumnaNombre';
 
-  public excelTipos: ExcelTipo[] = [{ "excelTipoId": 2, "excelTipoNombre": "Template" },
-  { "excelTipoId": 4, "excelTipoNombre": "SUA" },
-  { "excelTipoId": 5, "excelTipoNombre": "EMA" }];
+  public excelTipos: ExcelTipo[] = [{ "excelTipoId": 2, "excelNombre": "Template" },
+  { "excelTipoId": 4, "excelNombre": "SUA" },
+  { "excelTipoId": 5, "excelNombre": "EMA" },
+  { "excelTipoId": 3, "excelNombre": "Template bimestral" },
+  { "excelTipoId": 6, "excelNombre": "EBA" }];
   // cocheSelected: Coche;
 
   public data = [];
@@ -79,7 +90,7 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   getListExcelColumna() {
     this.dataApi.GetList('/ExcelColumnas').subscribe(excelList => {
-      console.log(" ***** " + JSON.stringify(excelList));
+      // console.log(" ***** " + JSON.stringify(excelList));
       this.excelListFiltro = excelList;
       this.excelList = excelList;
       this.capturar();
@@ -154,7 +165,7 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataApi.cargarModalConfObservable.subscribe(response => {
-      // console.log(JSON.stringify(response));
+       console.log(JSON.stringify(response) + " *****");
       this.configuracionSuaNivel = response;
     });
 
@@ -167,6 +178,7 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   public opcionSeleccionado: ExcelTipo;
   public ngExcelColumna: string;
+  public ngSuaNNombre: string;
 
 
   capturar() {
@@ -210,14 +222,17 @@ export class ConfiguracionSuaComponent implements OnInit {
           excelTipo: formSua.value.tipoPeriodoId,
           excelColumna: formSua.value.excelColumnaId
         }
+        // console.log(JSON.stringify(this.modelSuaExcel) + " ******");
         var bandera = false;
         if (this.suaExcel.length === 0) {
           this.suaExcel.push(this.modelSuaExcel);
+          this.ngExcelColumna = "";
         } else {
           for (var i = 0; i < this.suaExcel.length; i++) {
-            if (this.suaExcel[i].tipoPeriodoId == parseInt(formSua.value.tipoPeriodoId.excelTipoId) &&
-              this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
-              this.toastr.error('Error en los datos solicitados', 'Error', {
+            // if (this.suaExcel[i].tipoPeriodoId == parseInt(formSua.value.tipoPeriodoId.excelTipoId) &&
+              // this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
+                  if (this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
+              this.toastr.error('Esta columna ya fue registrada.', 'Error', {
                 timeOut: 3000
               });
               bandera = true;
@@ -226,6 +241,7 @@ export class ConfiguracionSuaComponent implements OnInit {
           }
           if (bandera == false) {
             this.suaExcel.push(this.modelSuaExcel);
+            this.ngExcelColumna = "";
           }
         }
       } else {
@@ -269,6 +285,7 @@ export class ConfiguracionSuaComponent implements OnInit {
 
           this.configuracionSuaNivel.push(this.modelSuaNivel);
           this.suaExcel = [];
+          this.ngSuaNNombre = "";
           bandera = true;
         } else {
           this.toastr.error('Debe de agregar filas antes', 'Error', {
@@ -289,6 +306,7 @@ export class ConfiguracionSuaComponent implements OnInit {
         if (bandera == false) {
           this.configuracionSuaNivel.push(this.modelSuaNivel);
           this.suaExcel = [];
+          this.ngSuaNNombre = "";
         }
       }
     } else {

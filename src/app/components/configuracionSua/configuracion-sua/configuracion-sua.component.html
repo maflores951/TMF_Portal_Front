@@ -1,3 +1,5 @@
+
+
 <div class="modal fade"  id="modalSUA" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -9,6 +11,9 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+
+
+
         <div class="modal-body">
 
             <form #formSua="ngForm" [formGroup]="configSuaForm">
@@ -31,13 +36,29 @@
             <div class="card_book">
                 <div class="card">
                   <div class="card-body">
+
+                    
+                    
           <form #formSuaNivel="ngForm" [formGroup]="configSuaNivelForm">
+
             <input type="hidden" formControlName="configuracionSuaNivelId" name="configuracionSuaNivelId">
             <!--<input type="hidden" name="userUid" [value]="userUid">-->
+
+
+            
+
+           
+              <!-- <span data-toggle="tooltip" 
+              title="
+              Para poder comparar un conjunto de columnas del mismo archivo, se deben agregar dentro del mismo nivel:
+              -Las columnas numéricas se suman y el resultado es el que se compara.
+              -Las columnas con caracteres se concatenan agregando un espacio entre cada palabra."> -->
+<img src="assets/ayuda.png" id="ayuda" (click)="Ayuda()">
+              <!-- </span> -->
   
             <div class="form-group required">
               <label for="confSuaNNombre" class="col-form-label">Nombre:</label>
-              <input type="text" class="form-control" name="confSuaNNombre" maxlength="50" formControlName="confSuaNNombre" placeholder="Ingrese el nombre de la columna">
+              <input type="text" class="form-control" name="confSuaNNombre" maxlength="50" formControlName="confSuaNNombre" placeholder="Ingrese el nombre de la columna"  [(ngModel)]="ngSuaNNombre">
   
               <div class="alert-danger" *ngIf="confSuaNNombre.invalid && (confSuaNNombre.dirty || confSuaNNombre.touched)">
   
@@ -65,7 +86,7 @@
     
                 <select id="opcionSeleccionado" name="tipoPeriodoId" class="form-control" formControlName="tipoPeriodoId" [(ngModel)]="opcionSeleccionado" (change)="capturar()">
                    <!-- <option value="" selected="true" disabled="disabled">Selecciona un tipo de archivo</option>  -->
-                  <option *ngFor="let excelTipo of excelTipos; let index = index" [ngValue]="excelTipo">{{excelTipo.excelTipoNombre}}</option>
+                  <option *ngFor="let excelTipo of excelTipos; let index = index" [ngValue]="excelTipo">{{excelTipo.excelNombre}}</option>
                   </select>
 
                 <div class="alert-danger" *ngIf="tipoPeriodoId.invalid && (tipoPeriodoId.dirty || tipoPeriodoId.touched)">
@@ -115,7 +136,7 @@
             </div>
 
               <div class="agregar">
-                <button (click)="agregarLinea(formSuaExcel)"  class="btn btn-primary">Agregar</button>
+                    <button (click)="agregarLinea(formSuaExcel)"  class="btn btn-primary">Agregar</button>
             </div>
   
             <div>
@@ -129,7 +150,7 @@
                     </tr>
                     <tr *ngFor="let item of suaExcel ; let id = index">
                         <th>{{id+1}}</th>
-                        <th>{{item.excelTipo.excelTipoNombre}}</th>
+                        <th>{{item.excelTipo.excelNombre}}</th>
                         <th>{{item.excelColumna.excelColumnaNombre}}</th>
                         <th>
                             <button class="btn btn-danger" (click)="quitarLinea(id)">Eliminar</button>
@@ -155,14 +176,14 @@
                         <tr>
                         <th width="10%">{{id+1}} </th>
                         <th width="20%">{{item.confSuaNNombre}}</th>
-                        <th scope="col">&nbsp;</th>
-                        <button (click)="quitarNivel(id)" class="btn btn-danger">Eliminar</button>
+                        <th width="30%" scope="col">&nbsp;</th>
+                        <button width="30%" (click)="quitarNivel(id)" class="btn btn-danger">Eliminar</button>
                       </tr>
                       
                           <tr *ngFor="let itemSua of item.suaExcel ; let id = index">
                             <th scope="col">&nbsp;</th>
                               <td >{{id+1}}</td>
-                              <td>{{itemSua.excelTipo.excelTipoNombre}}</td>
+                              <td>{{itemSua.excelTipo.excelNombre}}</td>
                               <td>{{itemSua.excelColumna.excelColumnaNombre}}</td>
                           </tr>
                       </table>

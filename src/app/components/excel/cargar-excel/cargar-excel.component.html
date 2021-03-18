@@ -13,7 +13,7 @@
     </div>
   </div> -->
 
-<h1>Carga de excel</h1>
+<h1>Generar comparativo</h1>
 
 <div class="container">
 
@@ -22,13 +22,13 @@
     <tr>
       <td width="5%"><b>Configuración</b></td>
 
-      <td width="30%"><select id="configuracionSua" name="configuracionSua" class="form-control" [(ngModel)]="configuracionSua">
+      <td width="30%"><select id="configuracionSua" name="configuracionSua" class="form-control" [(ngModel)]="configuracionSua" >
         <option *ngFor="let configuracionSua of configuracionSuas; let index = index" [ngValue]="configuracionSua">{{configuracionSua.confSuaNombre}}</option>
         </select></td>
 
       <td width="5%"><b>Periodo</b></td>
 
-      <td width="30%"><select id="tipoPeriodo" name="tipoPeriodo" class="form-control" [(ngModel)]="selectPeriodo">
+      <td width="30%"><select id="tipoPeriodo" name="tipoPeriodo" class="form-control" [(ngModel)]="selectPeriodo" (change)="tipoPeriodo()">
         <option *ngFor="let tipoPeriodo of tipoPeriodos; let index = index" [ngValue]="tipoPeriodo">{{tipoPeriodo.tipoPeriodoNombre}}</option>
         </select></td>
 
@@ -129,7 +129,7 @@
                   <!-- </div> -->
                 </div>
                 <p></p>
-                <button (click)="CargarDatos()" class="btn btn-lg btn-primary btn-block">Ingresar</button>
+                <button (click)="CargarDatos()" class="btn btn-lg btn-primary btn-block">Cargar información</button>
               <!-- </div> -->
             <!-- </div> -->
           </div>
