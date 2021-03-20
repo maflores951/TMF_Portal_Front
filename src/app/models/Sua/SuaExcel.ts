@@ -6,7 +6,8 @@ import { ConfiguracionSuaNivel } from "./configuracionSuaNivel";
 export interface SuaExcel {
     suaExcelId?: number;
 
-    tipoPeriodoId: number;
+    // tipoPeriodoId: number;
+    ExcelTipoId: number;
 
     excelColumnaId?: number;
 

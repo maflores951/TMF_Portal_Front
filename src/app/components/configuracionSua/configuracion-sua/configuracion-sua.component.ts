@@ -77,7 +77,8 @@ public Ayuda(){
 
   public keyword = 'excelColumnaNombre';
 
-  public excelTipos: ExcelTipo[] = [{ "excelTipoId": 2, "excelNombre": "Template" },
+  public excelTipos: ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial" },
+  { "excelTipoId": 2, "excelNombre": "Template" },
   { "excelTipoId": 4, "excelNombre": "SUA" },
   { "excelTipoId": 5, "excelNombre": "EMA" },
   { "excelTipoId": 3, "excelNombre": "Template bimestral" },
@@ -217,7 +218,7 @@ public Ayuda(){
 
 
         this.modelSuaExcel = {
-          tipoPeriodoId: parseInt(formSua.value.tipoPeriodoId.excelTipoId),
+          ExcelTipoId: parseInt(formSua.value.tipoPeriodoId.excelTipoId),
           excelColumnaId: parseInt(formSua.value.excelColumnaId.excelColumnaId),
           excelTipo: formSua.value.tipoPeriodoId,
           excelColumna: formSua.value.excelColumnaId
@@ -265,8 +266,39 @@ public Ayuda(){
     // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
+public confSuaNEstatus : boolean = false;
+
+public confSuaNPosicion : number = 0; 
+
+  actualzarNivel(nivelSua: ConfiguracionSuaNivel, id) {
+    this.suaExcel = [];
+    console.log("Entra "  + id);
+    for (var i = 0; i < nivelSua.suaExcel.length; i++) {
+      // if (this.suaExcel[i].tipoPeriodoId == parseInt(formSua.value.tipoPeriodoId.excelTipoId) &&
+        // this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
+        //     if (this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
+        // this.toastr.error('Esta columna ya fue registrada.', 'Error', {
+        //   timeOut: 3000
+        // });
+        // bandera = true;
+        // break;
+        this.suaExcel.push( nivelSua.suaExcel[i]);
+      }
+      this.ngSuaNNombre = nivelSua.confSuaNNombre;
+      // this.configuracionSuaNivel[id].confSuaNEstatus = true;  
+      // this.configuracionSuaNivel[id].confSuaNPosicion = id;  // this.suaExcel.splice(id, 1); // 1 es la cantidad de elemento a eliminar
+      this.confSuaNEstatus = true;
+      this.confSuaNPosicion = id;
+    //  console.log(id);
+    // this.suaExcel
+    // this.configuracionSuaNivelC.push(this.configuracionForm.value);
+  }
+
   limpiar() {
     this.suaExcel = [];
+    this.ngSuaNNombre = "";
+    this.confSuaNEstatus = false;
+    this.confSuaNPosicion = 0;
     // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
@@ -279,6 +311,8 @@ public Ayuda(){
       confSuaNNombre: formSua.value.confSuaNNombre,
       suaExcel: suaExcelNivel
     }
+
+   
     if (this.configSuaNivelForm.valid) {
       if (this.configuracionSuaNivel.length <= 0) {
         if (this.suaExcel.length > 0) {
@@ -294,19 +328,31 @@ public Ayuda(){
           bandera = true;
         }
       } else {
+        if(this.confSuaNEstatus == true){
+          this.configuracionSuaNivel.splice(this.confSuaNPosicion, 1);
+          this.configuracionSuaNivel.splice(this.confSuaNPosicion, 0, this.modelSuaNivel);
+          bandera = true;
+          this.suaExcel = [];
+          this.ngSuaNNombre = "";
+          this.confSuaNEstatus = false;
+          this.confSuaNPosicion = 0;
+        }else{
         for (var i = 0; i < this.configuracionSuaNivel.length; i++) {
-          if (this.configuracionSuaNivel[i].confSuaNNombre == formSua.value.confSuaNNombre) {
-            this.toastr.error('Error en los datos solicitados', 'Error', {
-              timeOut: 3000
-            });
-            bandera = true;
-            break;
+            if (this.configuracionSuaNivel[i].confSuaNNombre == formSua.value.confSuaNNombre) {
+              this.toastr.error('El nombre de este nivel ya existe.', 'Error', {
+                timeOut: 3000
+              });
+              bandera = true;
+              break;
           }
         }
+      }
         if (bandera == false) {
           this.configuracionSuaNivel.push(this.modelSuaNivel);
           this.suaExcel = [];
           this.ngSuaNNombre = "";
+          this.confSuaNEstatus = false;
+          this.confSuaNPosicion = 0;
         }
       }
     } else {

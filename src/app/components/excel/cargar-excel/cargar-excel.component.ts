@@ -4,6 +4,8 @@ import { EmpleadoColumna } from 'src/app/models/Empleado/EmpleadoColumna';
 import { ExcelColumna } from 'src/app/models/Excel/ExcelColumna';
 import { JsonToExel } from 'src/app/models/Excel/JsonToExcel';
 import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
+import { Usuario } from 'src/app/models/usuario';
+import { AuthUserService } from 'src/app/services/auth-user.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import Swal from 'sweetalert2';
@@ -26,10 +28,11 @@ export class CargarExcelComponent implements OnInit {
   @ViewChild('myInputEma')
   myInputEma: ElementRef;
 
+  public usuario: Usuario;
 
-
-  constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService) {
+  constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService,private apiAuthService: AuthUserService ) {
     this.empleadoColumnas = [];
+    this.usuario = this.apiAuthService.usuarioData;
     // this.getListConfiguracionSua()
   }
 
@@ -476,6 +479,7 @@ export class CargarExcelComponent implements OnInit {
                 empleadoColumnaAnio: this.selectAnio.anioId,
                 empleadoColumnaValor: valor,//element[indexValor],
                 excelColumnaNombre: columnaNombres[indexValor],
+                usuarioId: this.usuario.usuarioId,
                 // configuracionSuaId: this.configuracionSua.configuracionSuaId,
                 empleadoColumnaNo: this.PadLeft(element[0].toString(), 11),
                 excelTipoId: excelTipoId
@@ -514,6 +518,7 @@ export class CargarExcelComponent implements OnInit {
             var validaEmpleadoColumna : EmpleadoColumna = {
               empleadoColumnaMes: this.selectMes.mesId,
               empleadoColumnaAnio: this.selectAnio.anioId,
+              usuarioId: this.usuario.usuarioId,
               // configuracionSuaId: this.configuracionSua.configuracionSuaId,
               excelTipoId:   2
             }
@@ -521,6 +526,7 @@ export class CargarExcelComponent implements OnInit {
             var validaEmpleadoColumna : EmpleadoColumna = {
               empleadoColumnaMes: this.selectMes.mesId,
               empleadoColumnaAnio: this.selectAnio.anioId,
+              usuarioId: this.usuario.usuarioId,
               // configuracionSuaId: this.configuracionSua.configuracionSuaId,
               excelTipoId:   3
             }

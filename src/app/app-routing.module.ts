@@ -14,6 +14,7 @@ import { LoginComponent } from './components/users/login/login.component';
 import { PerfilComponent } from './components/users/perfil/perfil.component';
 import { RecuperarPassComponent } from './components/users/recuperar-pass/recuperar-pass.component';
 import { RegistroComponent } from './components/users/registro/registro.component';
+import { AuthLocalGuard } from './guards/auth-local.guard';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -22,12 +23,12 @@ const routes: Routes = [
   { path: 'user/RecuperaPass', component: RecuperarPassComponent },
   { path: 'user/AsignarPass/:token', component: AsignarPassComponent },
   { path: 'user/registro', component: RegistroComponent },
-  { path: 'catalogos/catalogo-parametros', component: ParametrosComponent, canActivate: [AuthGuard] },
+  { path: 'catalogos/catalogo-parametros', component: ParametrosComponent, canActivate: [AuthGuard]},
   { path: 'catalogos/catalogo-usuarios', component: UsuariosComponent, canActivate: [AuthGuard] },
   { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthGuard] },
   { path: 'configuracion/catalogo-sua', component: ConfigSuaComponent, canActivate: [AuthGuard] },
   { path: 'configuracion/cargarDatos', component: CargarExcelComponent, canActivate: [AuthGuard] },
-  { path: 'reportes/reporteSua', component: ReporteCompararSuaComponent, canActivate: [AuthGuard] },
+  { path: 'reportes/reporteSua', component: ReporteCompararSuaComponent, canActivate: [AuthLocalGuard] },
   { path: '**', component: Page404Component }
  
 ];

@@ -132,10 +132,20 @@
     <input #imageUser type="hidden" [value]="urlImage | async">-->
   
   
-                    <div class="modal-footer">
+                    <!-- <div class="modal-footer">
                       <button type="button" (click)="onLoginRedirect()" class="btn btn-secondary">Cancelar</button>
-                      <button type="submit" class="btn btn-primary  btn-block">Guardar</button>
-                    </div>
+                      <button width="20%" type="submit" class="btn btn-primary  btn-block">Guardar</button>
+                    </div> -->
+
+                    
+                      <table width="100%">
+                        <td width="50%">
+                          <button type="button" (click)="onLoginRedirect()" class="btn btn-secondary btn-block">Cancelar</button>
+                        </td>
+                        <td width="50%">
+                          <button type="submit"  class="btn btn-primary btn-block">Guardar</button>
+                        </td>
+                      </table>
   
                   </form>
                 </div>

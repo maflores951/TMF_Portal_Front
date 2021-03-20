@@ -75,7 +75,7 @@ export class NavbarComponent implements OnInit {
       if (this.UserTypeId == 1) {
         this.isAdmin = true;
       }
-      this.isAdmin = true;
+      // this.isAdmin = true;
       this.isLogged = true;
       //this.userUid = sessionStorage.getItem('email');
       // this.email = sessionStorage.getItem('email');

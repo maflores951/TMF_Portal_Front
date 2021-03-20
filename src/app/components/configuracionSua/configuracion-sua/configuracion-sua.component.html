@@ -74,7 +74,7 @@
             <form #formSuaExcel="ngForm" [formGroup]="suaExcelForm">
             <div class="form-row required">
                 <div class="form-group col-md-6">
-                <label for="tipoPeriodoId" class="col-form-label">Tipo periodo:</label>
+                <label for="tipoPeriodoId" class="col-form-label">Archivo:</label>
                 <!-- <input type="text" class="form-control" name="tipoPeriodoId"  maxlength="50" formControlName="tipoPeriodoId" placeholder="Ingrese el tipo de periodo"> -->
                 <!-- <select name="tipoPeriodoId" class="form-control" formControlName="tipoPeriodoId" style="width: 100%;
                 padding: 8px;">
@@ -177,7 +177,8 @@
                         <th width="10%">{{id+1}} </th>
                         <th width="20%">{{item.confSuaNNombre}}</th>
                         <th width="30%" scope="col">&nbsp;</th>
-                        <button width="30%" (click)="quitarNivel(id)" class="btn btn-danger">Eliminar</button>
+                        <button style="margin: 5%" width="30%" (click)="quitarNivel(id)" class="btn btn-danger">Eliminar</button>
+                        <button width="30%" (click)="actualzarNivel(item, id)" class="btn btn-info">Actualizar</button>
                       </tr>
                       
                           <tr *ngFor="let itemSua of item.suaExcel ; let id = index">

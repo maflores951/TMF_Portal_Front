@@ -37,7 +37,7 @@ export class RolesComponent implements OnInit {
     this.getListUserType();
     this.getCurrentUser();
     // this.spinnerService.hideAll();
-    this.cambiarEstatusSpinner(false);
+    
   }
 
   cambiarEstatusSpinner(estatus : boolean){
@@ -61,6 +61,7 @@ export class RolesComponent implements OnInit {
   getListUserType() {
     this.dataApi.GetList('/Roles').subscribe(userTypes => {
       this.userTypes = userTypes;
+      this.cambiarEstatusSpinner(false);
     }, error => console.error(error));
   }
 

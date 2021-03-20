@@ -36,7 +36,7 @@ export class ConfigSuaComponent implements OnInit {
     this.getCurrentUser();
     this.getListConfigSua();
     // this.spinnerService.hideAll();
-    this.cambiarEstatusSpinner(false);
+  
   }
   
   cambiarEstatusSpinner(estatus : boolean){
@@ -60,6 +60,7 @@ export class ConfigSuaComponent implements OnInit {
   getListConfigSua() {
     this.dataApi.GetList('/ConfiguracionSuas').subscribe(ConfigSuaList => {
        this.configuracionSuas = ConfigSuaList;
+       this.cambiarEstatusSpinner(false);
       // console.log("Entra parametros " + this.parametros[0].parametroClave);
     }, error => console.error(error));
   }

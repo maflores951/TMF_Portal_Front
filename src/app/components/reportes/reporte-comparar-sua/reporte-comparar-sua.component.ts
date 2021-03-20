@@ -5,6 +5,8 @@ import { DataApiService } from 'src/app/services/data-api.service';
 import { ToastrService } from 'ngx-toastr';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
+import { AuthUserService } from 'src/app/services/auth-user.service';
+import { Usuario } from 'src/app/models/usuario';
 
 @Component({
   selector: 'app-reporte-comparar-sua',
@@ -13,8 +15,14 @@ import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
 })
 export class ReporteCompararSuaComponent implements OnInit {
 
-  constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService,) { 
+
+  public usuario: Usuario;
+
+  constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService,private apiAuthService: AuthUserService ) {
+    this.cambiarEstatusSpinner(true);
+    this.usuario = this.apiAuthService.usuarioData;
     this.getListConfiguracionSua()
+    
   }
 
   ngOnInit(): void {
@@ -29,6 +37,7 @@ export class ReporteCompararSuaComponent implements OnInit {
       // console.log(" ***** " + JSON.stringify(excelList));
       this.configuracionSuas = confSuaList;
       this.configuracionSua = confSuaList[0];
+      this.cambiarEstatusSpinner(false);
       // this.excelList = confSuaList;
       // this.capturar();
 
@@ -99,7 +108,8 @@ export class ReporteCompararSuaComponent implements OnInit {
     // this.exportAsExcelFile(data,"ReporteSua");
     var parametros = { ConfiguracionSuaId : this.configuracionSua.configuracionSuaId,
     EmpleadoColumnaMes: this.selectMes.mesId,
-    EmpleadoColumnaAnio: this.selectAnio.anioId
+    EmpleadoColumnaAnio: this.selectAnio.anioId,
+    UsuarioId: this.usuario.usuarioId
     }
 
     console.log(JSON.stringify(parametros));

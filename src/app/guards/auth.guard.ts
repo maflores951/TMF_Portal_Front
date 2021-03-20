@@ -19,14 +19,15 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const usuario = this.apiAuthService.usuarioData;
       // return true;
-      // console.log(usuario + ' Entra guards');
-    if (usuario){
+       console.log(JSON.stringify(usuario) + ' Entra guards');
+    if (usuario.rolId == 1){
+      console.log("Entra ****")
       return true;
     }
     // console.log('Entra');
     // this.tokenResponse = JSON.parse(sessionStorage.getItem('Token'));
     // if (this.tokenResponse == null) {
-       this.router.navigate(['/user/login']);
+       this.router.navigate(['']);
        return false;
     //   console.log('user No loggd');
     // } else {

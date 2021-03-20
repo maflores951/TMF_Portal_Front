@@ -2,6 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/c
 import { Injectable } from "@angular/core";
 import { $ } from "protractor";
 import { Observable } from "rxjs";
+import { Usuario } from "../models/usuario";
 import { AuthUserService } from "../services/auth-user.service";
 
 
@@ -9,21 +10,23 @@ import { AuthUserService } from "../services/auth-user.service";
 
 export class JwtInterceptor implements HttpInterceptor{
     
+    public usuario :Usuario;
     constructor(private authUserService: AuthUserService){
-
+        
     }
 
     intercept(request : HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         
-        const usuario = this.authUserService.usuarioData;
-        // console.log(this.authUserService.usuarioData['usuarioId'] + ' ****');
-        if(usuario){
+        this.usuario = this.authUserService.usuarioData;
+         console.log(JSON.stringify(this.usuario) + ' **** Interceptor');
+        if(this.usuario){
             request = request.clone({
                 setHeaders: {
-                    Authorization: `Bearer' ${usuario.usuarioToken}`
+                    'Authorization': `Bearer ${this.usuario.usuarioToken}`
                 }
             });
         }
+        console.log(JSON.stringify(request)+ " &&&&&&&&");
         return next.handle(request);
     }
 }

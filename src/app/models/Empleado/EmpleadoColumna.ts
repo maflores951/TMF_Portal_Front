@@ -22,6 +22,8 @@ export interface EmpleadoColumna {
 
     excelTipoId?: number;
 
+    usuarioId: number,
+
     excelColumnaId?: number;
 
     excelColumna?: ExcelColumna;

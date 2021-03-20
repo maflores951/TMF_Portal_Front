@@ -11,5 +11,10 @@ export interface ConfiguracionSuaNivel {
     configuracionSua?: ConfiguracionSua;
 
     suaExcel?: SuaExcel[];
+
+    // confSuaNEstatus?: boolean;
+
+    // confSuaNPosicion?: number;
+
   }
   

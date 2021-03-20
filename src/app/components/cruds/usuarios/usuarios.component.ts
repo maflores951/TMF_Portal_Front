@@ -38,7 +38,7 @@ export class UsuariosComponent implements OnInit {
     this.cambiarEstatusSpinner(true);
     this.getListUsers();
     this.getCurrentUser();
-    this.cambiarEstatusSpinner(false);
+    
     // this.spinnerService.hideAll();
   }
 
@@ -58,6 +58,7 @@ export class UsuariosComponent implements OnInit {
         this.isAdmin = false;
       }
     }
+    this.cambiarEstatusSpinner(false);
   }
 
   getListUsers() {

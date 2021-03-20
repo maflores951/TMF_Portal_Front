@@ -31,12 +31,12 @@
           <a class="nav-link">Reportes</a>
           <ul>
             <li><a routerLink="/reportes/reporteSua">Reportes</a></li>
-            <li><a routerLink="/configuracion/cargarDatos">Cargar datos</a></li>
+            <li *ngIf="isAdmin"><a routerLink="/configuracion/cargarDatos">Cargar datos</a></li>
             <!--<li><a routerLink="/catalogos/catalogo-movimientos-u">Movimientos</a></li>
     <li><a routerLink="/catalogos/catalogo-tarjetas-u">Tarjetas</a></li>-->
           </ul>
         </li>
-        <li class="nav-item" *ngIf="isLogged">
+        <li class="nav-item" *ngIf="isLogged && isAdmin">
           <a class="nav-link">Catálogos</a>
           <ul>
             <!--<li><a routerLink="/catalogos/catalogo-bancos">Bancos</a></li>

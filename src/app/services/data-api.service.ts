@@ -8,6 +8,12 @@ import { Rol } from '../models/rol';
 import { ConfiguracionSua } from '../models/Sua/configuracionSua';
 import { ConfiguracionSuaNivel } from '../models/Sua/configuracionSuaNivel';
 
+const httpOption = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+};
+
 
 @Injectable({
   providedIn: 'root'
@@ -53,38 +59,38 @@ export class DataApiService {
   //   this.controller = '/Users/ChangePassword';
   //   this.url = this.urlBase + this.servicePrefix + this.controller;
 
-  //   const httpOptions = {
+  //   const httpOption = {
   //     headers: new HttpHeaders({
   //       'Content-Type': 'application/json',
   //       'Authorization': tokenType + ' ' + accessToken
   //     })
   //   }
-  //   return this.http.post<Response>(this.url, changePasswordRequest, httpOptions);
+  //   return this.http.post<Response>(this.url, changePasswordRequest, httpOption);
   // }
 
   // public SetPassword(recoverPasswordRequest: RecoverPasswordRequest): any {
   //   this.controller = '/Users/SetPassword';
   //   this.url = this.urlBase + this.servicePrefix + this.controller;
-  //   const httpOptions = {
+  //   const httpOption = {
   //     headers: new HttpHeaders({
   //       'Content-Type': 'application/json'
   //     })
   //   }
   //   console.log(JSON.stringify(recoverPasswordRequest) + ' *** JSON');
 
-  //   return this.http.post(this.url, recoverPasswordRequest, httpOptions);
+  //   return this.http.post(this.url, recoverPasswordRequest, httpOption);
   // }
 
   // public Get(controller: string, tokenType: string, accessToken: string, id: number) {
   //   this.url = this.urlBase + this.servicePrefix + controller;
-  //   const httpOptions = {
+  //   const httpOption = {
   //     headers: new HttpHeaders({
   //       'Content-Type': 'application/json',
   //       'Authorization': tokenType + ' ' + accessToken
   //     })
   //   }
 
-  //   return this.http.get<any>(this.url + '/' + id.toString(), httpOptions)
+  //   return this.http.get<any>(this.url + '/' + id.toString(), httpOption)
   //     .pipe(map((res: any) => res)
   //     )
 
@@ -93,14 +99,14 @@ export class DataApiService {
 
   public GetList(controller: string, ): Observable<any> {
     this.url = this.urlBase + this.servicePrefix + controller;
-    const httpOptions = {
-      headers: new HttpHeaders({
+    // const httpOption = {
+    //   headers: new HttpHeaders({
 
-      })
-    }
+    //   })
+    // }
 
 
-    return this.http.get<any>(this.url, httpOptions);
+    return this.http.get<any>(this.url, httpOption);
   }
 
   public GetListId(controller: string, id: number): Observable<any> {
@@ -112,13 +118,9 @@ export class DataApiService {
 
   public Post(controller: string, model: any): any {
     this.url = this.urlBase + this.servicePrefix + controller;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    }
+    
       // console.log(JSON.stringify(model));
-    return this.http.post<any>(this.url, model, httpOptions);
+    return this.http.post<any>(this.url, model, httpOption);
 
   }
 
@@ -136,7 +138,7 @@ export class DataApiService {
   //     console.log('Error: ', error);
   //   };
 
-  //   const httpOptions = {
+  //   const httpOption = {
   //     headers: new HttpHeaders({
   //       'Content-Type': 'application/json'
   //     })
@@ -153,7 +155,7 @@ export class DataApiService {
 
 
 
-  //     this.http.post(this.url, this.fotoResponse, httpOptions)
+  //     this.http.post(this.url, this.fotoResponse, httpOption)
   //       .subscribe(resp => {
   //         console.log(resp);
   //       });
@@ -164,7 +166,7 @@ export class DataApiService {
   // public GetUserByEmail(tokenType: string, accessToken: string, email: string): Observable<User> {
   //   this.controller = '/Users/GetUserByEmail';
   //   this.url = this.urlBase + this.servicePrefix + this.controller;
-  //   const httpOptions = {
+  //   const httpOption = {
   //     headers: new HttpHeaders({
   //       'Content-Type': 'application/json',
   //       'Authorization': tokenType + ' ' + accessToken
@@ -178,13 +180,13 @@ export class DataApiService {
   //   }
 
 
-  //   return this.http.post<User>(this.url, model, httpOptions);
+  //   return this.http.post<User>(this.url, model, httpOption);
 
   // }
 
   // public PutToken(controller: string, tokenType: string, accessToken: string, id: number, model: any) {
   //   this.url = this.urlBase + this.servicePrefix + controller;
-  //   const httpOptions = {
+  //   const httpOption = {
   //     headers: new HttpHeaders({
   //       'Content-Type': 'application/json',
   //       'Authorization': tokenType + ' ' + accessToken
@@ -193,7 +195,7 @@ export class DataApiService {
   //   console.log('Entra API ******');
 
 
-  //   this.http.put<Response>(this.url + '/' + id.toString(), model, httpOptions)
+  //   this.http.put<Response>(this.url + '/' + id.toString(), model, httpOption)
   //     .subscribe(result => {
 
   //       return result;
@@ -202,15 +204,15 @@ export class DataApiService {
 
   public Put(controller: string, id: number, model: any) {
     this.url = this.urlBase + this.servicePrefix + controller;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    }
+    // const httpOption = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json'
+    //   })
+    // }
 
 
 
-    this.http.put<any>(this.url + '/' + id.toString(), model, httpOptions)
+    this.http.put<any>(this.url + '/' + id.toString(), model, httpOption)
       .subscribe(result => {
         console.log(result);
       }, error => console.error(JSON.stringify(error)));
@@ -218,15 +220,15 @@ export class DataApiService {
 
   public SetPassword(controller: string, id: number, model: any): any {
     this.url = this.urlBase + this.servicePrefix + controller;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    }
+    // const httpOption = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json'
+    //   })
+    // }
 
 
 
-    this.http.put<any>(this.url + '/' + id.toString(), model, httpOptions);
+    this.http.put<any>(this.url + '/' + id.toString(), model, httpOption);
       // .subscribe(result => {
       //   console.log(result);
       // }, error => console.error(JSON.stringify(error)));
@@ -234,7 +236,7 @@ export class DataApiService {
 
   // public DeleteToken(controller: string, tokenType: string, accessToken: string, id: number): Observable<Response> {
   //   this.url = this.urlBase + this.servicePrefix + controller;
-  //   const httpOptions = {
+  //   const httpOption = {
   //     headers: new HttpHeaders({
   //       'Content-Type': 'application/json',
   //       'Authorization': tokenType + ' ' + accessToken
@@ -243,21 +245,21 @@ export class DataApiService {
 
 
 
-  //   return this.http.delete<Response>(this.url + '/' + id.toString(), httpOptions);
+  //   return this.http.delete<Response>(this.url + '/' + id.toString(), httpOption);
 
   // }
 
   public Delete(controller: string, id: number) {
     this.url = this.urlBase + this.servicePrefix + controller;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    }
+    // const httpOption = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json'
+    //   })
+    // }
 
 
 
-    this.http.delete<Response>(this.url + '/' + id.toString(), httpOptions)
+    this.http.delete<Response>(this.url + '/' + id.toString(), httpOption)
       .subscribe(result => {
         console.log(result);
       }, error => console.error(error + "Error Api"));
@@ -266,18 +268,18 @@ export class DataApiService {
   public EnviarEmail(email: string): Observable<any> {
     this.controller = '/User/EnviarEmail';
     this.url = this.urlBase + this.servicePrefix + this.controller;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    }
+    // const httpOption = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json'
+    //   })
+    // }
 
     let model: any;
 
     model = {
       Email: email
     }
-    return this.http.post<any>(this.url, model, httpOptions);
+    return this.http.post<any>(this.url, model, httpOption);
   }
 
   public SelectedUsuario: Usuario = {

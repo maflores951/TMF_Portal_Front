@@ -51,10 +51,12 @@ export class AuthUserService {
       // console.log("Entra " + email + " "+ password);
         return this.http.post<Response>(this.url, {email, password}, httpOption).pipe(
           map(res =>{
-            //  console.log("Entra");
+              console.log("Entra");
               if (res.exito === 1){
                 const usuario: Usuario = res.data;
                 
+                console.log(JSON.stringify(usuario) + ' $$$$$$');
+
                 sessionStorage.setItem("Usuario", JSON.stringify(usuario));
                  this.usuarioSubject.next(usuario);
               }

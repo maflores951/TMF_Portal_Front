@@ -36,7 +36,7 @@ export class ParametrosComponent implements OnInit {
     this.getCurrentUser();
     this.getListParametros();
     // this.spinnerService.hideAll();
-    this.cambiarEstatusSpinner(false);
+    
   }
   
   cambiarEstatusSpinner(estatus : boolean){
@@ -60,7 +60,8 @@ export class ParametrosComponent implements OnInit {
   getListParametros() {
     this.dataApi.GetList('/Parametros').subscribe(parametrost => {
        this.parametros = parametrost;
-      console.log("Entra parametros " + this.parametros[0].parametroClave);
+       this.cambiarEstatusSpinner(false);
+      // console.log("Entra parametros " + this.parametros[0].parametroClave);
     }, error => console.error(error));
   }
 
