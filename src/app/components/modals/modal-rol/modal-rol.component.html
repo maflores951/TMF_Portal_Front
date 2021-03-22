@@ -13,7 +13,6 @@
   
           <form #formUserType="ngForm" [formGroup]="UsuarioForm" (ngSubmit)="onSaveUserType(formUserType)">
             <input type="hidden" name="RolId" formControlName="RolId" [(ngModel)]="this.dataApi.SelectedRol.rolId">
-            <!--<input type="hidden" name="userUid" [value]="userUid">-->
   
             <div class="form-group required">
               <label for="Name" class="col-form-label">Name:</label>

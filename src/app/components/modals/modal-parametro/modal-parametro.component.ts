@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Parametro } from 'src/app/models/parametro';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
@@ -12,7 +13,7 @@ import { ParametrosComponent } from '../../cruds/parametros/parametros.component
 })
 export class ModalParametroComponent implements OnInit {
 
-  constructor(public dataApi: DataApiService, private spinner: SpinnerService) {
+  constructor(public dataApi: DataApiService, private spinner: SpinnerService, private toastr: ToastrService) {
     this.UsuarioForm = this.createForm();
   }
   @ViewChild('btnClose', { static: false }) btnClose: ElementRef;
@@ -87,10 +88,14 @@ export class ModalParametroComponent implements OnInit {
         this.UsuarioForm.value.ParametroEstatusDelete = false;
         this.dataApi.Post('/Parametros', this.UsuarioForm.value).subscribe(result => {
           this.cambiarEstatusSpinner(false);
-          alert("Registro exitoso");
+          this.toastr.error('Registro exitoso.', 'Exito', {
+            timeOut: 3000
+          });
         }, error => {
           this.cambiarEstatusSpinner(false);
-          alert("Errores en el servidor intente más tarde");
+          this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+            timeOut: 3000
+          });
         });
       } else {
         
@@ -106,7 +111,9 @@ export class ModalParametroComponent implements OnInit {
     }, 600)
     } else {
       this.cambiarEstatusSpinner(false);
-      alert("Errores en el formulario, revise la información ingresada");
+      this.toastr.error('Errores en el formulario, revise la información ingresada.', 'Error', {
+        timeOut: 3000
+      });
     }
 
   }
@@ -114,5 +121,4 @@ export class ModalParametroComponent implements OnInit {
   CerrarMP(formParametro): void {
     formParametro.resetForm();
   }
-
 }

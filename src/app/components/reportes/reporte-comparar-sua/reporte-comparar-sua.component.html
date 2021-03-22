@@ -1,17 +1,4 @@
 <section id="TMFGroup" class=" mt-5">
-
-	<!-- <div class="container">
-	  <div class="row">
-		<div class="col-md-12 form-group">        
-		  <input 
-			type="file" 
-			class="form-control" 
-			(change)="CargarExcelSua($event)" 
-			placeholder="Upload file" 
-			accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">        
-		</div>
-	  </div>
-	</div> -->
   
   <h1>Carga de excel</h1>
   
@@ -25,14 +12,6 @@
 		<td width="30%"><select id="configuracionSua" name="configuracionSua" class="form-control" [(ngModel)]="configuracionSua">
 		  <option *ngFor="let configuracionSua of configuracionSuas; let index = index" [ngValue]="configuracionSua">{{configuracionSua.confSuaNombre}}</option>
 		  </select></td>
-  
-		<!-- <td width="5%"><b>Periodo</b></td>
-  
-		<td width="30%"><select id="tipoPeriodo" name="tipoPeriodo" class="form-control" [(ngModel)]="selectPeriodo">
-		  <option *ngFor="let tipoPeriodo of tipoPeriodos; let index = index" [ngValue]="tipoPeriodo">{{tipoPeriodo.tipoPeriodoNombre}}</option>
-		  </select></td> -->
-  
-	   
   
 	  </tr>
   

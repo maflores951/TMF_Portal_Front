@@ -21,16 +21,12 @@ import { NavbarComponent } from '../../navbar/navbar/navbar.component';
 })
 
 export class ConfiguracionSuaComponent implements OnInit {
+
+  //Se crean la variables iniciales para validar los formulario y se recuperan las columnas de los excel
   constructor(public dataApi: DataApiService, private spinner: SpinnerService, public configuracionSuaService: ConfiguracionSuaService, private toastr: ToastrService) {
     this.configSuaForm = this.createFormSua();
     this.configSuaNivelForm = this.createFormNivel();
     this.suaExcelForm = this.createFormExcel();
-    // console.log(this.dataApi.SelectedconfiguracionSua);
-    // if (this.dataApi.SelectedconfiguracionSua){
-    //   this.configuracionSuaNivel = this.dataApi.SelectedconfiguracionSua.configuracionSuaNivel;
-    // } else{
-    //   this.configuracionSuaNivel = [];
-    // }
     this.suaExcel = [];
 
     this.getListExcelColumna()
@@ -39,6 +35,7 @@ export class ConfiguracionSuaComponent implements OnInit {
   @ViewChild('btnClose', { static: false }) btnClose: ElementRef;
   @Input() userUid: number;
 
+  //Variables necesarias para cargar información
   public configuracionSua: ConfiguracionSua;
   public configuracionSuaNivel: ConfiguracionSuaNivel[];
   public suaExcel: SuaExcel[];
@@ -60,6 +57,7 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   public excelListFiltro: ExcelColumna[];
 
+  //Función para lansar el mensaje con las instrucciones para utilizar el sistema
 public Ayuda(){
   Swal.fire({
     title: "Combinar columnas",
@@ -69,37 +67,50 @@ public Ayuda(){
   })
 }
 
+//Propiedades para validar los formularios reactivos 
   get configuracionSuaId() { return this.configSuaForm.get('configuracionSuaId'); }
   get confSuaNombre() { return this.configSuaForm.get('confSuaNombre'); }
   get confSuaNNombre() { return this.configSuaNivelForm.get('confSuaNNombre'); }
   get tipoPeriodoId() { return this.suaExcelForm.get('tipoPeriodoId'); }
   get excelColumnaId() { return this.suaExcelForm.get('excelColumnaId'); }
 
-  public keyword = 'excelColumnaNombre';
-
+  //Arreglo con los tipos de excel
   public excelTipos: ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial" },
   { "excelTipoId": 2, "excelNombre": "Template" },
   { "excelTipoId": 4, "excelNombre": "SUA" },
   { "excelTipoId": 5, "excelNombre": "EMA" },
   { "excelTipoId": 3, "excelNombre": "Template bimestral" },
   { "excelTipoId": 6, "excelNombre": "EBA" }];
-  // cocheSelected: Coche;
 
-  public data = [];
-
-  // public  nrSelect = '{excelTipoId : 0, excelTipoNombre : "Selecciona un tipo de archivo"}';
-
+  //Funcion que recupera  las columnas de los excel de forma ordenada
   getListExcelColumna() {
     this.dataApi.GetList('/ExcelColumnas').subscribe(excelList => {
-      // console.log(" ***** " + JSON.stringify(excelList));
-      this.excelListFiltro = excelList;
-      this.excelList = excelList;
+      this.excelListFiltro = excelList.sort((a, b) => { if (a.excelColumnaNombre < b.excelColumnaNombre) {
+        return -1;
+      }
+      if (a.excelColumnaNombre > b.excelColumnaNombre) {
+        return 1;
+      }
+      // a debe ser igual b
+      return 0;});
+      this.excelList = excelList.sort((a, b) => { if (a.excelColumnaNombre < b.excelColumnaNombre) {
+        return -1;
+      }
+      if (a.excelColumnaNombre > b.excelColumnaNombre) {
+        return 1;
+      }
+      // a debe ser igual b
+      return 0;});
       this.capturar();
-
-      // console.log("Entra parametros " + this.parametros[0].parametroClave);
-    }, error => console.error(error));
+    }, error => {
+      console.error(error);
+      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+        timeOut: 3000
+      });
+    });
   }
 
+  //Mensaje de las validaciones del formulario reactivo
   user_validation_messages = {
     'confSuaNombre': [
       {
@@ -135,6 +146,7 @@ public Ayuda(){
     ]
   }
 
+  //Validaciones del formulario reactivo
   createFormSua() {
     return new FormGroup({
       confSuaNombre: new FormControl('',
@@ -164,66 +176,47 @@ public Ayuda(){
     });
   }
 
+//Inicio de los filtros de busqueda y en caso de ser una actualización se recuperan los niveles
   ngOnInit(): void {
     this.dataApi.cargarModalConfObservable.subscribe(response => {
-       console.log(JSON.stringify(response) + " *****");
+      //  console.log(JSON.stringify(response) + " *****");
       this.configuracionSuaNivel = response;
     });
 
     this.opcionSeleccionado = this.excelTipos[0];
-    // this.opcionSeleccionado = new ExcelTipo;
-    // this.periodoTipos.push({excelTipoId:1,excelTipoNombre:"Sua",excelTipoPeriodo:1});
-    // this.periodoTipos.push({excelTipoId:2,excelTipoNombre:"EMA",excelTipoPeriodo:2});
-    // this.periodoTipos.push({excelTipoId:3,excelTipoNombre:"EBA",excelTipoPeriodo:1});
   }
 
+  //Variables para asignar los filtros
   public opcionSeleccionado: ExcelTipo;
   public ngExcelColumna: string;
   public ngSuaNNombre: string;
 
-
+//Función para filtrar las columnas segun el tipo de archivo seleccionado
   capturar() {
-    // console.log(JSON.stringify(this.ngExcelColumna) + ' *****');
-    // console.log(JSON.stringify(this.opcionSeleccionado.excelTipoId) + "++++++");
-    // console.log(JSON.stringify(this.excelList)+ " ****"); 
-    // let colombianos = personas.filter(persona => persona.pais === 'Colombia');
     this.excelList = this.excelListFiltro.filter(excelColumna => {
-      // console.log(JSON.stringify(excelColumna));
       if (excelColumna.excelTipoId === this.opcionSeleccionado.excelTipoId) {
-        // filtroExcel.push(excelColumna);
         return excelColumna;
       }
-
     });
 
     this.ngExcelColumna = "";
-    //  console.log(JSON.stringify(this.opcionSeleccionado));
   }
 
+  //Función para utilizar el spinner de carga 
   cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
 
-  // selectEvent(event) {
-  //   console.log(event.excelColumnaId);
-  //    this.suaExcelForm.value.excelColumnaId = event.excelColumnaId;
-  // }
-
-  //Se agrega el primer renglon del excel
+  //Función para agreger las lineas de cada nivel
   agregarLinea(formSua) {
-    console.log(JSON.stringify(formSua.value.excelColumnaId.excelColumnaId));
     if (this.suaExcelForm.valid) {
-
       if (formSua.value.excelColumnaId.excelColumnaId >= 1) {
-
-
         this.modelSuaExcel = {
           ExcelTipoId: parseInt(formSua.value.tipoPeriodoId.excelTipoId),
           excelColumnaId: parseInt(formSua.value.excelColumnaId.excelColumnaId),
           excelTipo: formSua.value.tipoPeriodoId,
           excelColumna: formSua.value.excelColumnaId
         }
-        // console.log(JSON.stringify(this.modelSuaExcel) + " ******");
         var bandera = false;
         if (this.suaExcel.length === 0) {
           this.suaExcel.push(this.modelSuaExcel);
@@ -259,54 +252,39 @@ public Ayuda(){
     }
   }
 
-  quitarLinea(id) {
+  //Funcion para  eliminar filas de cada nivel
+ public quitarLinea(id) {
     this.suaExcel.splice(id, 1); // 1 es la cantidad de elemento a eliminar
-    //  console.log(id);
-    // this.suaExcel
-    // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
+//Variables para determinar si es un update o un insert
 public confSuaNEstatus : boolean = false;
-
 public confSuaNPosicion : number = 0; 
 
+//Función para actualizar niveles
   actualzarNivel(nivelSua: ConfiguracionSuaNivel, id) {
     this.suaExcel = [];
     console.log("Entra "  + id);
     for (var i = 0; i < nivelSua.suaExcel.length; i++) {
-      // if (this.suaExcel[i].tipoPeriodoId == parseInt(formSua.value.tipoPeriodoId.excelTipoId) &&
-        // this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
-        //     if (this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
-        // this.toastr.error('Esta columna ya fue registrada.', 'Error', {
-        //   timeOut: 3000
-        // });
-        // bandera = true;
-        // break;
         this.suaExcel.push( nivelSua.suaExcel[i]);
       }
       this.ngSuaNNombre = nivelSua.confSuaNNombre;
-      // this.configuracionSuaNivel[id].confSuaNEstatus = true;  
-      // this.configuracionSuaNivel[id].confSuaNPosicion = id;  // this.suaExcel.splice(id, 1); // 1 es la cantidad de elemento a eliminar
       this.confSuaNEstatus = true;
       this.confSuaNPosicion = id;
-    //  console.log(id);
-    // this.suaExcel
-    // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
+  //Limpia un nivel y se prepara para un insert
   limpiar() {
     this.suaExcel = [];
     this.ngSuaNNombre = "";
     this.confSuaNEstatus = false;
     this.confSuaNPosicion = 0;
-    // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
+  //Se agrega un nivel a la configuración
   agregarNivel(formSua) {
     var bandera = false;
     var suaExcelNivel = this.suaExcel;
-    // console.log(this.configSuaNivelForm.valid);
-    // console.log(JSON.stringify(this.configSuaNivelForm.value));
     this.modelSuaNivel = {
       confSuaNNombre: formSua.value.confSuaNNombre,
       suaExcel: suaExcelNivel
@@ -361,30 +339,18 @@ public confSuaNPosicion : number = 0;
       });
       bandera = true;
     }
-
-
-    // this.configuracionSuaNivel.push(this.modelSuaNivel);
-    // this.suaExcel = [];
-
-    // var suaExcelNivel = this.suaExcel;
-    // console.log(JSON.stringify(this.suaExcel));
-
-    // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
-  quitarNivel(id) {
+  //Se elimina un nivel con todo y sus filas asignadas
+  public quitarNivel(id) {
     this.configuracionSuaNivel.splice(id, 1); // 1 es la cantidad de elemento a eliminar
-    //  console.log(id);
-    // this.suaExcel
-    // this.configuracionSuaNivelC.push(this.configuracionForm.value);
   }
 
-
+//Se valida y guarda toda la configuración
   guardarConfiguracion(formSua, formSuaNivel, formSuaExcel) {
     console.log(JSON.stringify(this.configSuaForm.value));
     console.log(this.configSuaForm.valid);
     this.cambiarEstatusSpinner(true);
-    // var confSuaNombre = formSua.value.confSuaNombre;
     if (this.configSuaForm.valid) {
       if (this.configuracionSuaNivel.length > 0) {
         if (this.dataApi.SelectedconfiguracionSua.configuracionSuaId >= 0) {
@@ -394,18 +360,13 @@ public confSuaNPosicion : number = 0;
             confSuaEstatus: false,
             configuracionSuaNivel: this.configuracionSuaNivel
           }
-          //  console.log(JSON.stringify(this.configuracionSua));
-          // this.dataApi.Put('/ConfiguracionSuas', this.configuracionSua.configuracionSuaId, this.configuracionSua);
           this.dataApi.Post('/ConfiguracionSuas', this.configuracionSua).subscribe(response => {
-            console.log(JSON.stringify(response) + '*********');
-
-            // this.configuracionSuaNivel = response;
             this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
               if (response.exito === 1) {
                 this.Cerrar(formSua, formSuaNivel, formSuaExcel);
                 this.cambiarEstatusSpinner(false);
               } else {
-                this.toastr.error('Error en el servidor intentelo más tarde', 'Error', {
+                this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
                   timeOut: 3000
                 });
               }
@@ -417,13 +378,12 @@ public confSuaNPosicion : number = 0;
             confSuaEstatus: false,
             configuracionSuaNivel: this.configuracionSuaNivel
           }
-          //  console.log(JSON.stringify(this.configuracionSua));
           this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
             if (response.exito === 1) {
               this.Cerrar(formSua, formSuaNivel, formSuaExcel);
               this.cambiarEstatusSpinner(false);
             } else {
-              this.toastr.error('Error en el servidor intentelo más tarde', 'Error', {
+              this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
                 timeOut: 3000
               });
             }
@@ -444,45 +404,19 @@ public confSuaNPosicion : number = 0;
     }
   }
 
-  // onSaveSUA(formParametro): void {
-  //   this.cambiarEstatusSpinner(true);
-  // if (this.UsuarioForm.valid) {
-  //   if (this.UsuarioForm.value.ParametroId == null) {
-  //     this.UsuarioForm.value.ParametroId = 0;
-  //     this.UsuarioForm.value.ParametroEstatusDelete = false;
-  //     this.dataApi.Post('/Parametros', this.UsuarioForm.value).subscribe(result => {
-  //       this.cambiarEstatusSpinner(false);
-  //       alert("Registro exitoso");
-  //     }, error => {
-  //       this.cambiarEstatusSpinner(false);
-  //       alert("Errores en el servidor intente más tarde");
-  //     });
-  //   } else {
-
-  //     this.parametro = this.UsuarioForm.value;
-  //     this.UsuarioForm.value.ParametroEstatusDelete = false;
-  //     this.dataApi.Put('/Parametros', this.UsuarioForm.value.ParametroId, this.parametro);
-  //   }
-  //   setTimeout(() => {
-  //   this.cambiarEstatusSpinner(false);
-  //   formParametro.resetForm();
-  //   ParametrosComponent.updateParametros.next(true);
-  //   this.btnClose.nativeElement.click();
-  // }, 600)
-  // } else {
-  //   this.cambiarEstatusSpinner(false);
-  //   alert("Errores en el formulario, revise la información ingresada");
-  // }
-
-  // }
-
+  //Se cierra la ventana y se reinician las variables
   CerrarMSua(formSua, formSuaNivel, formSuaExcel): void {
     this.configuracionSuaNivel = [];
     formSua.resetForm();
     formSuaNivel.resetForm();
     formSuaExcel.resetForm();
+    this.suaExcel = [];
+    this.ngSuaNNombre = "";
+    this.confSuaNEstatus = false;
+    this.confSuaNPosicion = 0;
   }
 
+  //Se cierra la ventana y se actualiza el CRUD
   Cerrar(formSua, formSuaNivel, formSuaExcel) {
     setTimeout(() => {
       this.cambiarEstatusSpinner(false);
@@ -492,6 +426,10 @@ public confSuaNPosicion : number = 0;
       this.suaExcelForm.reset();
       this.configSuaForm.reset();
       this.configSuaNivelForm.reset();
+      this.suaExcel = [];
+      this.ngSuaNNombre = "";
+      this.confSuaNEstatus = false;
+      this.confSuaNPosicion = 0;
       ConfigSuaComponent.updateConfigSua.next(true);
       NavbarComponent.updateUserStatus.next(true);
       this.btnClose.nativeElement.click();

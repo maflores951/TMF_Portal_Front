@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { FormsModule, FormControl, Validators, NgForm, ReactiveFormsModule } from '@angular/forms';
-import { environment } from '../environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UsuariosComponent } from './components/cruds/usuarios/usuarios.component';
 import { RolesComponent } from './components/cruds/roles/roles.component';

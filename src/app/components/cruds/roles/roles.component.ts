@@ -6,6 +6,7 @@ import { Rol } from 'src/app/models/rol';
 import { Usuario } from 'src/app/models/usuario';
 import { AuthUserService } from 'src/app/services/auth-user.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-roles',
@@ -16,7 +17,7 @@ export class RolesComponent implements OnInit {
 
   public static updateUserType: Subject<boolean> = new Subject();
 
-  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService) {
+  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService, private toastr: ToastrService) {
     RolesComponent.updateUserType.subscribe(res => {
       setTimeout(() => {
         this.getListUserType();
@@ -29,15 +30,11 @@ export class RolesComponent implements OnInit {
   public userTypes: Observable<Rol[]>;
   public isAdmin: any = null;
   public userUid: number = null;
-  // public tokenResponse: TokenResponse;
 
   ngOnInit() {
-    // this.spinnerService.showAll();
     this.cambiarEstatusSpinner(true);
     this.getListUserType();
     this.getCurrentUser();
-    // this.spinnerService.hideAll();
-    
   }
 
   cambiarEstatusSpinner(estatus : boolean){
@@ -46,8 +43,6 @@ export class RolesComponent implements OnInit {
 
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
-    // this.tokenResponse = JSON.parse(sessionStorage.getItem('Token'));
-    // console.log(this.tokenResponse);
     if (this.usuario) {
       this.userUid = this.usuario.usuarioId;
       if (this.usuario.rolId == 1) {
@@ -62,7 +57,13 @@ export class RolesComponent implements OnInit {
     this.dataApi.GetList('/Roles').subscribe(userTypes => {
       this.userTypes = userTypes;
       this.cambiarEstatusSpinner(false);
-    }, error => console.error(error));
+    }, error => {
+      console.error(error);
+      this.cambiarEstatusSpinner(false);
+      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+        timeOut: 3000
+      });
+    });
   }
 
   onDeleteUserType(userType: Rol): void {
@@ -80,8 +81,5 @@ export class RolesComponent implements OnInit {
 
   onPreUpdateUserType(userType: Rol) {
     this.dataApi.SelectedRol = Object.assign({}, userType);
-    //  this.dataApiBanco.selectedBanco = Object.assign({}, banco);
-    //  //console.log('BOOK update', book)
   }
-
- }
+}

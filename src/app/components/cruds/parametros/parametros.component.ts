@@ -5,6 +5,7 @@ import { Parametro } from 'src/app/models/parametro';
 import { AuthUserService } from 'src/app/services/auth-user.service';
 import { Usuario } from 'src/app/models/usuario';
 import { SpinnerService } from 'src/app/services/spinner.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-parametros',
@@ -14,7 +15,7 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 export class ParametrosComponent implements OnInit {
   public static updateParametros: Subject<boolean> = new Subject();
 
-  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService) {
+  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService, private toastr: ToastrService) {
     ParametrosComponent.updateParametros.subscribe(res => {
       setTimeout(() => {
         this.getListParametros();
@@ -28,15 +29,11 @@ export class ParametrosComponent implements OnInit {
   public parametros: Parametro[];
   public isAdmin: any = null;
   public userUid: number = null;
-  // public tokenResponse: TokenResponse;
 
   ngOnInit() {
-    // this.spinnerService.showAll();
     this.cambiarEstatusSpinner(true);
     this.getCurrentUser();
     this.getListParametros();
-    // this.spinnerService.hideAll();
-    
   }
   
   cambiarEstatusSpinner(estatus : boolean){
@@ -45,8 +42,6 @@ export class ParametrosComponent implements OnInit {
 
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
-    // this.tokenResponse = JSON.parse(sessionStorage.getItem('Token'));
-    // console.log(this.tokenResponse);
     if (this.usuario) {
       this.userUid = this.usuario.usuarioId;
       if (this.usuario.rolId == 1) {
@@ -61,8 +56,13 @@ export class ParametrosComponent implements OnInit {
     this.dataApi.GetList('/Parametros').subscribe(parametrost => {
        this.parametros = parametrost;
        this.cambiarEstatusSpinner(false);
-      // console.log("Entra parametros " + this.parametros[0].parametroClave);
-    }, error => console.error(error));
+    }, error => {
+      console.error(error);
+      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+        timeOut: 3000
+      });
+      this.cambiarEstatusSpinner(false);
+    });
   }
 
   onDeleteParametro(parametro: Parametro): void {

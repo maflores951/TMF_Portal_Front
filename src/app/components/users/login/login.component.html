@@ -7,9 +7,6 @@
               <div class="card-body text-center">
                 <form #formLogin="ngForm" [formGroup]="UsuarioForm" (submit)="onLogin()">
                   <h1 class="h3 mb-3 font-weight-normal">Login</h1>
-                  <!--<div class="alert alert-danger" role="alert" *ngIf="isError">
-                    Something is wrong!
-                  </div>-->
                   <div class="form-group">
                     <input formControlName="EmailLogin" type="email" id="EmailLogin" name="EmailLogin" class="form-control" placeholder="Email" required>
   
@@ -44,17 +41,6 @@
                   <div class="form-group">
                     <a routerLink="/user/registro" class="form-control login-user">Registro</a>
                   </div>
-
-                  <!--<div class="form-group">
-                    <button class="btn btn-block btn-social btn-facebook" (click)="onLoginFacebook()">
-                      <span class="fa fa-facebook"></span>
-                      Facebook
-                    </button>
-                    <button class="btn btn-block btn-social btn-google" (click)= "onLoginGoogle()">
-                      <span class="fa fa-google"></span>
-                        Google
-                    </button>
-                  </div>-->
                 </form>
               </div>
             </div>

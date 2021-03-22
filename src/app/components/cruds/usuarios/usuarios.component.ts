@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import { SpinnerService } from 'angular-spinners';
+import { ToastrService } from 'ngx-toastr';
 import { Subject, Observable } from 'rxjs';
 import { Usuario } from 'src/app/models/usuario';
 import { AuthUserService } from 'src/app/services/auth-user.service';
@@ -14,7 +14,7 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 export class UsuariosComponent implements OnInit {
   public static updateUsers: Subject<boolean> = new Subject();
 
-  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService) {
+  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService, private toastr: ToastrService) {
     UsuariosComponent.updateUsers.subscribe(res => {
       setTimeout(() => {
         this.getListUsers();
@@ -26,20 +26,15 @@ export class UsuariosComponent implements OnInit {
   public email = '';
   public usuarioApellidoP = '';
   public usuarioApellidoM = '';
-  // public filterUsuario = {age: this.filterUsuarioId, sex: this.filterEmail};
   public usuario: Usuario;
   public users: Observable<Usuario[]>;
   public isAdmin: any = null;
   public userUid: number = null;
-  // public tokenResponse: TokenResponse;
 
   ngOnInit() {
-    // this.spinnerService.showAll();
     this.cambiarEstatusSpinner(true);
     this.getListUsers();
     this.getCurrentUser();
-    
-    // this.spinnerService.hideAll();
   }
 
   cambiarEstatusSpinner(estatus : boolean){
@@ -48,8 +43,6 @@ export class UsuariosComponent implements OnInit {
   
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
-    // this.tokenResponse = JSON.parse(sessionStorage.getItem('Token'));
-    // //console.log(this.tokenResponse);
     if (this.usuario) {
       this.userUid = this.usuario.usuarioId;
       if (this.usuario.rolId == 1) {
@@ -64,8 +57,12 @@ export class UsuariosComponent implements OnInit {
   getListUsers() {
     this.dataApi.GetList('/Usuarios').subscribe(users => {
       this.users = users;
-      // console.log(JSON.stringify(users));
-    }, error => console.error(error));
+    }, error => {
+      console.error(error);
+      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+        timeOut: 3000
+      });
+    });
   }
 
   onDeleteUser(user: Usuario): void {
@@ -83,7 +80,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   onPreUpdateUser(user: Usuario) {
-    //  console.log(user.imageFullPath + ' ***');
     if (user == null){
       this.dataApi.SelectedUsuario = Object.assign({}, user);
     }else{
@@ -95,8 +91,6 @@ export class UsuariosComponent implements OnInit {
       }
       this.dataApi.SelectedUsuario = Object.assign({}, user);
     }
-   
   }
-
 }
 

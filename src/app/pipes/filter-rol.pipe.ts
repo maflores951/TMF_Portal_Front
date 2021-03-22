@@ -6,7 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilterRolPipe implements PipeTransform {
 
   transform(value: any, arg: any): any {
-    console.log(arg + ' ***');
     if (arg === '') return value;
     const resultRol = [];
     for(const rol of value){

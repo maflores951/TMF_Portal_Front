@@ -42,19 +42,7 @@
           <form #formSuaNivel="ngForm" [formGroup]="configSuaNivelForm">
 
             <input type="hidden" formControlName="configuracionSuaNivelId" name="configuracionSuaNivelId">
-            <!--<input type="hidden" name="userUid" [value]="userUid">-->
-
-
-            
-
-           
-              <!-- <span data-toggle="tooltip" 
-              title="
-              Para poder comparar un conjunto de columnas del mismo archivo, se deben agregar dentro del mismo nivel:
-              -Las columnas numéricas se suman y el resultado es el que se compara.
-              -Las columnas con caracteres se concatenan agregando un espacio entre cada palabra."> -->
 <img src="assets/ayuda.png" id="ayuda" (click)="Ayuda()">
-              <!-- </span> -->
   
             <div class="form-group required">
               <label for="confSuaNNombre" class="col-form-label">Nombre:</label>
@@ -75,17 +63,9 @@
             <div class="form-row required">
                 <div class="form-group col-md-6">
                 <label for="tipoPeriodoId" class="col-form-label">Archivo:</label>
-                <!-- <input type="text" class="form-control" name="tipoPeriodoId"  maxlength="50" formControlName="tipoPeriodoId" placeholder="Ingrese el tipo de periodo"> -->
-                <!-- <select name="tipoPeriodoId" class="form-control" formControlName="tipoPeriodoId" style="width: 100%;
-                padding: 8px;">
-                  
-                  <option value="{excelTipoId : 1, excelTipoNombre : Sua}">SUA</option>
-                  <option value="{excelTipoId : 2, excelTipoNombre : EMA}">EMA</option>
-                  <option value="{excelTipoId : 3, excelTipoNombre : EBA}">EBA</option>
-                </select> -->
     
                 <select id="opcionSeleccionado" name="tipoPeriodoId" class="form-control" formControlName="tipoPeriodoId" [(ngModel)]="opcionSeleccionado" (change)="capturar()">
-                   <!-- <option value="" selected="true" disabled="disabled">Selecciona un tipo de archivo</option>  -->
+
                   <option *ngFor="let excelTipo of excelTipos; let index = index" [ngValue]="excelTipo">{{excelTipo.excelNombre}}</option>
                   </select>
 
@@ -101,8 +81,7 @@
 
               <div class="form-group col-md-6 required">
                 <label for="excelColumnaId" class="col-form-label">Columna:</label>
-                <!-- <input type="text" class="form-control"  name="excelColumnaId" maxlength="50" formControlName="excelColumnaId" placeholder="Ingrese la columna"> -->
-                <!-- <div class="ng-autocomplete"> -->
+
                   <ng-autocomplete  style="width: 100%;
                   "
                   [(ngModel)]="ngExcelColumna"
@@ -113,14 +92,14 @@
                     [itemTemplate]="itemTemplate"
                     [notFoundTemplate]="notFoundTemplate">                                 
                   </ng-autocomplete>
-                <!-- </div> -->
+
                 
                   <ng-template #itemTemplate let-item>
                   <a [innerHTML]="item.excelColumnaNombre"></a>
                   </ng-template>
                   
                   <ng-template #notFoundTemplate let-notFound>
-                  <!-- <div "not Found"></div> -->
+
                   <b>No se encontro el registro</b>
                    </ng-template>
     
@@ -203,60 +182,3 @@
       </div>
     </div>
   </div>
-  
-  <!-- <p>fdfsdf</p>
-<p>fdfsdf</p>
-<p>fdfsdf</p>
-<p>fdfsdf</p>
-<p>fdfsdf</p>
-<p>fdfsdf</p>
-
-<h1 mat-dialog-title>Nueva configuración</h1>
-
-<div mat-dialog-content>
-    <mat-form-field>
-        <mat-label>Configuración nombre</mat-label>
-        <input matinput type="text" [(ngModel)]="configuracionSua.confSuaNombre" name="confSuaNombre">
-    </mat-form-field>
-
-    <form [formGroup]="configuracionForm" (ngSubmit)="agregarLinea()">
-        <mat-form-field>
-            <mat-label>Id</mat-label>
-            <input type="text" formControlName="confSuaNId">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Nombre</mat-label>
-            <input type="text" formControlName="confSuaNNombre">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Tipo</mat-label>
-            <input type="text" formControlName="confSuaNTipo">
-        </mat-form-field>
-        <div>
-            <button type="submit" [disabled]="!configuracionForm.valid" mat-raised-button>+</button>
-        </div>
-    </form>
-</div>
-<div>
-    <h5>Niveles</h5>
-    <table>
-        <tr>
-            <th>No.</th>
-            <th>Archivo</th>
-            <th>Columna</th>
-        </tr>
-        <tr *ngFor="let item of configuracionSuaNivelC">
-            <th>{{item.confSuaNCId}}</th>
-            <th>{{item.ConfiguracionSuaNivel.confSuaNNombre}}</th>
-            <th>{{item.excelColumna.excelColumnaNombre}}</th>
-        </tr>
-    </table>
-</div>
-
-
-<div mat-dialog-actions>
-    <button mat-raised-button (clicl)="close(configuracionForm)">Cancelar</button>
-    <button mat-raised-button color="btn-primary" (click)="guardarConfiguracion()">Gurdar</button>
-
-</div>
- -->

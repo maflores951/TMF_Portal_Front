@@ -74,23 +74,19 @@ export class RecuperarPassComponent implements OnInit {
         this.onLoginRedirect();
       }else{
         this.cambiarEstatusSpinner(false);
-        this.toastr.error('Problemas con el servidor por favor intente más tarde.', 'Error', {
+        this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
           timeOut: 3000
         });
       }
       }, error => {
-        // console.log(JSON.stringify(error));
         this.cambiarEstatusSpinner(false);
         this.toastr.error(error.error.error_description, 'Error', {
           timeOut: 3000
         });
-        //alert(error.error.error_description);
-        //console.error(error.error.error_description)
       });
     } else {
       this.cambiarEstatusSpinner(false);
       this.toastr.error('Error en el email, favor de verificar', 'Error');
-      //alert("Ingrese los datos solicitados");
     }
   }
 

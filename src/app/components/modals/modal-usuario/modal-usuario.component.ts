@@ -34,14 +34,12 @@ export class ModalUsuarioComponent implements OnInit {
   @ViewChild('btnClose', { static: false }) btnClose: ElementRef;
   @Input() userUid: number;
 
-  // private token: TokenResponse;
   public UsuarioForm: FormGroup;
 
 
   get UsuarioNombre() { return this.UsuarioForm.get('UsuarioNombre'); }
   get UsuarioApellidoP() { return this.UsuarioForm.get('UsuarioApellidoP'); }
   get UsuarioApellidoM() { return this.UsuarioForm.get('UsuarioApellidoM'); }
-  // get Telephone() { return this.UsuarioForm.get('Telephone'); }
   get Email() { return this.UsuarioForm.get('Email'); }
   get RolId() { return this.UsuarioForm.get('RolId'); }
   get UsuarioId() { return this.UsuarioForm.get('UsuarioId'); }
@@ -102,20 +100,6 @@ export class ModalUsuarioComponent implements OnInit {
         message: 'El apellido materno  debe de comenzar con mayúscula y contener solamente letras'
       }
     ],
-    // 'Telephone': [
-    //   {
-    //     type: 'required',
-    //     message: 'El teléfono es requerido'
-    //   },
-    //   {
-    //     type: 'minlength',
-    //     message: 'El teléfono debe de contener 10 numeros'
-    //   },
-    //   {
-    //     type: 'pattern',
-    //     message: 'El teléfono solamente debe contener números'
-    //   }
-    // ],
     'Email': [
       {
         type: 'required',
@@ -156,11 +140,6 @@ export class ModalUsuarioComponent implements OnInit {
         Validators.minLength(6),
         Validators.pattern(this.nombrePattern)
         ]),
-      // Telephone: new FormControl('',
-      //   [Validators.required,
-      //   Validators.minLength(10),
-      //   Validators.pattern(this.telephonePattern)
-      //   ]),
       Email: new FormControl('',
         [Validators.required,
         Validators.pattern(this.emailPattern)
@@ -196,8 +175,13 @@ export class ModalUsuarioComponent implements OnInit {
   RecuperaUserTypes() {
     this.dataApi.GetList('/Roles').subscribe(userTypes => {
       this.userTypes = userTypes;
-    }, error => console.error(error));
+    }, error => {
+      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+        timeOut: 3000
+      });
+    });
   }
+
 
   readURL(event: any): void {
     
@@ -224,10 +208,8 @@ export class ModalUsuarioComponent implements OnInit {
 
 
   onSaveUsuario(formUsuario): void {
-    // console.log(this.UsuarioForm.value);
     this.cambiarEstatusSpinner(true);
     if (this.UsuarioForm.valid) {
-      // this.token = JSON.parse(sessionStorage.getItem('Token'));
       if (this.UsuarioForm.value.UsuarioId == null) {
         this.UsuarioForm.value.Password = this.cifrado.encrypt(this.UsuarioForm.value.Password);
         this.UsuarioForm.value.UsuarioId = 0;
@@ -252,7 +234,6 @@ export class ModalUsuarioComponent implements OnInit {
 
             this.UsuarioForm.value.ImageBase64 = image.substr(buscaComa)
           }
-          // console.log(this.UsuarioForm.value.RolId);
           this.UsuarioForm.value.RolId = parseInt(this.UsuarioForm.value.RolId);
           this.dataApi.Post('/Usuarios', this.UsuarioForm.value).subscribe(result => {
             this.toastr.success('Registro exitoso.', 'Exito', {
@@ -267,7 +248,6 @@ export class ModalUsuarioComponent implements OnInit {
       } else {
         this.user = this.UsuarioForm.value;
         if (this.file != null) {
-          // console.log("Entra imagen")
           let file = this.file;
           let reader = new FileReader();
           reader.readAsDataURL(file);
@@ -289,7 +269,6 @@ export class ModalUsuarioComponent implements OnInit {
             this.user.imageBase64 = image.substr(buscaComa)
           }
           this.UsuarioForm.value.RolId = parseInt(this.UsuarioForm.value.RolId);
-          //  console.log(JSON.stringify(this.user) + ' ***');
           this.UsuarioForm.value.UsuarioEstatusSesion = false;
            this.dataApi.Put('/Usuarios', this.UsuarioForm.value.UsuarioId , this.UsuarioForm.value);
         }, 300)
@@ -306,7 +285,9 @@ export class ModalUsuarioComponent implements OnInit {
       }, 600)
     } else {
       this.cambiarEstatusSpinner(false);
-      alert("Errores en el formulario, revise la información ingresada");
+      this.toastr.error('Errores en el formulario, revise la información ingresada".', 'Error', {
+        timeOut: 3000
+      });
     }
 
   }

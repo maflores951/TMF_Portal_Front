@@ -1,73 +1,84 @@
-<div class="modal fade" id="modalParametro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-            {{!this.dataApi.SelectedParametro.parametroId ? 'Nuevo registro' : 'Actualizar registro'}}
-          </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-  
-          <form #formParametro="ngForm" (ngSubmit)="onSaveParametro(formParametro)" [formGroup]="UsuarioForm">
-            <input type="hidden" formControlName="ParametroId" name="ParametroId" [(ngModel)]="this.dataApi.SelectedParametro.parametroId">
-            <!--<input type="hidden" name="userUid" [value]="userUid">-->
-  
-            <div class="form-group required">
-              <label for="ParametroNombre" class="col-form-label">Nombre:</label>
-              <input type="text" class="form-control" name="ParametroNombre" [(ngModel)]="this.dataApi.SelectedParametro.parametroNombre" maxlength="50" formControlName="ParametroNombre" placeholder="Ingrese el nombre del parametro">
-  
-              <div class="alert-danger" *ngIf="ParametroNombre.invalid && (ParametroNombre.dirty || ParametroNombre.touched)">
-  
-                <div *ngFor="let validation of user_validation_messages.ParametroNombre">
-                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('ParametroNombre').hasError(validation.type) && (UsuarioForm.get('ParametroNombre').dirty || UsuarioForm.get('ParametroNombre').touched)">
-                    {{validation.message}}
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="form-group required" [formGroup]="UsuarioForm">
-              <label for="ParametroClave">Clave</label>
-              <input type="text" name="ParametroClave" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroClave" maxlength="6" formControlName="ParametroClave" placeholder="Ingrese la clave del parametro">
-  
-              <div class="alert-danger" *ngIf="ParametroClave.invalid && (ParametroClave.dirty || ParametroClave.touched)">
-  
-                <div *ngFor="let validation of user_validation_messages.ParametroClave">
-                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('ParametroClave').hasError(validation.type) && (UsuarioForm.get('ParametroClave').dirty || UsuarioForm.get('ParametroClave').touched)">
-                    {{validation.message}}
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="form-group noRequired">
-              <label for="ParametroDescripcion">Descripción</label>
-              <input type="text" name="ParametroDescripcion" formControlName="ParametroDescripcion" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroDescripcion">
-            </div>
-  
-            <div class="form-group noRequired">
-              <label for="ParametroValorInicial">Valor inicial</label>
-              <input type="text" name="ParametroValorInicial" formControlName="ParametroValorInicial" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroValorInicial">
-            </div>
-  
-            <div class="form-group noRequired">
-              <label for="ParametroValorFinal">Valor final</label>
-              <input type="text" name="ParametroValorFinal" formControlName="ParametroValorFinal" class="form-control" [(ngModel)]="this.dataApi.SelectedParametro.parametroValorFinal">
-            </div>
-  
-            <div class="modal-footer">
-              <button type="button" (click)="CerrarMP(formParametro)" class="btn btn-secondary" #btnClose data-dismiss="modal">Cerrar</button>
-              <button type="submit" class="btn btn-primary form-actions">Guardar</button>
-            </div>
-  
-          </form>
-        </div>
-  
+<div class="modal fade" id="modalParametro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!this.dataApi.SelectedParametro.parametroId ? 'Nuevo registro' : 'Actualizar registro'}}
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+      <div class="modal-body">
+
+        <form #formParametro="ngForm" (ngSubmit)="onSaveParametro(formParametro)" [formGroup]="UsuarioForm">
+          <input type="hidden" formControlName="ParametroId" name="ParametroId"
+            [(ngModel)]="this.dataApi.SelectedParametro.parametroId">
+
+          <div class="form-group required">
+            <label for="ParametroNombre" class="col-form-label">Nombre:</label>
+            <input type="text" class="form-control" name="ParametroNombre"
+              [(ngModel)]="this.dataApi.SelectedParametro.parametroNombre" maxlength="50"
+              formControlName="ParametroNombre" placeholder="Ingrese el nombre del parametro">
+
+            <div class="alert-danger"
+              *ngIf="ParametroNombre.invalid && (ParametroNombre.dirty || ParametroNombre.touched)">
+
+              <div *ngFor="let validation of user_validation_messages.ParametroNombre">
+                <div style="font-size: smaller !important;"
+                  *ngIf="UsuarioForm.get('ParametroNombre').hasError(validation.type) && (UsuarioForm.get('ParametroNombre').dirty || UsuarioForm.get('ParametroNombre').touched)">
+                  {{validation.message}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group required" [formGroup]="UsuarioForm">
+            <label for="ParametroClave">Clave</label>
+            <input type="text" name="ParametroClave" class="form-control"
+              [(ngModel)]="this.dataApi.SelectedParametro.parametroClave" maxlength="6" formControlName="ParametroClave"
+              placeholder="Ingrese la clave del parametro">
+
+            <div class="alert-danger"
+              *ngIf="ParametroClave.invalid && (ParametroClave.dirty || ParametroClave.touched)">
+
+              <div *ngFor="let validation of user_validation_messages.ParametroClave">
+                <div style="font-size: smaller !important;"
+                  *ngIf="UsuarioForm.get('ParametroClave').hasError(validation.type) && (UsuarioForm.get('ParametroClave').dirty || UsuarioForm.get('ParametroClave').touched)">
+                  {{validation.message}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group noRequired">
+            <label for="ParametroDescripcion">Descripción</label>
+            <input type="text" name="ParametroDescripcion" formControlName="ParametroDescripcion" class="form-control"
+              [(ngModel)]="this.dataApi.SelectedParametro.parametroDescripcion">
+          </div>
+
+          <div class="form-group noRequired">
+            <label for="ParametroValorInicial">Valor inicial</label>
+            <input type="text" name="ParametroValorInicial" formControlName="ParametroValorInicial" class="form-control"
+              [(ngModel)]="this.dataApi.SelectedParametro.parametroValorInicial">
+          </div>
+
+          <div class="form-group noRequired">
+            <label for="ParametroValorFinal">Valor final</label>
+            <input type="text" name="ParametroValorFinal" formControlName="ParametroValorFinal" class="form-control"
+              [(ngModel)]="this.dataApi.SelectedParametro.parametroValorFinal">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" (click)="CerrarMP(formParametro)" class="btn btn-secondary" #btnClose
+              data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary form-actions">Guardar</button>
+          </div>
+
+        </form>
+      </div>
+
     </div>
   </div>
-  
-  
+</div>

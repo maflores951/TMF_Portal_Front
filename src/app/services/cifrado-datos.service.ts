@@ -24,16 +24,11 @@ export class CifradoDatosService {
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7
       }).toString(CryptoJS.enc.Utf8);
-    // console.log(encTarjeta + ' ******* desCifrado');
     return encTarjeta;
 
   }
 
   encrypt(conversion: string): string {
-    //console.log(conversion + ' ******* 1');
-    //console.log(conversion + ' encrypt*******');
-    //var encTarjeta = CryptoJS.AES.encrypt(conversion.trim(), this.llave.trim()).toString();
-    //console.log(encTarjeta + ' ******* 2');
 
      var encTarjeta = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(conversion), this.key,
       {
@@ -41,8 +36,7 @@ export class CifradoDatosService {
         iv: this.iv,
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7
-       }).toString();  
-    //console.log(encTarjeta + ' ******* Cifrado');
+       }).toString();
     return encTarjeta;
   }
 }

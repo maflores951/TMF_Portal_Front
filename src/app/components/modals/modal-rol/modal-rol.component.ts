@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { NgForm, Validators, FormControl, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Rol } from 'src/app/models/rol';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
@@ -12,7 +13,7 @@ import { RolesComponent } from '../../cruds/roles/roles.component';
 })
 export class ModalRolComponent implements OnInit {
 
-    constructor(public dataApi: DataApiService, private spinner: SpinnerService)
+    constructor(public dataApi: DataApiService, private spinner: SpinnerService, private toastr: ToastrService)
     {
       this.UsuarioForm = this.createForm();
     }
@@ -64,9 +65,13 @@ export class ModalRolComponent implements OnInit {
         this.UsuarioForm.value.RolId = 0;
         this.UsuarioForm.value.RolEstatus = false;
         this.dataApi.Post('/Roles', this.UsuarioForm.value).subscribe(result => {
-          alert("Registro exitoso");
+          this.toastr.error('Registro exitoso', 'Exito', {
+            timeOut: 3000
+          });
         }, error => {
-          alert("Errores en el servidor intente más tarde");
+          this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+            timeOut: 3000
+          });
         });
       } else {
         
@@ -82,12 +87,13 @@ export class ModalRolComponent implements OnInit {
     }, 600)
     }else {
       this.cambiarEstatusSpinner(false);
-        alert("Errores en el formulario, revise la información ingresada");
+      this.toastr.error('Errores en el formulario, revise la información ingresada.', 'Error', {
+        timeOut: 3000
+      });
       }
   }
 
   CerrarMUT(formUserType): void {
     formUserType.resetForm();
   }
-
 }

@@ -18,7 +18,6 @@ export class JwtInterceptor implements HttpInterceptor{
     intercept(request : HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         
         this.usuario = this.authUserService.usuarioData;
-         console.log(JSON.stringify(this.usuario) + ' **** Interceptor');
         if(this.usuario){
             request = request.clone({
                 setHeaders: {
@@ -26,7 +25,6 @@ export class JwtInterceptor implements HttpInterceptor{
                 }
             });
         }
-        console.log(JSON.stringify(request)+ " &&&&&&&&");
         return next.handle(request);
     }
 }
