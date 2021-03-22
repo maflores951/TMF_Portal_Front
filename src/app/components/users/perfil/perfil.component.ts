@@ -20,6 +20,7 @@ export class PerfilComponent implements OnInit {
     })
   }
 
+
   public user: Usuario;
   public email: string;
   public isAdmin: any = null;
@@ -32,6 +33,17 @@ export class PerfilComponent implements OnInit {
     this.getCurrentUser();
   }
 
-  getCurrentUser() {
+  RecuperaUsuario(TokenType: string, AccessToken: string, email: string) {
+
   }
+
+  onPreUpdateUsuario() {
+
+  }
+
+  getCurrentUser() {
+
+
+  }
+
 }

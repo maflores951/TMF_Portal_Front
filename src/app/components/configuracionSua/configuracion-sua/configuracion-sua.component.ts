@@ -35,6 +35,7 @@ export class ConfiguracionSuaComponent implements OnInit {
   @ViewChild('btnClose', { static: false }) btnClose: ElementRef;
   @Input() userUid: number;
 
+ 
   //Variables necesarias para cargar información
   public configuracionSua: ConfiguracionSua;
   public configuracionSuaNivel: ConfiguracionSuaNivel[];
@@ -82,6 +83,8 @@ public Ayuda(){
   { "excelTipoId": 3, "excelNombre": "Template bimestral" },
   { "excelTipoId": 6, "excelNombre": "EBA" }];
 
+
+  public keyword = 'excelColumnaNombre'; 
   //Funcion que recupera  las columnas de los excel de forma ordenada
   getListExcelColumna() {
     this.dataApi.GetList('/ExcelColumnas').subscribe(excelList => {
