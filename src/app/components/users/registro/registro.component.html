@@ -21,7 +21,7 @@
                       <label class="col-form-label">Click en la imagen para actualizar tu foto de perfil.</label>
                       <div class="image-upload">
                         <label for="file-input">
-                          <img [src]="imageSrc || 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png'" width="100" alt="Click aquí para subir tu foto" title="Click aquí para subir tu foto" />
+                          <img [src]="imageSrc || 'assets/user.png'" width="100" alt="Click aquí para subir tu foto" title="Click aquí para subir tu foto" />
                         </label>
                         <input id="file-input" name="Foto" formControlName="Foto" type='file' (change)="readURL($event);" accept=".png, .jpg" />
                       </div>

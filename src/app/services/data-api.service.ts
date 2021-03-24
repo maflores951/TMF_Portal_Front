@@ -7,6 +7,7 @@ import { Rol } from '../models/rol';
 import { ConfiguracionSua } from '../models/Sua/configuracionSua';
 import { ConfiguracionSuaNivel } from '../models/Sua/configuracionSuaNivel';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 
 const httpOption = {
   headers: new HttpHeaders({
@@ -19,25 +20,8 @@ const httpOption = {
   providedIn: 'root'
 })
 export class DataApiService {
-  //Url para recuperar el token de seguridad del sistema publicado en el IIS.(Se utiliza un proxi para evitar los Cors.)
-  public urlBaseToken = 'http://cors-anywhere.herokuapp.com/http://legvit.ddns.me/Fintech_Api/Token';
-
-  //Url para publicar el sistema Fintech.Front en donde ya no se necesita el proxi ya que estan alojada en el mismo IIS.
-  //public urlBaseToken = 'http://legvit.ddns.me/Fintech_Api/Token';
-
-  //URL base para conectar todas las API´s al IIS.
-  public urlBase = 'https://localhost:44319';
-
-  //URL base para conectar todas las API´s a Azure.
-  //public urlBase = 'https://fintechapi20200807223126.azurewebsites.net';
-  //public urlBaseToken = 'https://fintechapi20200807223126.azurewebsites.net/Token';
-
-  //URL base para conectar todass las apis al sistema Fintech.API de desarrollo
-  //public urlBase = 'https://localhost:44340';
-  //public urlBaseToken = 'https://localhost:44340/Token';
-
-
-  public servicePrefix = '/api';
+  public urlBase = environment.baseUrl;
+  public servicePrefix = environment.servicePrefix;
   public controller: string;
   public url: string;
   public model: any;
@@ -66,9 +50,7 @@ export class DataApiService {
 
   public Post(controller: string, model: any): any {
     this.url = this.urlBase + this.servicePrefix + controller;
-
     return this.http.post<any>(this.url, model, httpOption);
-
   }
 
  

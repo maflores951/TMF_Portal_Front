@@ -5,6 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Response } from '../models/response';
 import { Usuario } from '../models/usuario';
 import { NavbarComponent } from '../components/navbar/navbar/navbar.component';
+import { environment } from 'src/environments/environment';
+
 
 const httpOption ={
   headers: new HttpHeaders({
@@ -17,14 +19,16 @@ const httpOption ={
 })
 export class AuthUserService {
 
-    url: string = "https://localhost:44319/api/User/login";
+    public urlBase = environment.baseUrl;
+    public servicePrefix = environment.servicePrefix;
+    public controller = "/User/login";
+    // url: string = "https://localhost:44319/api/User/login";
 
+    public url = this.urlBase + this.servicePrefix + this.controller;
     private usuarioSubject: BehaviorSubject<Usuario>;
 
     public get usuarioData(): Usuario{
-
         return this.usuarioSubject.value;
-
     }
 
     constructor(private http: HttpClient){
@@ -33,9 +37,10 @@ export class AuthUserService {
     }
 
     login(email: string, password: string): Observable<Response>{
+      // console.log(this.url + " *****");
         return this.http.post<Response>(this.url, {email, password}, httpOption).pipe(
           map(res =>{
-              console.log("Entra");
+              // console.log("Entra");
               if (res.exito === 1){
                 const usuario: Usuario = res.data;
                 sessionStorage.setItem("Usuario", JSON.stringify(usuario));

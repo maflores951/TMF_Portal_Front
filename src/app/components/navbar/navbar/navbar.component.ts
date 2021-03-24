@@ -49,7 +49,7 @@ export class NavbarComponent implements OnInit {
       this.email = this.usuario.email;
 
       if (this.foto == null){
-        this.foto = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+        this.foto = "assets/user.png"//"https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
       } else{
         // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath;
         this.foto = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"

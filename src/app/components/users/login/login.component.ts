@@ -10,6 +10,8 @@ import { Usuario } from 'src/app/models/usuario';
 import { NavbarComponent } from '../../navbar/navbar/navbar.component';
 import { CifradoDatosService } from 'src/app/services/cifrado-datos.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
+import { DataApiService } from 'src/app/services/data-api.service';
+import { Parametro } from 'src/app/models/parametro';
 
 @Component({
   selector: 'app-login',
@@ -22,8 +24,9 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 export class LoginComponent implements OnInit {
 
   public UsuarioForm: FormGroup;
+  public parametro: Parametro;
 
-   constructor(private router: Router, private apiAuth: AuthUserService,private toastr: ToastrService, private cifrado: CifradoDatosService, private spinner: SpinnerService) {
+  constructor(private router: Router, private apiAuth: AuthUserService, private toastr: ToastrService, private cifrado: CifradoDatosService, private spinner: SpinnerService, private dataApi: DataApiService) {
     this.UsuarioForm = this.createForm();
   }
 
@@ -66,8 +69,8 @@ export class LoginComponent implements OnInit {
     return new FormGroup({
       EmailLogin: new FormControl('',
         [Validators.required,
-          Validators.minLength(6),
-          Validators.pattern(this.emailPattern)
+        Validators.minLength(6),
+        Validators.pattern(this.emailPattern)
         ]),
       PasswordLogin: new FormControl('',
         [Validators.required,
@@ -77,40 +80,43 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
-  cambiarEstatusSpinner(estatus : boolean){
+  cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
 
-  onLogin(){
-  if (this.UsuarioForm.valid) {
+  onLogin() {
+    if (this.UsuarioForm.valid) {
       this.cambiarEstatusSpinner(true);
       this.UsuarioForm.value.PasswordLogin = this.cifrado.encrypt(this.UsuarioForm.value.PasswordLogin);
-      this.apiAuth.login(this.UsuarioForm.value.EmailLogin,this.UsuarioForm.value.PasswordLogin).subscribe(response =>{
-        if (response.exito === 1){
-            this.cambiarEstatusSpinner(false);
-            this.onLoginRedirect();
-        }else {
+      this.apiAuth.login(this.UsuarioForm.value.EmailLogin, this.UsuarioForm.value.PasswordLogin).subscribe(response => {
+        if (response.exito === 1) {
+          this.cambiarEstatusSpinner(false);
+          this.onLoginRedirect();
+        } else {
           this.cambiarEstatusSpinner(false);
           this.toastr.error('Error en los datos solicitados', 'Error', {
-            timeOut: 3000});
-          }
-        });
-  } else {
-    this.cambiarEstatusSpinner(false);
-    this.toastr.error('Error en los datos solicitados', 'Error', {
-      timeOut: 3000
-    });
+            timeOut: 3000
+          });
+        }
+      });
+    } else {
+      this.cambiarEstatusSpinner(false);
+      this.toastr.error('Error en los datos solicitados', 'Error', {
+        timeOut: 3000
+      });
+    }
   }
-}
+
+ 
 
   onLogout() {
     sessionStorage.clear();
   }
 
-  onLoginRedirect(): void{
+  onLoginRedirect(): void {
     NavbarComponent.updateUserStatus.next(true);
     this.router.navigate(['']);
   }

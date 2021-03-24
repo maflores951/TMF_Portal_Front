@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  baseUrl: "http://legvit.ddns.me/Tmf_Back",
+  servicePrefix : "/api"
 };
