@@ -74,7 +74,7 @@ export class RecuperarPassComponent implements OnInit {
         this.onLoginRedirect();
       }else{
         this.cambiarEstatusSpinner(false);
-        this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+        this.toastr.error(result.mensaje, 'Error', {
           timeOut: 3000
         });
       }

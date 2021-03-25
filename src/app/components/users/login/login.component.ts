@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
       },
       {
         type: 'minlength',
-        message: 'El password debe de contener mínimo 6 caracteres'
+        message: 'El password debe de contener mínimo 8 caracteres'
       },
     ]
   }
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
         ]),
       PasswordLogin: new FormControl('',
         [Validators.required,
-        Validators.minLength(6)
+        Validators.minLength(8)
         ]),
     });
   }

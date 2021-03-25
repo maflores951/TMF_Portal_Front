@@ -55,7 +55,7 @@ export class AsignarPassComponent implements OnInit {
       },
       {
         type: 'minlength',
-        message: 'La contraseña debe de contener mínimo 6 caracteres'
+        message: 'La contraseña debe de contener mínimo 8 caracteres'
       }
     ],
     'ConfirmLogin': [
@@ -65,7 +65,7 @@ export class AsignarPassComponent implements OnInit {
       },
       {
         type: 'minlength',
-        message: 'La confirmación debe de contener mínimo 6 caracteres'
+        message: 'La confirmación debe de contener mínimo 8 caracteres'
       }
     ]
   }
@@ -75,11 +75,11 @@ export class AsignarPassComponent implements OnInit {
     return new FormGroup({
       PasswordLogin: new FormControl('',
         [Validators.required,
-        Validators.minLength(6)
+        Validators.minLength(8)
         ]),
       ConfirmLogin: new FormControl('',
         [Validators.required,
-        Validators.minLength(6)
+        Validators.minLength(8)
         ])
     });
   }

@@ -13,6 +13,7 @@ import { PerfilComponent } from '../../users/perfil/perfil.component';
 import { CifradoDatosService } from 'src/app/services/cifrado-datos.service';
 import { ToastrService } from 'ngx-toastr';
 import { SpinnerService } from 'src/app/services/spinner.service';
+import { AuthUserService } from 'src/app/services/auth-user.service';
 
 @Component({
   selector: 'app-modal-usuario',
@@ -24,10 +25,11 @@ export class ModalUsuarioComponent implements OnInit {
   private emailPattern: any = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
   private nombrePattern: any = /^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$/;
   private telephonePattern: any = /^([0-9])*$/;
+  public usuario: Usuario;
 
-
-  constructor(private router: Router, public dataApi: DataApiService,private cifrado: CifradoDatosService, private toastr: ToastrService, private spinner: SpinnerService ) {
+  constructor(private router: Router, public dataApi: DataApiService, private cifrado: CifradoDatosService, private toastr: ToastrService, private spinner: SpinnerService, private authUserService: AuthUserService) {
     this.UsuarioForm = this.createForm();
+    this.usuario = this.authUserService.usuarioData;
   }
 
   @ViewChild('imageUser', { static: false }) inputImageUser;
@@ -50,14 +52,14 @@ export class ModalUsuarioComponent implements OnInit {
     'UsuarioId': [],
     'Password': [
       {
-      type: 'required',
-      message: 'El password es requerido'
-    },
-    {
-      type: 'minlength',
-      message: 'El password debe de contener mínimo 8 caracteres'
-    }
-  ],
+        type: 'required',
+        message: 'El password es requerido'
+      },
+      {
+        type: 'minlength',
+        message: 'El password debe de contener mínimo 8 caracteres'
+      }
+    ],
     'UsuarioNombre': [
       {
         type: 'required',
@@ -65,7 +67,7 @@ export class ModalUsuarioComponent implements OnInit {
       },
       {
         type: 'minlength',
-        message: 'El nombre debe de contener mínimo 6 caracteres'
+        message: 'El nombre debe de contener mínimo 3 caracteres'
       },
       {
         type: 'pattern',
@@ -79,7 +81,7 @@ export class ModalUsuarioComponent implements OnInit {
       },
       {
         type: 'minlength',
-        message: 'El apellido paterno  debe de contener mínimo 6 caracteres'
+        message: 'El apellido paterno  debe de contener mínimo 3 caracteres'
       },
       {
         type: 'pattern',
@@ -93,7 +95,7 @@ export class ModalUsuarioComponent implements OnInit {
       },
       {
         type: 'minlength',
-        message: 'El apellido materno  debe de contener mínimo 6 caracteres'
+        message: 'El apellido materno  debe de contener mínimo 3 caracteres'
       },
       {
         type: 'pattern',
@@ -124,20 +126,20 @@ export class ModalUsuarioComponent implements OnInit {
         []),
       Password: new FormControl('',
         [Validators.required,
-          Validators.minLength(8)]),
+        Validators.minLength(8)]),
       UsuarioNombre: new FormControl('',
         [Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(3),
         Validators.pattern(this.nombrePattern)
         ]),
       UsuarioApellidoP: new FormControl('',
         [Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(3),
         Validators.pattern(this.nombrePattern)
         ]),
       UsuarioApellidoM: new FormControl('',
         [Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(3),
         Validators.pattern(this.nombrePattern)
         ]),
       Email: new FormControl('',
@@ -155,7 +157,7 @@ export class ModalUsuarioComponent implements OnInit {
   private user: Usuario;
   public userTypes: Rol;
   public imageSrc: string;
- 
+
   public isAdmin: any = null;
   public file: File;
   uploadPercent: Observable<number>;
@@ -168,7 +170,7 @@ export class ModalUsuarioComponent implements OnInit {
     this.cambiarEstatusSpinner(false);
   }
 
-  cambiarEstatusSpinner(estatus : boolean){
+  cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
 
@@ -184,7 +186,7 @@ export class ModalUsuarioComponent implements OnInit {
 
 
   readURL(event: any): void {
-    
+
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
 
@@ -203,7 +205,7 @@ export class ModalUsuarioComponent implements OnInit {
     const id = Math.random().toString(36).substring(2);
     this.file = e.target.files[0];
     const filePath = 'uploads/profile_${id}';
- 
+
   }
 
 
@@ -270,19 +272,46 @@ export class ModalUsuarioComponent implements OnInit {
           }
           this.UsuarioForm.value.RolId = parseInt(this.UsuarioForm.value.RolId);
           this.UsuarioForm.value.UsuarioEstatusSesion = false;
-           this.dataApi.Put('/Usuarios', this.UsuarioForm.value.UsuarioId , this.UsuarioForm.value);
+          this.dataApi.Put('/Usuarios', this.UsuarioForm.value.UsuarioId, this.UsuarioForm.value);
         }, 300)
-        
+
       }
       setTimeout(() => {
-        this.cambiarEstatusSpinner(false);
-      formUsuario.resetForm();
-      this.UsuarioForm.reset();
-      UsuariosComponent.updateUsers.next(true);
-      NavbarComponent.updateUserStatus.next(true);
-      PerfilComponent.updateUsers.next(true);
-        this.btnClose.nativeElement.click();
-      }, 600)
+        if (this.usuario.usuarioId == this.UsuarioForm.value.UsuarioId) {
+          this.dataApi.GetListId('/Usuarios', this.usuario.usuarioId).subscribe(result => {
+
+            const usuario: Usuario = result;
+            usuario.usuarioToken = this.usuario.usuarioToken;
+            setTimeout(() => {
+              this.authUserService.actualizarLogin(usuario);
+            }, 500)
+            setTimeout(() => {
+              this.cambiarEstatusSpinner(false);
+              formUsuario.resetForm();
+              this.UsuarioForm.reset();
+              UsuariosComponent.updateUsers.next(true);
+              NavbarComponent.updateUserStatus.next(true);
+              PerfilComponent.updateUsers.next(true);
+              this.btnClose.nativeElement.click();
+            }, 1000)
+              , error => {
+                this.toastr.error('Errores en el servidor intente más tarde.', 'Error', {
+                  timeOut: 3000
+                });
+              };
+          });
+        } else {
+          this.cambiarEstatusSpinner(false);
+          formUsuario.resetForm();
+          this.UsuarioForm.reset();
+          UsuariosComponent.updateUsers.next(true);
+          NavbarComponent.updateUserStatus.next(true);
+          PerfilComponent.updateUsers.next(true);
+          this.btnClose.nativeElement.click();
+        }
+      }, 500);
+
+
     } else {
       this.cambiarEstatusSpinner(false);
       this.toastr.error('Errores en el formulario, revise la información ingresada".', 'Error', {

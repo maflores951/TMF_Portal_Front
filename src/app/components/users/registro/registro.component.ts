@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CifradoDatosService } from 'src/app/services/cifrado-datos.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
+import { ToastrService } from 'ngx-toastr';
 // import { SpinnerService } from 'angular-spinners';
 
 @Component({
@@ -20,7 +21,7 @@ export class RegistroComponent implements OnInit {
   private telephonePattern: any = /^\d{10}$/g;
   private file: File;
 
-  constructor(private router: Router, public dataApi: DataApiService,private cifrado: CifradoDatosService, private spinner: SpinnerService)
+  constructor(private router: Router, public dataApi: DataApiService,private cifrado: CifradoDatosService, private spinner: SpinnerService, private toastr: ToastrService)
   {
     this.UsuarioForm = this.createForm();
   }
@@ -44,9 +45,13 @@ export class RegistroComponent implements OnInit {
     'UsuarioId': [],
     'Password': [
       {
-        type: 'required',
-        message: 'El password es requerido'
-      }
+      type: 'required',
+      message: 'El password es requerido'
+    },
+    {
+      type: 'minlength',
+      message: 'El password debe de contener mínimo 8 caracteres'
+    }
     ],
     'UsuarioNombre': [
       {
@@ -55,7 +60,7 @@ export class RegistroComponent implements OnInit {
       },
       {
         type: 'minlength',
-        message: 'El nombre debe de contener mínimo 6 caracteres'
+        message: 'El nombre debe de contener mínimo 3 caracteres'
       },
       {
         type: 'pattern',
@@ -69,7 +74,7 @@ export class RegistroComponent implements OnInit {
       },
       {
         type: 'minlength',
-        message: 'El apellido paterno  debe de contener mínimo 6 caracteres'
+        message: 'El apellido paterno  debe de contener mínimo 3 caracteres'
       },
       {
         type: 'pattern',
@@ -83,7 +88,7 @@ export class RegistroComponent implements OnInit {
       },
       {
         type: 'minlength',
-        message: 'El apellido materno  debe de contener mínimo 6 caracteres'
+        message: 'El apellido materno  debe de contener mínimo 3 caracteres'
       },
       {
         type: 'pattern',
@@ -126,22 +131,22 @@ export class RegistroComponent implements OnInit {
     return new FormGroup({
       UsuarioId: new FormControl('',
         []),
-      Password: new FormControl('',
-        [Validators.required
-        ]),
+        Password: new FormControl('',
+        [Validators.required,
+          Validators.minLength(8)]),
       UsuarioNombre: new FormControl('',
         [Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(3),
         Validators.pattern(this.nombrePattern)
         ]),
       UsuarioApellidoP: new FormControl('',
         [Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(3),
         Validators.pattern(this.nombrePattern)
         ]),
       UsuarioApellidoM: new FormControl('',
         [Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(3),
         Validators.pattern(this.nombrePattern)
         ]),
       // Telephone: new FormControl('',
@@ -187,11 +192,13 @@ export class RegistroComponent implements OnInit {
       this.file = event.target.files[0];
       const filePath = 'uploads/profile_${id}';
     }
+    console.log(this.file);
   }
 
   onUpload(e){
     const id = Math.random().toString(36).substring(2);
     this.file = e.target.files[0];
+   
   }
 
   async onSaveUsuario(formUsuario): Promise<void> {
@@ -214,7 +221,7 @@ export class RegistroComponent implements OnInit {
           console.log('Error: ', error);
         };
       } else {
-        let response = await fetch('https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png');
+        let response = await fetch('assets/user.png');
         let data = await response.blob();
         let metadata = {
           type: 'image/jpeg'
@@ -238,12 +245,17 @@ export class RegistroComponent implements OnInit {
           this.UsuarioForm.value.ImageBase64 = image.substr(buscaComa)
           this.UsuarioForm.value.UsuarioEstatusSesion = false;
         this.dataApi.Post('/Usuarios', this.UsuarioForm.value).subscribe(result => {
-          alert("Registro exitoso");
+          this.toastr.success('Registro Exitoso.', 'Exito', {
+            timeOut: 3000
+          });
           // this.spinnerService.hideAll();
           this.cambiarEstatusSpinner(false);
+          this.UsuarioForm.reset();
           this.router.navigate(['/user/login']);
         }, error => {
-            alert(error.error.Message);
+          this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+            timeOut: 3000
+          });
             // this.spinnerService.hideAll();
             this.cambiarEstatusSpinner(false);
         });
@@ -251,7 +263,9 @@ export class RegistroComponent implements OnInit {
     } else {
       // this.spinnerService.hideAll();
       this.cambiarEstatusSpinner(false);
-      alert("Errores en el formulario, revise la información ingresada");
+      this.toastr.error('Errores en el formulario, revise la información ingresada.', 'Error', {
+        timeOut: 3000
+      });
     }
   }
 

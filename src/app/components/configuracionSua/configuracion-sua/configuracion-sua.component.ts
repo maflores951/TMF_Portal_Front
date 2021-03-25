@@ -62,7 +62,7 @@ export class ConfiguracionSuaComponent implements OnInit {
 public Ayuda(){
   Swal.fire({
     title: "Combinar columnas",
-    html: "Para poder comparar un conjunto de columnas del mismo archivo, se deben agregar dentro del mismo nivel:<p>-Las columnas numéricas se suman y el resultado es el que se compara.</p>  <p>-Las columnas con caracteres se concatenan agregando un espacio entre cada palabra.</p>",
+    html: "Para poder comparar un conjunto de columnas del mismo archivo, se deben agregar dentro del mismo nivel:<p>-Las columnas numéricas se suman y el resultado es el que se compara.</p>  <p>-Las columnas con caracteres se concatenan agregando un espacio entre cada palabra.</p> <p>-Para realizar una comparación especial se debe de seleccionar el tipo de archivo “Comparativo Especial” y seleccionar la columna que contenga el comparativo que necesitemos.</p>",
     confirmButtonText: `Salir`,
     icon: 'info'
   })
@@ -122,7 +122,7 @@ public Ayuda(){
       },
       {
         type: 'minlength',
-        message: 'El nombre de la configuración debe de contener mínimo 4 caracteres'
+        message: 'El nombre de la configuración debe de contener mínimo 3 caracteres'
       }
     ],
     'confSuaNNombre': [
@@ -132,7 +132,7 @@ public Ayuda(){
       },
       {
         type: 'minlength',
-        message: 'La nombre de la columna debe de contener mínimo 4 caracteres'
+        message: 'La nombre de la columna debe de contener mínimo 3 caracteres'
       }
     ],
     'tipoPeriodoId': [
@@ -154,7 +154,7 @@ public Ayuda(){
     return new FormGroup({
       confSuaNombre: new FormControl('',
         [Validators.required,
-        Validators.minLength(4)
+        Validators.minLength(3)
         ]),
       configuracionSuaId: new FormControl('',)
     });
@@ -164,7 +164,7 @@ public Ayuda(){
     return new FormGroup({
       confSuaNNombre: new FormControl('',
         [Validators.required,
-        Validators.minLength(6)
+        Validators.minLength(3)
         ])
     });
   }

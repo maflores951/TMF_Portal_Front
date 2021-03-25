@@ -44,6 +44,7 @@ export class AuthUserService {
               if (res.exito === 1){
                 const usuario: Usuario = res.data;
                 sessionStorage.setItem("Usuario", JSON.stringify(usuario));
+                // console.log(JSON.stringify(usuario));
                 this.usuarioSubject.next(usuario);
               }
               return res;
@@ -54,6 +55,13 @@ export class AuthUserService {
     logout(){
       sessionStorage.removeItem('Usuario');
       this.usuarioSubject.next(null);
+      NavbarComponent.updateUserStatus.next(true);
+    }
+
+    actualizarLogin(usuario){
+      // console.log(JSON.stringify(usuario) + " AUTH *****");
+      sessionStorage.setItem("Usuario", JSON.stringify(usuario));
+      this.usuarioSubject.next(usuario);
       NavbarComponent.updateUserStatus.next(true);
     }
 }

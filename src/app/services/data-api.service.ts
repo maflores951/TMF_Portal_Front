@@ -45,7 +45,7 @@ export class DataApiService {
     this.url = this.urlBase + this.servicePrefix + controller;
 
 
-    return this.http.get<Response>(this.url + '/' + id.toString());
+    return this.http.get<Response>(this.url + '/' + id.toString(), httpOption);
   }
 
   public Post(controller: string, model: any): any {

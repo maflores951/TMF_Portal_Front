@@ -5,6 +5,7 @@ import { Usuario } from 'src/app/models/usuario';
 import { AuthUserService } from 'src/app/services/auth-user.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-usuarios',
@@ -83,11 +84,15 @@ export class UsuariosComponent implements OnInit {
     if (user == null){
       this.dataApi.SelectedUsuario = Object.assign({}, user);
     }else{
-      if (user.imageFullPath == null){
-        user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+     
+      if (user.imagePath == null){
+        user.imageFullPath = "assets/user.png"
       } else{
         // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath;
-        user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+        //  user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+       
+        user.imageFullPath = environment.baseUrl + "/" + user.imagePath;
+        // console.log(user.imageFullPath + " ***** Crud usuario");
       }
       this.dataApi.SelectedUsuario = Object.assign({}, user);
     }
