@@ -6,6 +6,7 @@ import { ExcelTipo } from 'src/app/models/Excel/ExcelTipo';
 import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
 import { ConfiguracionSuaNivel } from 'src/app/models/Sua/configuracionSuaNivel';
 import { SuaExcel } from 'src/app/models/Sua/SuaExcel';
+import { TipoPeriodo } from 'src/app/models/TipoPeriodo';
 import { ConfiguracionSuaService } from 'src/app/services/configuracion-sua.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
@@ -41,7 +42,7 @@ export class ConfiguracionSuaComponent implements OnInit {
   public configuracionSuaNivel: ConfiguracionSuaNivel[];
   public suaExcel: SuaExcel[];
 
-  public periodoTipos: ExcelTipo[];
+  // public periodoTipos: ExcelTipo[];
 
   public configSuaForm: FormGroup;
 
@@ -58,6 +59,13 @@ export class ConfiguracionSuaComponent implements OnInit {
 
   public excelListFiltro: ExcelColumna[];
 
+  //Lista de los tipos de periodos
+  public periodoTipos : TipoPeriodo[] = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },
+  { "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }];
+
+  //Inicio del filtro
+  public selectPeriodo = this.periodoTipos[0];
+
   //Función para lansar el mensaje con las instrucciones para utilizar el sistema
 public Ayuda(){
   Swal.fire({
@@ -70,21 +78,30 @@ public Ayuda(){
 
 //Propiedades para validar los formularios reactivos 
   get configuracionSuaId() { return this.configSuaForm.get('configuracionSuaId'); }
+  get periodoTipoId() { return this.configSuaForm.get('periodoTipoId'); }
   get confSuaNombre() { return this.configSuaForm.get('confSuaNombre'); }
   get confSuaNNombre() { return this.configSuaNivelForm.get('confSuaNNombre'); }
-  get tipoPeriodoId() { return this.suaExcelForm.get('tipoPeriodoId'); }
+  get excelTipoId() { return this.suaExcelForm.get('excelTipoId'); }
   get excelColumnaId() { return this.suaExcelForm.get('excelColumnaId'); }
 
-  //Arreglo con los tipos de excel
-  public excelTipos: ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial" },
-  { "excelTipoId": 2, "excelNombre": "Template" },
-  { "excelTipoId": 4, "excelNombre": "SUA" },
-  { "excelTipoId": 5, "excelNombre": "EMA" },
-  { "excelTipoId": 3, "excelNombre": "Template bimestral" },
-  { "excelTipoId": 6, "excelNombre": "EBA" }];
+  //Arreglo con los tipos de excel mensual
+  public excelTiposMensual: ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo" : 1 },
+  { "excelTipoId": 2, "excelNombre": "Template", "excelTipoPeriodo" : 1 },
+  { "excelTipoId": 4, "excelNombre": "SUA" , "excelTipoPeriodo" : 1},
+  { "excelTipoId": 5, "excelNombre": "EMA" , "excelTipoPeriodo" : 1}];
 
+   //Arreglo con los tipos de excel bimestral
+   public excelTiposBimestral: ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo" : 1 },
+   { "excelTipoId": 3, "excelNombre": "Template bimestral" , "excelTipoPeriodo" : 2},
+   { "excelTipoId": 4, "excelNombre": "SUA" , "excelTipoPeriodo" : 1},
+   { "excelTipoId": 6, "excelNombre": "EBA" , "excelTipoPeriodo" : 2}];
 
-  public keyword = 'excelColumnaNombre'; 
+   public excelTipos : ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo" : 1 },
+   { "excelTipoId": 2, "excelNombre": "Template", "excelTipoPeriodo" : 1 },
+   { "excelTipoId": 4, "excelNombre": "SUA" , "excelTipoPeriodo" : 1},
+   { "excelTipoId": 5, "excelNombre": "EMA" , "excelTipoPeriodo" : 1}];
+
+  public keyword = 'excelColumnaNombre';
   //Funcion que recupera  las columnas de los excel de forma ordenada
   getListExcelColumna() {
     this.dataApi.GetList('/ExcelColumnas').subscribe(excelList => {
@@ -125,6 +142,12 @@ public Ayuda(){
         message: 'El nombre de la configuración debe de contener mínimo 3 caracteres'
       }
     ],
+    'periodoTipoId': [
+      {
+        type: 'required',
+        message: 'El tipo de periodo es requerido'
+      }
+    ],
     'confSuaNNombre': [
       {
         type: 'required',
@@ -135,10 +158,10 @@ public Ayuda(){
         message: 'La nombre de la columna debe de contener mínimo 3 caracteres'
       }
     ],
-    'tipoPeriodoId': [
+    'excelTipoId': [
       {
         type: 'required',
-        message: 'El tipo de periodo es requerido'
+        message: 'El tipo de archivo es requerido'
       }
     ],
     'excelColumnaId': [
@@ -156,6 +179,9 @@ public Ayuda(){
         [Validators.required,
         Validators.minLength(3)
         ]),
+        periodoTipoId: new FormControl('',
+        [Validators.required
+        ]),
       configuracionSuaId: new FormControl('',)
     });
   }
@@ -171,7 +197,7 @@ public Ayuda(){
 
   createFormExcel() {
     return new FormGroup({
-      tipoPeriodoId: new FormControl('',
+      excelTipoId: new FormControl('',
         [Validators.required]),
       excelColumnaId: new FormControl('',
         [Validators.required]),
@@ -186,6 +212,29 @@ public Ayuda(){
       this.configuracionSuaNivel = response;
     });
 
+    this.dataApi.cargarTipoExcelConfObservable.subscribe(response => {
+      //  console.log(JSON.stringify(response) + " *****");
+      this.excelTipos = response;
+    });
+
+    this.dataApi.cargarTipoPeriodoConfObservable.subscribe(response => {
+      //  console.log(JSON.stringify(response) + " *****");
+      this.periodoTipos = response;
+
+      console.log("Entra **** " + this.dataApi.SelectedconfiguracionSua.configuracionSuaTipo);
+      
+      if(this.dataApi.SelectedconfiguracionSua.configuracionSuaTipo == 1){
+        this.selectPeriodo =  this.periodoTipos[0];
+      }else if(this.dataApi.SelectedconfiguracionSua.configuracionSuaTipo == 2){
+        this.selectPeriodo =  this.periodoTipos[1];
+      }else{
+        this.selectPeriodo =  this.periodoTipos[0];
+      }
+    });
+
+   
+    // if (this.dataApi.SelectedconfiguracionSua.confSuaNombre)
+    // this.selectPeriodo =  this.periodoTipos[0];
     this.opcionSeleccionado = this.excelTipos[0];
   }
 
@@ -196,13 +245,32 @@ public Ayuda(){
 
 //Función para filtrar las columnas segun el tipo de archivo seleccionado
   capturar() {
-    this.excelList = this.excelListFiltro.filter(excelColumna => {
-      if (excelColumna.excelTipoId === this.opcionSeleccionado.excelTipoId) {
-        return excelColumna;
+    this.excelList = this.excelListFiltro.filter(excelTipo => {
+      if (excelTipo.excelTipoId === this.opcionSeleccionado.excelTipoId) {
+        return excelTipo;
       }
     });
 
     this.ngExcelColumna = "";
+  }
+
+  //Función para determinar el tipo de comparativo
+  tipoPeriodo() {
+    if (this.selectPeriodo.tipoPeriodoId == 1){
+      this.excelTipos = this.excelTiposMensual;
+    }else{
+      this.excelTipos = this.excelTiposBimestral;
+    }
+
+    this.suaExcelForm.reset();
+    // this.configSuaForm.reset();
+    this.configSuaNivelForm.reset();
+    this.suaExcel = [];
+    this.configuracionSuaNivel = [];
+    this.ngSuaNNombre = "";
+    this.confSuaNEstatus = false;
+    this.confSuaNPosicion = 0;
+    // this.ngExcelColumna = "";
   }
 
   //Función para utilizar el spinner de carga 
@@ -215,9 +283,9 @@ public Ayuda(){
     if (this.suaExcelForm.valid) {
       if (formSua.value.excelColumnaId.excelColumnaId >= 1) {
         this.modelSuaExcel = {
-          ExcelTipoId: parseInt(formSua.value.tipoPeriodoId.excelTipoId),
+          ExcelTipoId: parseInt(formSua.value.excelTipoId.excelTipoId),
           excelColumnaId: parseInt(formSua.value.excelColumnaId.excelColumnaId),
-          excelTipo: formSua.value.tipoPeriodoId,
+          excelTipo: formSua.value.excelTipoId,
           excelColumna: formSua.value.excelColumnaId
         }
         var bandera = false;
@@ -226,7 +294,7 @@ public Ayuda(){
           this.ngExcelColumna = "";
         } else {
           for (var i = 0; i < this.suaExcel.length; i++) {
-            // if (this.suaExcel[i].tipoPeriodoId == parseInt(formSua.value.tipoPeriodoId.excelTipoId) &&
+            // if (this.suaExcel[i].excelTipoId == parseInt(formSua.value.excelTipoId.excelTipoId) &&
               // this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
                   if (this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
               this.toastr.error('Esta columna ya fue registrada.', 'Error', {
@@ -361,7 +429,8 @@ public confSuaNPosicion : number = 0;
             configuracionSuaId: this.dataApi.SelectedconfiguracionSua.configuracionSuaId,
             confSuaNombre: formSua.value.confSuaNombre,
             confSuaEstatus: false,
-            configuracionSuaNivel: this.configuracionSuaNivel
+            configuracionSuaNivel: this.configuracionSuaNivel,
+            configuracionSuaTipo: this.selectPeriodo.tipoPeriodoId
           }
           this.dataApi.Post('/ConfiguracionSuas', this.configuracionSua).subscribe(response => {
             this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
@@ -369,6 +438,7 @@ public confSuaNPosicion : number = 0;
                 this.Cerrar(formSua, formSuaNivel, formSuaExcel);
                 this.cambiarEstatusSpinner(false);
               } else {
+                this.cambiarEstatusSpinner(false); 
                 this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
                   timeOut: 3000
                 });
@@ -414,9 +484,11 @@ public confSuaNPosicion : number = 0;
     formSuaNivel.resetForm();
     formSuaExcel.resetForm();
     this.suaExcel = [];
+    this.configuracionSuaNivel = [];
     this.ngSuaNNombre = "";
     this.confSuaNEstatus = false;
     this.confSuaNPosicion = 0;
+    // this.excelTipos = this.excelTiposMensual;
   }
 
   //Se cierra la ventana y se actualiza el CRUD
@@ -430,9 +502,11 @@ public confSuaNPosicion : number = 0;
       this.configSuaForm.reset();
       this.configSuaNivelForm.reset();
       this.suaExcel = [];
+      this.configuracionSuaNivel = [];
       this.ngSuaNNombre = "";
       this.confSuaNEstatus = false;
       this.confSuaNPosicion = 0;
+      // this.excelTipos = this.excelTiposMensual;
       ConfigSuaComponent.updateConfigSua.next(true);
       NavbarComponent.updateUserStatus.next(true);
       this.btnClose.nativeElement.click();

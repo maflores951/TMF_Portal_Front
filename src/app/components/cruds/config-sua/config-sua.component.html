@@ -24,6 +24,7 @@
             <th scope="col">#</th>
             <th scope="col">Id</th>
             <th scope="col">Nombre</th>
+            <!-- <th scope="col">Tipo</th> -->
             <th scope="col">&nbsp;</th>
             <th scope="col">&nbsp;</th>
           </tr>
@@ -33,6 +34,7 @@
             <th scope="row">{{i+1}}</th>
             <td>{{configuracionSua.configuracionSuaId}}</td>
             <td>{{configuracionSua.confSuaNombre}}</td>
+            <!-- <td>{{configuracionSua.configuracionSuaTipo}}</td> -->
             <td *ngIf="isAdmin == true; else noOwner">
               <button class="btn btn-primary" data-toggle="modal" data-target="#modalSUA" (click)="onPreUpdateSua(configuracionSua)">Actualizar</button>
             </td>

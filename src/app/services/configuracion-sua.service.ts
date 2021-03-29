@@ -18,7 +18,7 @@ export class ConfiguracionSuaService {
 
   public urlBase = environment.baseUrl;
   public servicePrefix = environment.servicePrefix;
-  public controller = "/api/Sua";
+  public controller = "/Sua";
   
   public url = this.urlBase + this.servicePrefix + this.controller;
 

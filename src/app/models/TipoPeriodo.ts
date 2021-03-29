@@ -1,5 +1,5 @@
 export interface TipoPeriodo {
-    tipoPeriodoId: number;
+    tipoPeriodoId?: number;
 
     tipoPeriodoNombre?: string;
   }

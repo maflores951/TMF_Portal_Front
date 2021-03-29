@@ -9,5 +9,5 @@ export interface ConfiguracionSua {
 
     configuracionSuaNivel?: ConfiguracionSuaNivel[];
 
+    configuracionSuaTipo?: Number;
   }
-  

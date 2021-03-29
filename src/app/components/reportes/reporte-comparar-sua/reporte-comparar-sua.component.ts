@@ -125,7 +125,7 @@ export class ReporteCompararSuaComponent implements OnInit {
       //Se convierte a un archivo
       const data: Blob = new Blob([byteArray], { type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
       FileSaver.saveAs(data, "Comparativo.xlsx");
-      this.toastr.error('El comparativo se generó con éxito.', 'Exito', {
+      this.toastr.success('El comparativo se generó con éxito.', 'Exito', {
         timeOut: 3000
       });
       this.cambiarEstatusSpinner(false);

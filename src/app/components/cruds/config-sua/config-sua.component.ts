@@ -80,11 +80,36 @@ export class ConfigSuaComponent implements OnInit {
 
   onPreUpdateSua(configuracionSua: ConfiguracionSua) {
     if (configuracionSua == null) {
+      this.dataApi.SelectedconfiguracionSua = Object.assign({}, configuracionSua);
       this.dataApi.validarEspera([]);
-      this.dataApi.SelectedconfiguracionSua = Object.assign({}, configuracionSua);
+      this.dataApi.cargarTipoExcel([{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo" : 1 },
+      { "excelTipoId": 2, "excelNombre": "Template", "excelTipoPeriodo" : 1 },
+      { "excelTipoId": 4, "excelNombre": "SUA" , "excelTipoPeriodo" : 1},
+      { "excelTipoId": 5, "excelNombre": "EMA" , "excelTipoPeriodo" : 1}]);
+      this.dataApi.cargarTipoPeriodo([{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },
+      { "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]);
+    
     } else {
-      this.dataApi.validarEspera(configuracionSua.configuracionSuaNivel);
+      console.log(JSON.stringify(configuracionSua));
+     
       this.dataApi.SelectedconfiguracionSua = Object.assign({}, configuracionSua);
+      this.dataApi.validarEspera(configuracionSua.configuracionSuaNivel);
+      if(configuracionSua.configuracionSuaTipo == 1){
+        this.dataApi.cargarTipoExcel([{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo" : 1 },
+        { "excelTipoId": 2, "excelNombre": "Template", "excelTipoPeriodo" : 1 },
+        { "excelTipoId": 4, "excelNombre": "SUA" , "excelTipoPeriodo" : 1},
+        { "excelTipoId": 5, "excelNombre": "EMA" , "excelTipoPeriodo" : 1}]);
+        this.dataApi.cargarTipoPeriodo([{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },
+        { "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]);
+      }else{
+        this.dataApi.cargarTipoExcel([{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo" : 1 },
+        { "excelTipoId": 3, "excelNombre": "Template bimestral" , "excelTipoPeriodo" : 2},
+        { "excelTipoId": 4, "excelNombre": "SUA" , "excelTipoPeriodo" : 1},
+        { "excelTipoId": 6, "excelNombre": "EBA" , "excelTipoPeriodo" : 2}]);
+        this.dataApi.cargarTipoPeriodo([{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },
+        { "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]);
+      }
+      
     }
   }
 }

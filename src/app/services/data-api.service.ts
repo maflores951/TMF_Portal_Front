@@ -8,6 +8,8 @@ import { ConfiguracionSua } from '../models/Sua/configuracionSua';
 import { ConfiguracionSuaNivel } from '../models/Sua/configuracionSuaNivel';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
+import { TipoPeriodo } from '../models/TipoPeriodo';
+import { ExcelTipo } from '../models/Excel/ExcelTipo';
 
 const httpOption = {
   headers: new HttpHeaders({
@@ -113,6 +115,20 @@ export class DataApiService {
 
   validarEspera(modal: ConfiguracionSuaNivel[]) {
     this.cargarModalConfSubject.next(modal);
+  }
+
+  private cargarTipoExcelConfSubject = new Subject<ExcelTipo[]>();
+  cargarTipoExcelConfObservable = this.cargarTipoExcelConfSubject.asObservable();
+
+  cargarTipoExcel(modal: ExcelTipo[]) {
+    this.cargarTipoExcelConfSubject.next(modal);
+  }
+
+  private cargarTipoPeriodoConfSubject = new Subject<TipoPeriodo[]>();
+  cargarTipoPeriodoConfObservable = this.cargarTipoPeriodoConfSubject.asObservable();
+
+  cargarTipoPeriodo(modal: TipoPeriodo[]) {
+    this.cargarTipoPeriodoConfSubject.next(modal);
   }
 
   public SelectedconfiguracionSua: ConfiguracionSua = {

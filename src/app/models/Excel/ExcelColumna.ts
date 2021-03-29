@@ -2,13 +2,13 @@ import { SuaExcel } from "../Sua/SuaExcel";
 import { ExcelTipo } from "./ExcelTipo";
 
 export interface ExcelColumna {
-  excelColumnaId: number;
+  excelColumnaId?: number;
 
   excelColumnaNombre?: string;
 
-  excelTipoId: number;
+  excelTipoId?: number;
 
-  excelPosicion: number;
+  excelPosicion?: number;
 
   suaExcel?: SuaExcel[];
 }
