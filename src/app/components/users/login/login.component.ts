@@ -58,10 +58,10 @@ export class LoginComponent implements OnInit {
         type: 'required',
         message: 'El password es requerido'
       },
-      {
-        type: 'minlength',
-        message: 'El password debe de contener mínimo 8 caracteres'
-      },
+      // {
+      //   type: 'minlength',
+      //   message: 'El password debe de contener mínimo 8 caracteres'
+      // },
     ]
   }
 
@@ -73,8 +73,8 @@ export class LoginComponent implements OnInit {
         Validators.pattern(this.emailPattern)
         ]),
       PasswordLogin: new FormControl('',
-        [Validators.required,
-        Validators.minLength(8)
+        [Validators.required
+        // Validators.minLength(8)
         ]),
     });
   }

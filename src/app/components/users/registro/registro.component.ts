@@ -19,6 +19,7 @@ export class RegistroComponent implements OnInit {
   private emailPattern: any = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
   private nombrePattern: any = /^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$/;
   private telephonePattern: any = /^\d{10}$/g;
+  private regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)([A-Za-z\d]|[^ ]){8,15}$/;
   private file: File;
 
   constructor(private router: Router, public dataApi: DataApiService,private cifrado: CifradoDatosService, private spinner: SpinnerService, private toastr: ToastrService)
@@ -49,8 +50,8 @@ export class RegistroComponent implements OnInit {
       message: 'El password es requerido'
     },
     {
-      type: 'minlength',
-      message: 'El password debe de contener mínimo 8 caracteres'
+      type: 'pattern',
+      message: 'El password debe de tener mínimo 8 caracteres y máximo 15, contar con un digito, una letra mayúscula, una minúscula y no contar con espacios.'
     }
     ],
     'UsuarioNombre': [
@@ -133,7 +134,7 @@ export class RegistroComponent implements OnInit {
         []),
         Password: new FormControl('',
         [Validators.required,
-          Validators.minLength(8)]),
+          Validators.pattern(this.regex)]),
       UsuarioNombre: new FormControl('',
         [Validators.required,
         Validators.minLength(3),
@@ -192,7 +193,7 @@ export class RegistroComponent implements OnInit {
       this.file = event.target.files[0];
       const filePath = 'uploads/profile_${id}';
     }
-    console.log(this.file);
+    // console.log(this.file);
   }
 
   onUpload(e){

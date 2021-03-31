@@ -18,6 +18,7 @@ export class AsignarPassComponent implements OnInit {
   private email: string;
   private usuarioJson: string;
   private usuario: Usuario;
+  private regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)([A-Za-z\d]|[^ ]){8,15}$/;
 
   //Se recibe el token de seguridad y se descifra para obtener la información relacionada
   constructor(private router: Router, private dataApi: DataApiService, private toastr: ToastrService, private activatedRoute: ActivatedRoute, private cifrado: CifradoDatosService, private spinner: SpinnerService) {
@@ -54,9 +55,9 @@ export class AsignarPassComponent implements OnInit {
         message: 'La contraseña es requerida'
       },
       {
-        type: 'minlength',
-        message: 'La contraseña debe de contener mínimo 8 caracteres'
-      }
+      type: 'pattern',
+      message: 'El password debe de tener mínimo 8 caracteres y máximo 15, contar con un digito, una letra mayúscula, una minúscula y no contar con espacios.'
+    }
     ],
     'ConfirmLogin': [
       {
@@ -64,8 +65,8 @@ export class AsignarPassComponent implements OnInit {
         message: 'La confirmación es requerida'
       },
       {
-        type: 'minlength',
-        message: 'La confirmación debe de contener mínimo 8 caracteres'
+        type: 'pattern',
+        message: 'El password debe de tener mínimo 8 caracteres y máximo 15, contar con un digito, una letra mayúscula, una minúscula y no contar con espacios.'
       }
     ]
   }
@@ -75,11 +76,11 @@ export class AsignarPassComponent implements OnInit {
     return new FormGroup({
       PasswordLogin: new FormControl('',
         [Validators.required,
-        Validators.minLength(8)
+          Validators.pattern(this.regex)
         ]),
       ConfirmLogin: new FormControl('',
         [Validators.required,
-        Validators.minLength(8)
+          Validators.pattern(this.regex)
         ])
     });
   }

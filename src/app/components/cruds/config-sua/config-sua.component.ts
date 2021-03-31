@@ -90,7 +90,7 @@ export class ConfigSuaComponent implements OnInit {
       { "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]);
     
     } else {
-      console.log(JSON.stringify(configuracionSua));
+      // console.log(JSON.stringify(configuracionSua));
      
       this.dataApi.SelectedconfiguracionSua = Object.assign({}, configuracionSua);
       this.dataApi.validarEspera(configuracionSua.configuracionSuaNivel);

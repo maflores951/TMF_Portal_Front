@@ -78,7 +78,7 @@ export class DataApiService {
     this.url = this.urlBase + this.servicePrefix + controller;
     this.http.delete<Response>(this.url + '/' + id.toString(), httpOption)
       .subscribe(result => {
-        console.log(result);
+        // console.log(result);
       }, error => {
         this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
           timeOut: 3000

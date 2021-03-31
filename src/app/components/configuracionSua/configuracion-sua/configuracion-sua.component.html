@@ -34,18 +34,18 @@
             </div>
           </div>
 
-          <div class="form-group required">
+          <div class="form-group required"
+            *ngIf="this.dataApi.SelectedconfiguracionSua.configuracionSuaId == null; else noOwner">
             <label for="periodoTipoId" class="col-form-label">Tipo de periodo:</label>
 
-            <select id="selectPeriodo" name="periodoTipoId" class="form-control"
-              formControlName="periodoTipoId" [(ngModel)]="selectPeriodo" (change)="tipoPeriodo()">
+            <select id="selectPeriodo" name="periodoTipoId" class="form-control" formControlName="periodoTipoId"
+              [(ngModel)]="selectPeriodo" (change)="tipoPeriodo()" >
 
               <option *ngFor="let periodoTipo of periodoTipos; let index = index" [ngValue]="periodoTipo">
                 {{periodoTipo.tipoPeriodoNombre}}</option>
             </select>
 
-            <div class="alert-danger"
-              *ngIf="periodoTipoId.invalid && (periodoTipoId.dirty || periodoTipoId.touched)">
+            <div class="alert-danger" *ngIf="periodoTipoId.invalid && (periodoTipoId.dirty || periodoTipoId.touched)">
 
               <div *ngFor="let validation of user_validation_messages.periodoTipoId">
                 <div style="font-size: smaller !important;"
@@ -55,6 +55,29 @@
               </div>
             </div>
           </div>
+
+          <ng-template #noOwner>
+            <div class="form-group required">
+              <label for="periodoTipoId" class="col-form-label">Tipo de periodo:</label>
+
+              <select disabled="disabled" id="selectPeriodo" name="periodoTipoId" class="form-control" formControlName="periodoTipoId"
+                [(ngModel)]="selectPeriodo" (change)="tipoPeriodo()">
+
+                <option *ngFor="let periodoTipo of periodoTipos; let index = index" [ngValue]="periodoTipo">
+                  {{periodoTipo.tipoPeriodoNombre}}</option>
+              </select>
+
+              <div class="alert-danger" *ngIf="periodoTipoId.invalid && (periodoTipoId.dirty || periodoTipoId.touched)">
+
+                <div *ngFor="let validation of user_validation_messages.periodoTipoId">
+                  <div style="font-size: smaller !important;"
+                    *ngIf="configSuaForm.get('periodoTipoId').hasError(validation.type) && (configSuaForm.get('periodoTipoId').dirty || configSuaForm.get('periodoTipoId').touched)">
+                    {{validation.message}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
         </form>
 
         <div class="card_book">
@@ -100,8 +123,7 @@
                         {{excelTipo.excelNombre}}</option>
                     </select>
 
-                    <div class="alert-danger"
-                      *ngIf="excelTipoId.invalid && (excelTipoId.dirty || excelTipoId.touched)">
+                    <div class="alert-danger" *ngIf="excelTipoId.invalid && (excelTipoId.dirty || excelTipoId.touched)">
 
                       <div *ngFor="let validation of user_validation_messages.excelTipoId">
                         <div style="font-size: smaller !important;"

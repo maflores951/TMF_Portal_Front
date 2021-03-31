@@ -70,7 +70,7 @@ export class UsuariosComponent implements OnInit {
     const confirmacion = confirm('¿Quiere eliminar el registro?');
     if (confirmacion) {
       user.usuarioEstatusSesion = true;
-      console.log(JSON.stringify(user));
+      // console.log(JSON.stringify(user));
       this.dataApi.Put('/Usuarios', user.usuarioId, user)
 
       setTimeout(() => {

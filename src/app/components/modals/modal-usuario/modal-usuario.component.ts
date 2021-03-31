@@ -25,6 +25,7 @@ export class ModalUsuarioComponent implements OnInit {
   private emailPattern: any = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
   private nombrePattern: any = /^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$/;
   private telephonePattern: any = /^([0-9])*$/;
+  private regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)([A-Za-z\d]|[^ ]){8,15}$/;
   public usuario: Usuario;
 
   constructor(private router: Router, public dataApi: DataApiService, private cifrado: CifradoDatosService, private toastr: ToastrService, private spinner: SpinnerService, private authUserService: AuthUserService) {
@@ -55,9 +56,13 @@ export class ModalUsuarioComponent implements OnInit {
         type: 'required',
         message: 'El password es requerido'
       },
+      // {
+      //   type: 'minlength',
+      //   message: 'El password debe de contener mínimo 8 caracteres'
+      // },
       {
-        type: 'minlength',
-        message: 'El password debe de contener mínimo 8 caracteres'
+        type: 'pattern',
+        message: 'El password debe de tener mínimo 8 caracteres y máximo 15, contar con un digito, una letra mayúscula, una minúscula y no contar con espacios.'
       }
     ],
     'UsuarioNombre': [
@@ -126,7 +131,8 @@ export class ModalUsuarioComponent implements OnInit {
         []),
       Password: new FormControl('',
         [Validators.required,
-        Validators.minLength(8)]),
+        // Validators.minLength(8),
+        Validators.pattern(this.regex)]),
       UsuarioNombre: new FormControl('',
         [Validators.required,
         Validators.minLength(3),

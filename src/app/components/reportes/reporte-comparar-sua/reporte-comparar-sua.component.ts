@@ -7,6 +7,7 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
 import { AuthUserService } from 'src/app/services/auth-user.service';
 import { Usuario } from 'src/app/models/usuario';
+import { Response } from 'src/app/models/response';
 
 @Component({
   selector: 'app-reporte-comparar-sua',
@@ -109,11 +110,13 @@ export class ReporteCompararSuaComponent implements OnInit {
     UsuarioId: this.usuario.usuarioId
     }
 
-    console.log(JSON.stringify(parametros));
+    // console.log(JSON.stringify(parametros));
     this.dataApi.Post('/Sua/Excel', parametros).subscribe(result => {
      
      //Se recupera un string en base64 y se restaura a un archivo xlsx
-      var variable = result;
+      var variable : Response = result;
+      if (variable.exito == 1){
+
       //Se convierte a bytes
       const byteCharacters = atob(variable.data);
       const byteNumbers = new Array(byteCharacters.length);
@@ -129,6 +132,12 @@ export class ReporteCompararSuaComponent implements OnInit {
         timeOut: 3000
       });
       this.cambiarEstatusSpinner(false);
+    }else{
+      this.cambiarEstatusSpinner(false);
+       this.toastr.error('No existen datos para comparar.', 'Error', {
+        timeOut: 3000
+      });
+    }
     }, error => {
        this.cambiarEstatusSpinner(false);
        this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {

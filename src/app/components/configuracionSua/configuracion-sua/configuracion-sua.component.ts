@@ -36,7 +36,7 @@ export class ConfiguracionSuaComponent implements OnInit {
   @ViewChild('btnClose', { static: false }) btnClose: ElementRef;
   @Input() userUid: number;
 
- 
+
   //Variables necesarias para cargar información
   public configuracionSua: ConfiguracionSua;
   public configuracionSuaNivel: ConfiguracionSuaNivel[];
@@ -60,23 +60,23 @@ export class ConfiguracionSuaComponent implements OnInit {
   public excelListFiltro: ExcelColumna[];
 
   //Lista de los tipos de periodos
-  public periodoTipos : TipoPeriodo[] = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },
+  public periodoTipos: TipoPeriodo[] = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },
   { "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }];
 
   //Inicio del filtro
   public selectPeriodo = this.periodoTipos[0];
 
   //Función para lansar el mensaje con las instrucciones para utilizar el sistema
-public Ayuda(){
-  Swal.fire({
-    title: "Combinar columnas",
-    html: "Para poder comparar un conjunto de columnas del mismo archivo, se deben agregar dentro del mismo nivel:<p>-Las columnas numéricas se suman y el resultado es el que se compara.</p>  <p>-Las columnas con caracteres se concatenan agregando un espacio entre cada palabra.</p> <p>-Para realizar una comparación especial se debe de seleccionar el tipo de archivo “Comparativo Especial” y seleccionar la columna que contenga el comparativo que necesitemos.</p>",
-    confirmButtonText: `Salir`,
-    icon: 'info'
-  })
-}
+  public Ayuda() {
+    Swal.fire({
+      title: "Combinar columnas",
+      html: "Para poder comparar un conjunto de columnas del mismo archivo, se deben agregar dentro del mismo nivel:<p>-Las columnas numéricas se suman y el resultado es el que se compara.</p>  <p>-Las columnas con caracteres se concatenan agregando un espacio entre cada palabra.</p> <p>-Para realizar una comparación especial se debe de seleccionar el tipo de archivo “Comparativo Especial” y seleccionar la columna que contenga el comparativo que necesitemos.</p>",
+      confirmButtonText: `Salir`,
+      icon: 'info'
+    })
+  }
 
-//Propiedades para validar los formularios reactivos 
+  //Propiedades para validar los formularios reactivos 
   get configuracionSuaId() { return this.configSuaForm.get('configuracionSuaId'); }
   get periodoTipoId() { return this.configSuaForm.get('periodoTipoId'); }
   get confSuaNombre() { return this.configSuaForm.get('confSuaNombre'); }
@@ -85,42 +85,46 @@ public Ayuda(){
   get excelColumnaId() { return this.suaExcelForm.get('excelColumnaId'); }
 
   //Arreglo con los tipos de excel mensual
-  public excelTiposMensual: ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo" : 1 },
-  { "excelTipoId": 2, "excelNombre": "Template", "excelTipoPeriodo" : 1 },
-  { "excelTipoId": 4, "excelNombre": "SUA" , "excelTipoPeriodo" : 1},
-  { "excelTipoId": 5, "excelNombre": "EMA" , "excelTipoPeriodo" : 1}];
+  public excelTiposMensual: ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 2, "excelNombre": "Template", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 4, "excelNombre": "SUA", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 5, "excelNombre": "EMA", "excelTipoPeriodo": 1 }];
 
-   //Arreglo con los tipos de excel bimestral
-   public excelTiposBimestral: ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo" : 1 },
-   { "excelTipoId": 3, "excelNombre": "Template bimestral" , "excelTipoPeriodo" : 2},
-   { "excelTipoId": 4, "excelNombre": "SUA" , "excelTipoPeriodo" : 1},
-   { "excelTipoId": 6, "excelNombre": "EBA" , "excelTipoPeriodo" : 2}];
+  //Arreglo con los tipos de excel bimestral
+  public excelTiposBimestral: ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 3, "excelNombre": "Template bimestral", "excelTipoPeriodo": 2 },
+  { "excelTipoId": 4, "excelNombre": "SUA", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 6, "excelNombre": "EBA", "excelTipoPeriodo": 2 }];
 
-   public excelTipos : ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo" : 1 },
-   { "excelTipoId": 2, "excelNombre": "Template", "excelTipoPeriodo" : 1 },
-   { "excelTipoId": 4, "excelNombre": "SUA" , "excelTipoPeriodo" : 1},
-   { "excelTipoId": 5, "excelNombre": "EMA" , "excelTipoPeriodo" : 1}];
+  public excelTipos: ExcelTipo[] = [{ "excelTipoId": 1, "excelNombre": "Comparativo Especial", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 2, "excelNombre": "Template", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 4, "excelNombre": "SUA", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 5, "excelNombre": "EMA", "excelTipoPeriodo": 1 }];
 
   public keyword = 'excelColumnaNombre';
   //Funcion que recupera  las columnas de los excel de forma ordenada
   getListExcelColumna() {
     this.dataApi.GetList('/ExcelColumnas').subscribe(excelList => {
-      this.excelListFiltro = excelList.sort((a, b) => { if (a.excelColumnaNombre < b.excelColumnaNombre) {
-        return -1;
-      }
-      if (a.excelColumnaNombre > b.excelColumnaNombre) {
-        return 1;
-      }
-      // a debe ser igual b
-      return 0;});
-      this.excelList = excelList.sort((a, b) => { if (a.excelColumnaNombre < b.excelColumnaNombre) {
-        return -1;
-      }
-      if (a.excelColumnaNombre > b.excelColumnaNombre) {
-        return 1;
-      }
-      // a debe ser igual b
-      return 0;});
+      this.excelListFiltro = excelList.sort((a, b) => {
+        if (a.excelColumnaNombre < b.excelColumnaNombre) {
+          return -1;
+        }
+        if (a.excelColumnaNombre > b.excelColumnaNombre) {
+          return 1;
+        }
+        // a debe ser igual b
+        return 0;
+      });
+      this.excelList = excelList.sort((a, b) => {
+        if (a.excelColumnaNombre < b.excelColumnaNombre) {
+          return -1;
+        }
+        if (a.excelColumnaNombre > b.excelColumnaNombre) {
+          return 1;
+        }
+        // a debe ser igual b
+        return 0;
+      });
       this.capturar();
     }, error => {
       console.error(error);
@@ -179,7 +183,7 @@ public Ayuda(){
         [Validators.required,
         Validators.minLength(3)
         ]),
-        periodoTipoId: new FormControl('',
+      periodoTipoId: new FormControl('',
         [Validators.required
         ]),
       configuracionSuaId: new FormControl('',)
@@ -205,7 +209,7 @@ public Ayuda(){
     });
   }
 
-//Inicio de los filtros de busqueda y en caso de ser una actualización se recuperan los niveles
+  //Inicio de los filtros de busqueda y en caso de ser una actualización se recuperan los niveles
   ngOnInit(): void {
     this.dataApi.cargarModalConfObservable.subscribe(response => {
       //  console.log(JSON.stringify(response) + " *****");
@@ -221,18 +225,18 @@ public Ayuda(){
       //  console.log(JSON.stringify(response) + " *****");
       this.periodoTipos = response;
 
-      console.log("Entra **** " + this.dataApi.SelectedconfiguracionSua.configuracionSuaTipo);
-      
-      if(this.dataApi.SelectedconfiguracionSua.configuracionSuaTipo == 1){
-        this.selectPeriodo =  this.periodoTipos[0];
-      }else if(this.dataApi.SelectedconfiguracionSua.configuracionSuaTipo == 2){
-        this.selectPeriodo =  this.periodoTipos[1];
-      }else{
-        this.selectPeriodo =  this.periodoTipos[0];
+      // console.log("Entra **** " + this.dataApi.SelectedconfiguracionSua.configuracionSuaTipo);
+
+      if (this.dataApi.SelectedconfiguracionSua.configuracionSuaTipo == 1) {
+        this.selectPeriodo = this.periodoTipos[0];
+      } else if (this.dataApi.SelectedconfiguracionSua.configuracionSuaTipo == 2) {
+        this.selectPeriodo = this.periodoTipos[1];
+      } else {
+        this.selectPeriodo = this.periodoTipos[0];
       }
     });
 
-   
+
     // if (this.dataApi.SelectedconfiguracionSua.confSuaNombre)
     // this.selectPeriodo =  this.periodoTipos[0];
     this.opcionSeleccionado = this.excelTipos[0];
@@ -243,7 +247,7 @@ public Ayuda(){
   public ngExcelColumna: string;
   public ngSuaNNombre: string;
 
-//Función para filtrar las columnas segun el tipo de archivo seleccionado
+  //Función para filtrar las columnas segun el tipo de archivo seleccionado
   capturar() {
     this.excelList = this.excelListFiltro.filter(excelTipo => {
       if (excelTipo.excelTipoId === this.opcionSeleccionado.excelTipoId) {
@@ -256,92 +260,132 @@ public Ayuda(){
 
   //Función para determinar el tipo de comparativo
   tipoPeriodo() {
-    if (this.selectPeriodo.tipoPeriodoId == 1){
-      this.excelTipos = this.excelTiposMensual;
-    }else{
-      this.excelTipos = this.excelTiposBimestral;
+    if (this.configuracionSuaNivel.length > 0) {
+
+      Swal.fire({
+        title: 'Si cambia el tipo de periodo se borrarán los niveles registrados ¿Está seguro de realizar el cambio?',
+        confirmButtonText: `Continuar`,
+        denyButtonText: `Cancelar`,
+        showDenyButton: true,
+        icon: 'question'
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+          if (this.selectPeriodo.tipoPeriodoId == 1) {
+            this.excelTipos = this.excelTiposMensual;
+          } else {
+            this.excelTipos = this.excelTiposBimestral;
+          }
+
+          this.suaExcelForm.reset();
+          // this.configSuaForm.reset();
+          this.configSuaNivelForm.reset();
+          this.suaExcel = [];
+          this.configuracionSuaNivel = [];
+          this.ngSuaNNombre = "";
+          this.confSuaNEstatus = false;
+          this.confSuaNPosicion = 0;
+          // this.ngExcelColumna = "";
+        }else{
+          if (this.selectPeriodo.tipoPeriodoId == 1) {
+            this.selectPeriodo = this.periodoTipos[1];
+          } else {
+            this.selectPeriodo = this.periodoTipos[0];
+          }
+        }
+        // } else if (result.isDenied) {
+        //   Swal.fire('Carga de información cancelada', '', 'error')
+        //   this.cambiarEstatusSpinner(false);
+        // }
+      });
+
+    } else {
+        if (this.selectPeriodo.tipoPeriodoId == 1) {
+          this.excelTipos = this.excelTiposMensual;
+        } else {
+          this.excelTipos = this.excelTiposBimestral;
+        }
+
+        this.suaExcelForm.reset();
+        // this.configSuaForm.reset();
+        this.configSuaNivelForm.reset();
+        this.suaExcel = [];
+        this.configuracionSuaNivel = [];
+        this.ngSuaNNombre = "";
+        this.confSuaNEstatus = false;
+        this.confSuaNPosicion = 0;
+      }
     }
 
-    this.suaExcelForm.reset();
-    // this.configSuaForm.reset();
-    this.configSuaNivelForm.reset();
-    this.suaExcel = [];
-    this.configuracionSuaNivel = [];
-    this.ngSuaNNombre = "";
-    this.confSuaNEstatus = false;
-    this.confSuaNPosicion = 0;
-    // this.ngExcelColumna = "";
-  }
+    //Función para utilizar el spinner de carga 
+    cambiarEstatusSpinner(estatus: boolean) {
+      this.spinner.validarEspera(estatus);
+    }
 
-  //Función para utilizar el spinner de carga 
-  cambiarEstatusSpinner(estatus: boolean) {
-    this.spinner.validarEspera(estatus);
-  }
-
-  //Función para agreger las lineas de cada nivel
-  agregarLinea(formSua) {
-    if (this.suaExcelForm.valid) {
-      if (formSua.value.excelColumnaId.excelColumnaId >= 1) {
-        this.modelSuaExcel = {
-          ExcelTipoId: parseInt(formSua.value.excelTipoId.excelTipoId),
-          excelColumnaId: parseInt(formSua.value.excelColumnaId.excelColumnaId),
-          excelTipo: formSua.value.excelTipoId,
-          excelColumna: formSua.value.excelColumnaId
-        }
-        var bandera = false;
-        if (this.suaExcel.length === 0) {
-          this.suaExcel.push(this.modelSuaExcel);
-          this.ngExcelColumna = "";
-        } else {
-          for (var i = 0; i < this.suaExcel.length; i++) {
-            // if (this.suaExcel[i].excelTipoId == parseInt(formSua.value.excelTipoId.excelTipoId) &&
-              // this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
-                  if (this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
-              this.toastr.error('Esta columna ya fue registrada.', 'Error', {
-                timeOut: 3000
-              });
-              bandera = true;
-              break;
-            }
+    //Función para agreger las lineas de cada nivel
+    agregarLinea(formSua) {
+      if (this.suaExcelForm.valid) {
+        if (formSua.value.excelColumnaId.excelColumnaId >= 1) {
+          this.modelSuaExcel = {
+            ExcelTipoId: parseInt(formSua.value.excelTipoId.excelTipoId),
+            excelColumnaId: parseInt(formSua.value.excelColumnaId.excelColumnaId),
+            excelTipo: formSua.value.excelTipoId,
+            excelColumna: formSua.value.excelColumnaId
           }
-          if (bandera == false) {
+          var bandera = false;
+          if (this.suaExcel.length === 0) {
             this.suaExcel.push(this.modelSuaExcel);
             this.ngExcelColumna = "";
+          } else {
+            for (var i = 0; i < this.suaExcel.length; i++) {
+              // if (this.suaExcel[i].excelTipoId == parseInt(formSua.value.excelTipoId.excelTipoId) &&
+              // this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
+              if (this.suaExcel[i].excelColumnaId == parseInt(formSua.value.excelColumnaId.excelColumnaId)) {
+                this.toastr.error('Esta columna ya fue registrada.', 'Error', {
+                  timeOut: 3000
+                });
+                bandera = true;
+                break;
+              }
+            }
+            if (bandera == false) {
+              this.suaExcel.push(this.modelSuaExcel);
+              this.ngExcelColumna = "";
+            }
           }
+        } else {
+          this.toastr.error('La columna ingresada no esta registrada', 'Error', {
+            timeOut: 3000
+          });
+          bandera = true;
         }
       } else {
-        this.toastr.error('La columna ingresada no esta registrada', 'Error', {
+        this.toastr.error('Ingrese "Tipo de archivo" y "Nombre de la columna"', 'Error', {
           timeOut: 3000
         });
         bandera = true;
       }
-    } else {
-      this.toastr.error('Ingrese "Tipo de archivo" y "Nombre de la columna"', 'Error', {
-        timeOut: 3000
-      });
-      bandera = true;
     }
-  }
 
   //Funcion para  eliminar filas de cada nivel
  public quitarLinea(id) {
     this.suaExcel.splice(id, 1); // 1 es la cantidad de elemento a eliminar
   }
 
-//Variables para determinar si es un update o un insert
-public confSuaNEstatus : boolean = false;
-public confSuaNPosicion : number = 0; 
+  //Variables para determinar si es un update o un insert
+  public confSuaNEstatus: boolean = false;
+  public confSuaNPosicion: number = 0;
 
-//Función para actualizar niveles
+  //Función para actualizar niveles
   actualzarNivel(nivelSua: ConfiguracionSuaNivel, id) {
     this.suaExcel = [];
-    console.log("Entra "  + id);
+    // console.log("Entra " + id);
     for (var i = 0; i < nivelSua.suaExcel.length; i++) {
-        this.suaExcel.push( nivelSua.suaExcel[i]);
-      }
-      this.ngSuaNNombre = nivelSua.confSuaNNombre;
-      this.confSuaNEstatus = true;
-      this.confSuaNPosicion = id;
+      this.suaExcel.push(nivelSua.suaExcel[i]);
+    }
+    this.ngSuaNNombre = nivelSua.confSuaNNombre;
+    this.confSuaNEstatus = true;
+    this.confSuaNPosicion = id;
   }
 
   //Limpia un nivel y se prepara para un insert
@@ -361,7 +405,7 @@ public confSuaNPosicion : number = 0;
       suaExcel: suaExcelNivel
     }
 
-   
+
     if (this.configSuaNivelForm.valid) {
       if (this.configuracionSuaNivel.length <= 0) {
         if (this.suaExcel.length > 0) {
@@ -377,7 +421,7 @@ public confSuaNPosicion : number = 0;
           bandera = true;
         }
       } else {
-        if(this.confSuaNEstatus == true){
+        if (this.confSuaNEstatus == true) {
           this.configuracionSuaNivel.splice(this.confSuaNPosicion, 1);
           this.configuracionSuaNivel.splice(this.confSuaNPosicion, 0, this.modelSuaNivel);
           bandera = true;
@@ -385,17 +429,17 @@ public confSuaNPosicion : number = 0;
           this.ngSuaNNombre = "";
           this.confSuaNEstatus = false;
           this.confSuaNPosicion = 0;
-        }else{
-        for (var i = 0; i < this.configuracionSuaNivel.length; i++) {
+        } else {
+          for (var i = 0; i < this.configuracionSuaNivel.length; i++) {
             if (this.configuracionSuaNivel[i].confSuaNNombre == formSua.value.confSuaNNombre) {
               this.toastr.error('El nombre de este nivel ya existe.', 'Error', {
                 timeOut: 3000
               });
               bandera = true;
               break;
+            }
           }
         }
-      }
         if (bandera == false) {
           this.configuracionSuaNivel.push(this.modelSuaNivel);
           this.suaExcel = [];
@@ -417,10 +461,10 @@ public confSuaNPosicion : number = 0;
     this.configuracionSuaNivel.splice(id, 1); // 1 es la cantidad de elemento a eliminar
   }
 
-//Se valida y guarda toda la configuración
+  //Se valida y guarda toda la configuración
   guardarConfiguracion(formSua, formSuaNivel, formSuaExcel) {
-    console.log(JSON.stringify(this.configSuaForm.value));
-    console.log(this.configSuaForm.valid);
+    // console.log(JSON.stringify(this.configSuaForm.value));
+    // console.log(this.configSuaForm.valid);
     this.cambiarEstatusSpinner(true);
     if (this.configSuaForm.valid) {
       if (this.configuracionSuaNivel.length > 0) {
@@ -438,7 +482,7 @@ public confSuaNPosicion : number = 0;
                 this.Cerrar(formSua, formSuaNivel, formSuaExcel);
                 this.cambiarEstatusSpinner(false);
               } else {
-                this.cambiarEstatusSpinner(false); 
+                this.cambiarEstatusSpinner(false);
                 this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
                   timeOut: 3000
                 });
