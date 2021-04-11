@@ -92,6 +92,12 @@
             <div class="form-group required">
   
               
+                
+              
+            </div>
+  
+           
+              <div class="form-group required" *ngIf="this.dataApi.SelectedUsuario.usuarioId == null; else noOwner"> 
                 <label for="Email">Email</label>
                 <input type="email" name="Email" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.email" maxlength="100" placeholder="Ingresa tu email" formControlName="Email">
   
@@ -103,11 +109,7 @@
                     </div>
                   </div>
                 </div>
-              
-            </div>
-  
-           
-              <div class="form-group required" *ngIf="this.dataApi.SelectedUsuario.usuarioId == null; else noOwner"> 
+
                 <label for="Password">Password:</label>
                 <input type="password" name="Password" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.password" maxlength="50" formControlName="Password" placeholder="Ingresa tu password">
     
@@ -124,6 +126,18 @@
 
             <ng-template #noOwner>
               <div class="form-group required" > 
+                <label for="Email">Email</label>
+                <input type="email" name="Email" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.email" maxlength="100" placeholder="Ingresa tu email" formControlName="Email" readonly="readonly">
+  
+                <div class="alert-danger" *ngIf="Email.invalid && (Email.dirty || Email.touched)">
+  
+                  <div *ngFor="let validation of user_validation_messages.Email">
+                    <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('Email').hasError(validation.type) && (UsuarioForm.get('Email').dirty || UsuarioForm.get('Email').touched)">
+                      {{validation.message}}
+                    </div>
+                  </div>
+                </div>
+
                 <label for="Password">Password:</label>
                 <input type="password" name="Password" readonly="readonly" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.password" maxlength="50" formControlName="Password" placeholder="Ingresa tu password">
     

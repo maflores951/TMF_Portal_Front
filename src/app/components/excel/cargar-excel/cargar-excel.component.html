@@ -97,7 +97,7 @@
                     accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     #myInput>
                   <p></p>
-                  <div style="text-align: right;">
+                  <div style="text-align: right;" *ngIf="isAdmin || isSuper">
                     <button (click)="CargarColumnasExcel()" class="btn btn-primary">Cargar columnas</button>
                   </div>
                 </div>

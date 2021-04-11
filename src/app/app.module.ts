@@ -40,6 +40,8 @@ import { CargarExcelComponent } from './components/excel/cargar-excel/cargar-exc
 import { ReporteCompararSuaComponent } from './components/reportes/reporte-comparar-sua/reporte-comparar-sua.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { TooltipModule } from 'ng2-tooltip-directive';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+
 
 
 @NgModule({
@@ -85,7 +87,8 @@ import { TooltipModule } from 'ng2-tooltip-directive';
     MatInputModule,
     AutocompleteLibModule,
     MatTableExporterModule,
-    TooltipModule
+    TooltipModule,
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

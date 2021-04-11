@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const usuario = this.apiAuthService.usuarioData;
-    if (usuario.rolId == 1){
+    if (usuario.rolId == 4 || usuario.rolId == 3){
       return true;
     }
 

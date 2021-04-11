@@ -244,11 +244,25 @@ export class ModalUsuarioComponent implements OnInit {
           }
           this.UsuarioForm.value.RolId = parseInt(this.UsuarioForm.value.RolId);
           this.dataApi.Post('/Usuarios', this.UsuarioForm.value).subscribe(result => {
-            this.toastr.success('Registro exitoso.', 'Exito', {
-              timeOut: 3000
-            });
+            if(result.exito == 1){
+              this.toastr.success(result.mensaje, 'Exito', {
+                timeOut: 3000
+              });
+              this.cambiarEstatusSpinner(false);
+            formUsuario.resetForm();
+            this.UsuarioForm.reset();
+            UsuariosComponent.updateUsers.next(true);
+            NavbarComponent.updateUserStatus.next(true);
+            PerfilComponent.updateUsers.next(true);
+            this.btnClose.nativeElement.click();
+            }else{
+              this.toastr.error(result.mensaje, 'Error', {
+                timeOut: 3000
+              });
+            }
+
           }, error => {
-            this.toastr.error('Errores en el servidor intente más tarde.', 'Error', {
+            this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
               timeOut: 3000
             });
           });
@@ -276,46 +290,48 @@ export class ModalUsuarioComponent implements OnInit {
 
             this.user.imageBase64 = image.substr(buscaComa)
           }
+          this.UsuarioForm.value.Password = this.cifrado.encrypt(this.UsuarioForm.value.Password);
           this.UsuarioForm.value.RolId = parseInt(this.UsuarioForm.value.RolId);
           this.UsuarioForm.value.UsuarioEstatusSesion = false;
           this.dataApi.Put('/Usuarios', this.UsuarioForm.value.UsuarioId, this.UsuarioForm.value);
         }, 300)
-
+        setTimeout(() => {
+       
+          if (this.usuario.usuarioId == this.UsuarioForm.value.UsuarioId) {
+            this.dataApi.GetListId('/Usuarios', this.usuario.usuarioId).subscribe(result => {
+  
+              const usuario: Usuario = result;
+              usuario.usuarioToken = this.usuario.usuarioToken;
+              setTimeout(() => {
+                this.authUserService.actualizarLogin(usuario);
+              }, 500)
+              setTimeout(() => {
+                this.cambiarEstatusSpinner(false);
+                formUsuario.resetForm();
+                this.UsuarioForm.reset();
+                UsuariosComponent.updateUsers.next(true);
+                NavbarComponent.updateUserStatus.next(true);
+                PerfilComponent.updateUsers.next(true);
+                this.btnClose.nativeElement.click();
+              }, 1000)
+                , error => {
+                  this.toastr.error('Errores en el servidor intente más tarde.', 'Error', {
+                    timeOut: 3000
+                  });
+                };
+            });
+          } else {
+            this.cambiarEstatusSpinner(false);
+            formUsuario.resetForm();
+            this.UsuarioForm.reset();
+            UsuariosComponent.updateUsers.next(true);
+            NavbarComponent.updateUserStatus.next(true);
+            PerfilComponent.updateUsers.next(true);
+            this.btnClose.nativeElement.click();
+          }
+        }, 500);
       }
-      setTimeout(() => {
-        if (this.usuario.usuarioId == this.UsuarioForm.value.UsuarioId) {
-          this.dataApi.GetListId('/Usuarios', this.usuario.usuarioId).subscribe(result => {
-
-            const usuario: Usuario = result;
-            usuario.usuarioToken = this.usuario.usuarioToken;
-            setTimeout(() => {
-              this.authUserService.actualizarLogin(usuario);
-            }, 500)
-            setTimeout(() => {
-              this.cambiarEstatusSpinner(false);
-              formUsuario.resetForm();
-              this.UsuarioForm.reset();
-              UsuariosComponent.updateUsers.next(true);
-              NavbarComponent.updateUserStatus.next(true);
-              PerfilComponent.updateUsers.next(true);
-              this.btnClose.nativeElement.click();
-            }, 1000)
-              , error => {
-                this.toastr.error('Errores en el servidor intente más tarde.', 'Error', {
-                  timeOut: 3000
-                });
-              };
-          });
-        } else {
-          this.cambiarEstatusSpinner(false);
-          formUsuario.resetForm();
-          this.UsuarioForm.reset();
-          UsuariosComponent.updateUsers.next(true);
-          NavbarComponent.updateUserStatus.next(true);
-          PerfilComponent.updateUsers.next(true);
-          this.btnClose.nativeElement.click();
-        }
-      }, 500);
+     
 
 
     } else {

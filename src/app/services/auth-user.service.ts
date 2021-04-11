@@ -6,6 +6,7 @@ import { Response } from '../models/response';
 import { Usuario } from '../models/usuario';
 import { NavbarComponent } from '../components/navbar/navbar/navbar.component';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 
 const httpOption ={
@@ -31,7 +32,7 @@ export class AuthUserService {
         return this.usuarioSubject.value;
     }
 
-    constructor(private http: HttpClient){
+    constructor(private http: HttpClient, private router: Router){
       this.usuarioSubject =
       new BehaviorSubject<Usuario>(JSON.parse(sessionStorage.getItem('Usuario')));
     }
@@ -56,6 +57,7 @@ export class AuthUserService {
       sessionStorage.removeItem('Usuario');
       this.usuarioSubject.next(null);
       NavbarComponent.updateUserStatus.next(true);
+      this.router.navigate(['']);
     }
 
     actualizarLogin(usuario){

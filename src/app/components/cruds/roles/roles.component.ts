@@ -7,6 +7,7 @@ import { Usuario } from 'src/app/models/usuario';
 import { AuthUserService } from 'src/app/services/auth-user.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-roles',
@@ -67,16 +68,27 @@ export class RolesComponent implements OnInit {
   }
 
   onDeleteUserType(userType: Rol): void {
-    const confirmacion = confirm('¿Quiere eliminar el registro?');
-    if (confirmacion) {
-      userType.rolEstatus = true;
+    this.cambiarEstatusSpinner(true);
+    Swal.fire({
+      title: '¿Quiere eliminar el registro?',
+      confirmButtonText: `Continuar`,
+      denyButtonText: `Cancelar`,
+      showDenyButton: true,
+      icon: 'question',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        userType.rolEstatus = true;
       this.dataApi.Put('/Roles', userType.rolId, userType)
-
-      setTimeout(() => {
-        this.getListUserType();
-      }, 500);
-
-    }
+        this.cambiarEstatusSpinner(false);
+        setTimeout(() => {
+          this.getListUserType();
+        }, 500);
+      } else if (result.isDenied) {
+        Swal.fire('Carga de información cancelada', '', 'error')
+        this.cambiarEstatusSpinner(false);
+      }
+    })
   }
 
   onPreUpdateUserType(userType: Rol) {

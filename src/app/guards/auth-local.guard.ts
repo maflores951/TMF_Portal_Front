@@ -15,7 +15,7 @@ export class AuthLocalGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | 
       UrlTree {
         const usuario = this.apiAuthService.usuarioData;
-        if (usuario.rolId == 2 || usuario.rolId == 1){
+        if (usuario.rolId == 2 || usuario.rolId == 1 || usuario.rolId == 4){
           return true;
         }
            this.router.navigate(['']);

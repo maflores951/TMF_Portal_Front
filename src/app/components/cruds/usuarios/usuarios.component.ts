@@ -6,6 +6,7 @@ import { AuthUserService } from 'src/app/services/auth-user.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuarios',
@@ -67,17 +68,28 @@ export class UsuariosComponent implements OnInit {
   }
 
   onDeleteUser(user: Usuario): void {
-    const confirmacion = confirm('¿Quiere eliminar el registro?');
-    if (confirmacion) {
-      user.usuarioEstatusSesion = true;
-      // console.log(JSON.stringify(user));
-      this.dataApi.Put('/Usuarios', user.usuarioId, user)
-
-      setTimeout(() => {
-        this.getListUsers();
-      }, 500);
-
-    }
+    this.cambiarEstatusSpinner(true);
+    Swal.fire({
+      title: '¿Quiere eliminar el registro?',
+      confirmButtonText: `Continuar`,
+      denyButtonText: `Cancelar`,
+      showDenyButton: true,
+      icon: 'question',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        user.usuarioEstatusSesion = true;
+        // console.log(JSON.stringify(user));
+        this.dataApi.Put('/Usuarios', user.usuarioId, user)
+        this.cambiarEstatusSpinner(false);
+        setTimeout(() => {
+          this.getListUsers();
+        }, 500);
+      } else if (result.isDenied) {
+        Swal.fire('Carga de información cancelada', '', 'error')
+        this.cambiarEstatusSpinner(false);
+      }
+    })
   }
 
   onPreUpdateUser(user: Usuario) {

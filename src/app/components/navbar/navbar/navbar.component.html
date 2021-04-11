@@ -2,7 +2,7 @@
 
     <!-- <a class="navbar-brand"  routerLink="/">{{app_name}}</a> -->
     <!--<a class="navbar-brand " routerLink=""><img class="imgRedonda" src="https://media.licdn.com/dms/image/C4E0BAQGtTED2gCqfwA/company-logo_200_200/0?e=2159024400&v=beta&t=74WfkzA5dSIitR6XKT54Sjsl4uCzBg9WXVPiHGEgczQ"></a>-->
-    <a class="navbar-brand " routerLink=""><img class="imgRedonda" src="assets/TMF_Group_logo.gif"></a>
+    <a class="navbar-brand " routerLink=""><img class="imgRedonda" src="assets/TMF_Logo_Esp.png"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar"
             aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -10,26 +10,38 @@
   
     <div class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item" *ngIf="!isLogged">
+        <!-- <li class="nav-item" *ngIf="!isLogged">
           <a class="nav-link" routerLink="/user/registro">
             Nueva cuenta
           </a>
-        </li>
-        <li class="nav-item" *ngIf="isLogged">
+        </li> -->
+        <li class="nav-item" *ngIf="isLogged && (isAdmin || isLocal || isSuper)">
           <a class="nav-link">Reportes</a>
           <ul>
             <li><a routerLink="/reportes/reporteSua">Reportes</a></li>
-            <li *ngIf="isAdmin"><a routerLink="/configuracion/cargarDatos">Cargar datos</a></li>
+            <li *ngIf="(isAdmin || isLocal || isSuper)"><a routerLink="/configuracion/cargarDatos">Cargar datos</a></li>
           </ul>
         </li>
-        <li class="nav-item" *ngIf="isLogged && isAdmin">
+        <li class="nav-item" *ngIf="isLogged && (isIT || isSuper)">
           <a class="nav-link">Catálogos</a>
           <ul>
 
-            <li><a routerLink="/configuracion/catalogo-sua">Configuración SUA</a></li>
+            <!-- <li><a routerLink="/configuracion/catalogo-sua">Configuración SUA</a></li> -->
             <li><a routerLink="/catalogos/catalogo-parametros">Parametros</a></li>
             <li><a routerLink="/catalogos/catalogo-roles">Tipos de usuario</a></li>
             <li><a routerLink="/catalogos/catalogo-usuarios">Usuarios</a></li>
+
+          </ul>
+        </li>
+
+        <li class="nav-item" *ngIf="isLogged && (isAdmin || isSuper)">
+          <a class="nav-link">Configuración</a>
+          <ul>
+
+            <li><a routerLink="/configuracion/catalogo-sua">Configuración SUA</a></li>
+            <!-- <li><a routerLink="/catalogos/catalogo-parametros">Parametros</a></li>
+            <li><a routerLink="/catalogos/catalogo-roles">Tipos de usuario</a></li>
+            <li><a routerLink="/catalogos/catalogo-usuarios">Usuarios</a></li> -->
 
           </ul>
         </li>
@@ -48,5 +60,23 @@
         <img class="imgRedondaPerfil" src="{{foto}}">
         <span>{{email}}</span>
       </div>
+
+      <section>
+        <div class="coming-soon" *ngIf="isLogged">
+            <div class="time-countdown">
+                <ul>
+                    <li class="count-bg-four radius"><span id="minutes">{{minutes}}</span></li>
+                    <li class="count-bg-four radius"><span id="puntos">:</span></li>
+                    <li class="count-bg-four radius"><span id="seconds">{{seconds}}</span></li>
+                </ul>
+                <!-- <ul>
+                  <button (click)="onComenzar()">Comenzar</button>
+                </ul>
+                <ul>
+                  <button (click)="onDetener()">Detener</button>
+                </ul> -->
+            </div>
+        </div>
+    </section>
     </div>
   </nav>

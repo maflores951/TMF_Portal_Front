@@ -35,23 +35,15 @@
             <td>{{configuracionSua.configuracionSuaId}}</td>
             <td>{{configuracionSua.confSuaNombre}}</td>
             <!-- <td>{{configuracionSua.configuracionSuaTipo}}</td> -->
-            <td *ngIf="isAdmin == true; else noOwner">
+            <td >
               <button class="btn btn-primary" data-toggle="modal" data-target="#modalSUA" (click)="onPreUpdateSua(configuracionSua)">Actualizar</button>
             </td>
-            <ng-template #noOwner>
-              <td>
-                <button class="btn btn-secondary" disabled="true">Actualizar</button>
-              </td>
-            </ng-template>
+
   
-            <td *ngIf="isAdmin == true; else noAdmin">
+            <td >
               <button class="btn btn-danger" (click)="onDeleteSua(configuracionSua)">Eliminar</button>
             </td>
-            <ng-template #noAdmin>
-              <td>
-                <button class="btn btn-danger" disabled='true'>Eliminar</button>
-              </td>
-            </ng-template>
+            
           </tr>
         </tbody>
       </table>

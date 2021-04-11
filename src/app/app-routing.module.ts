@@ -22,12 +22,12 @@ const routes: Routes = [
   { path: 'user/login', component: LoginComponent },
   { path: 'user/RecuperaPass', component: RecuperarPassComponent },
   { path: 'user/AsignarPass/:token', component: AsignarPassComponent },
-  { path: 'user/registro', component: RegistroComponent },
+  // { path: 'user/registro', component: RegistroComponent },
   { path: 'catalogos/catalogo-parametros', component: ParametrosComponent, canActivate: [AuthGuard]},
   { path: 'catalogos/catalogo-usuarios', component: UsuariosComponent, canActivate: [AuthGuard] },
   { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthGuard] },
-  { path: 'configuracion/catalogo-sua', component: ConfigSuaComponent, canActivate: [AuthGuard] },
-  { path: 'configuracion/cargarDatos', component: CargarExcelComponent, canActivate: [AuthGuard] },
+  { path: 'configuracion/catalogo-sua', component: ConfigSuaComponent, canActivate: [AuthLocalGuard] },
+  { path: 'configuracion/cargarDatos', component: CargarExcelComponent, canActivate: [AuthLocalGuard] },
   { path: 'reportes/reporteSua', component: ReporteCompararSuaComponent, canActivate: [AuthLocalGuard] },
   { path: '**', component: Page404Component }
  

@@ -7,6 +7,7 @@ import { Response } from 'src/app/models/response';
 import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
 import { Usuario } from 'src/app/models/usuario';
 import { AuthUserService } from 'src/app/services/auth-user.service';
+import { CifradoDatosService } from 'src/app/services/cifrado-datos.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import Swal from 'sweetalert2';
@@ -31,8 +32,13 @@ export class CargarExcelComponent implements OnInit {
   // myInputEma: ElementRef;
 
   public usuario: Usuario;
+  public isAdmin: boolean = false;
+  public isIT: boolean = false;
+  public isLocal: boolean = false;
+  public isSuper: boolean = false;
+  private UserTypeId: number;
 
-  constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService, private apiAuthService: AuthUserService) {
+  constructor(public dataApi: DataApiService, private toastr: ToastrService, private spinner: SpinnerService, private apiAuthService: AuthUserService, private cifrado: CifradoDatosService) {
     this.empleadoColumnas = [];
     this.usuario = this.apiAuthService.usuarioData;
   }
@@ -107,11 +113,27 @@ export class CargarExcelComponent implements OnInit {
   public selectExcelTipos: ExcelTipo = this.excelTipos[0];//this.excelTipos[0];
 
   ngOnInit(): void {
+    this.getCurrentUser();
     //   this.selectExcelTipos = this.excelTipos[1];
     // console.log( JSON.stringify(this.selectExcelTipos) + " *** cargar excel");
   }
 
+  getCurrentUser() {
+    this.usuario = this.apiAuthService.usuarioData;
+      this.UserTypeId = this.usuario.rolId;
 
+      // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath.substr(1);
+      //  console.log('Entrar imagen 99 ' + this.usuario.imagePath.substr(1));
+      if (this.UserTypeId == 1) {
+        this.isAdmin = true;
+      } else if (this.UserTypeId == 2) {
+        this.isLocal = true
+      } else if (this.UserTypeId == 3) {
+        this.isIT = true
+      } else if (this.UserTypeId == 4) {
+        this.isSuper = true
+      }
+  }
 
   //Variables para indicar en donde comienzan los registros
   public indexTemplate: number;
@@ -317,13 +339,29 @@ export class CargarExcelComponent implements OnInit {
               } else {
                 var valor = element[indexValor];
               }
+              if (columnaNombres[indexValor] == "NSS" ||
+                columnaNombres[indexValor] == "Nombre" ||
+                columnaNombres[indexValor] == "No. S.S." ||
+                columnaNombres[indexValor] == "No. CR. INFONAVIT" ||
+                columnaNombres[indexValor] == "APELLIDO PATERNO" ||
+                columnaNombres[indexValor] == "APELLIDO MATERNO" ||
+                columnaNombres[indexValor] == "NOMBRE(S)" ||
+                columnaNombres[indexValor] == "RFC" ||
+                columnaNombres[indexValor] == "CURP" ||
+                columnaNombres[indexValor] == "RFC Trabajador" ||
+                columnaNombres[indexValor] == "Nombre Trabajador" ||
+                columnaNombres[indexValor] == "Número de Afiliación") {
+                var valorCifrado: string = this.cifrado.encrypt(valor);
+              } else {
+                var valorCifrado: string = valor;
+              }
               var empleadoColumna: EmpleadoColumna = {
                 empleadoColumnaMes: this.selectMes.mesId,
                 empleadoColumnaAnio: this.selectAnio.anioId,
-                empleadoColumnaValor: valor,//element[indexValor],
+                empleadoColumnaValor: valorCifrado,//valor,//element[indexValor],
                 excelColumnaNombre: columnaNombres[indexValor],
                 usuarioId: this.usuario.usuarioId,
-                empleadoColumnaNo: this.PadLeft(element[0].toString(), 11),
+                empleadoColumnaNo: this.cifrado.encrypt(this.PadLeft(element[0].toString(), 11)),
                 excelTipoId: excelTipoId
               }
               this.empleadoColumnas.push(empleadoColumna);
@@ -339,60 +377,127 @@ export class CargarExcelComponent implements OnInit {
 
 
 
-  public CargarDatos(index,json,columnaNombres,excelTipoId) {
-  this.cambiarEstatusSpinner(true);
-      if (json.length > 0) {
-        this.toastr.success('El excel es correcto y contiene información', 'Exito', {
-          timeOut: 3000
-        });
-        // if (this.selectPeriodo.tipoPeriodoId == 1) {
-        var validaEmpleadoColumna: EmpleadoColumna = {
-          empleadoColumnaMes: this.selectMes.mesId,
-          empleadoColumnaAnio: this.selectAnio.anioId,
-          usuarioId: this.usuario.usuarioId,
-          excelTipoId: excelTipoId
-        }
-        // } else {
-        //   var validaEmpleadoColumna: EmpleadoColumna = {
-        //     empleadoColumnaMes: this.selectMes.mesId,
-        //     empleadoColumnaAnio: this.selectAnio.anioId,
-        //     usuarioId: this.usuario.usuarioId,
-        //     excelTipoId: 3
-        //   }
-        // }
+  public CargarDatos(index, json, columnaNombres, excelTipoId) {
+    this.cambiarEstatusSpinner(true);
+    if (json.length > 0) {
+      this.toastr.success('El excel es correcto y contiene información', 'Exito', {
+        timeOut: 3000
+      });
+      // if (this.selectPeriodo.tipoPeriodoId == 1) {
+      var validaEmpleadoColumna: EmpleadoColumna = {
+        empleadoColumnaMes: this.selectMes.mesId,
+        empleadoColumnaAnio: this.selectAnio.anioId,
+        usuarioId: this.usuario.usuarioId,
+        excelTipoId: excelTipoId
+      }
+      // } else {
+      //   var validaEmpleadoColumna: EmpleadoColumna = {
+      //     empleadoColumnaMes: this.selectMes.mesId,
+      //     empleadoColumnaAnio: this.selectAnio.anioId,
+      //     usuarioId: this.usuario.usuarioId,
+      //     excelTipoId: 3
+      //   }
+      // }
 
-        //Se raliza la actualizaión en la base de datos
-        this.dataApi.Post('/EmpleadoColumnas/ValidarColumnas', validaEmpleadoColumna).subscribe(result => {
-          if (result.exito == 0) {
-            this.CrearEmpleadoColumnas(index, json, columnaNombres, excelTipoId);
-            // this.CrearEmpleadoColumnas(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
-            // this.CrearEmpleadoColumnas(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
-             var tiempo = 10000;
-            // setTimeout(() => { 
+      //Se raliza la actualizaión en la base de datos
+      this.dataApi.Post('/EmpleadoColumnas/ValidarColumnas', validaEmpleadoColumna).subscribe(result => {
+        if (result.exito == 0) {
+          this.CrearEmpleadoColumnas(index, json, columnaNombres, excelTipoId);
+          // this.CrearEmpleadoColumnas(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
+          // this.CrearEmpleadoColumnas(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
+          var tiempo = 10000;
+          // setTimeout(() => { 
 
-              this.dataApi.Post('/EmpleadoColumnas', this.empleadoColumnas).subscribe(result => {
-                var respuestaUdp: Response = result;
-                // if (respuestaUdp.exito == 1) {
+          this.dataApi.Post('/EmpleadoColumnas', this.empleadoColumnas).subscribe(result => {
+            var respuestaUdp: Response = result;
+            // if (respuestaUdp.exito == 1) {
+            this.cambiarEstatusSpinner(false);
+            this.myInput.nativeElement.value = '';
+            // this.myInputSua.nativeElement.value = '';
+            // this.myInputEma.nativeElement.value = '';
+            this.temporalJson = [];
+            this.suaJson = [];
+            this.emaJson = [];
+            this.empleadoColumnas = [];
+            this.excelTipoIdSua = 0;
+            this.excelTipoIdTemplate = 0;
+            this.excelTipoIdEma = 0;
+            this.toastr.success('Datos registrados con exito', 'Exito', {
+              timeOut: 3000
+            });
+            // } else {
+            //   this.cambiarEstatusSpinner(false);
+            //   this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+            //     timeOut: 3000
+            //   });
+            // }
+          }, error => {
+            this.cambiarEstatusSpinner(false);
+            this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+              timeOut: 3000
+            });
+          });
+
+          // }, 5000);
+        } else {
+          Swal.fire({
+            title: 'Ya existe registro de columnas para este periodo, si continua las columnas se actualizarán, ¿Quiere continuar?',
+
+            confirmButtonText: `Continuar`,
+            denyButtonText: `Cancelar`,
+            showDenyButton: true,
+            icon: 'question',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.dataApi.Post('/EmpleadoColumnas/EliminarColumnas', validaEmpleadoColumna).subscribe(result => {
+
+                var respuestaDel: Response = result;
+                if (respuestaDel.exito == 1) {
+                  this.CrearEmpleadoColumnas(index, json, columnaNombres, excelTipoId);
+                  // this.CrearEmpleadoColumnas(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
+                  // this.CrearEmpleadoColumnas(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
+                  var tiempo = 10000;
+                  // setTimeout(() => {
+
+                  this.dataApi.Post('/EmpleadoColumnas', this.empleadoColumnas).subscribe(resultUdp => {
+                    var respuestaUdp: Response = resultUdp;
+                    // console.log("Entra al UDP *******");
+                    if (respuestaUdp.exito == 1) {
+                      // console.log(JSON.stringify(respuestaUdp) + " Entra ******");
+                      this.cambiarEstatusSpinner(false);
+                      this.myInput.nativeElement.value = '';
+                      // this.myInputSua.nativeElement.value = '';
+                      // this.myInputEma.nativeElement.value = '';
+                      this.temporalJson = [];
+                      this.suaJson = [];
+                      this.emaJson = [];
+                      this.empleadoColumnas = [];
+                      this.excelTipoIdSua = 0;
+                      this.excelTipoIdTemplate = 0;
+                      this.excelTipoIdEma = 0;
+                      this.toastr.success('Datos registrados con exito', 'Exito', {
+                        timeOut: 5000
+                      });
+                    } else {
+                      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+                        timeOut: 3000
+                      });
+                    }
+
+                  }, error => {
+                    this.cambiarEstatusSpinner(false);
+                    this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
+                      timeOut: 3000
+                    });
+                  });
+                  // }, 5000);
+                } else {
                   this.cambiarEstatusSpinner(false);
-                  this.myInput.nativeElement.value = '';
-                  // this.myInputSua.nativeElement.value = '';
-                  // this.myInputEma.nativeElement.value = '';
-                  this.temporalJson = [];
-                  this.suaJson = [];
-                  this.emaJson = [];
-                  this.empleadoColumnas = [];
-                  this.excelTipoIdSua = 0;
-                  this.excelTipoIdTemplate = 0;
-                  this.excelTipoIdEma = 0;
-                  this.toastr.success('Datos registrados con exito', 'Exito', {
+                  this.toastr.success('Error en el servidor, contacte al administrador del sistema.', 'Exito', {
                     timeOut: 3000
                   });
-                // } else {
-                //   this.cambiarEstatusSpinner(false);
-                //   this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
-                //     timeOut: 3000
-                //   });
-                // }
+                }
               }, error => {
                 this.cambiarEstatusSpinner(false);
                 this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
@@ -400,394 +505,333 @@ export class CargarExcelComponent implements OnInit {
                 });
               });
 
-            // }, 5000);
-          } else {
-            Swal.fire({
-              title: 'Ya existe registro de columnas para este periodo, si continua las columnas se actualizarán, ¿Quiere continuar?',
-             
-              confirmButtonText: `Continuar`,
-              denyButtonText: `Cancelar`,
-              showDenyButton: true,
-              icon: 'question'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.dataApi.Post('/EmpleadoColumnas/EliminarColumnas', validaEmpleadoColumna).subscribe(result => {
-                 
-                  var respuestaDel: Response = result;
-                  if (respuestaDel.exito == 1) {
-                    this.CrearEmpleadoColumnas(index, json, columnaNombres, excelTipoId);
-                    // this.CrearEmpleadoColumnas(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
-                    // this.CrearEmpleadoColumnas(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
-                    var tiempo = 10000;
-                    // setTimeout(() => {
+            } else if (result.isDenied) {
+              Swal.fire('Carga de información cancelada', '', 'error')
+              this.cambiarEstatusSpinner(false);
+            }
+          })
 
-                      this.dataApi.Post('/EmpleadoColumnas', this.empleadoColumnas).subscribe(resultUdp => {
-                        var respuestaUdp: Response = resultUdp;
-                        // console.log("Entra al UDP *******");
-                        if (respuestaUdp.exito == 1) {
-                          // console.log(JSON.stringify(respuestaUdp) + " Entra ******");
-                          this.cambiarEstatusSpinner(false);
-                          this.myInput.nativeElement.value = '';
-                          // this.myInputSua.nativeElement.value = '';
-                          // this.myInputEma.nativeElement.value = '';
-                          this.temporalJson = [];
-                          this.suaJson = [];
-                          this.emaJson = [];
-                          this.empleadoColumnas = [];
-                          this.excelTipoIdSua = 0;
-                          this.excelTipoIdTemplate = 0;
-                          this.excelTipoIdEma = 0;
-                          this.toastr.success('Datos registrados con exito', 'Exito', {
-                            timeOut: 5000
-                          });
-                        } else {
-                          this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
-                            timeOut: 3000
-                          });
-                        }
-
-                      }, error => {
-                        this.cambiarEstatusSpinner(false);
-                        this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
-                          timeOut: 3000
-                        });
-                      });
-                    // }, 5000);
-                  } else {
-                    this.cambiarEstatusSpinner(false);
-                    this.toastr.success('Error en el servidor, contacte al administrador del sistema.', 'Exito', {
-                      timeOut: 3000
-                    });
-                  }
-                }, error => {
-                  this.cambiarEstatusSpinner(false);
-                  this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
-                    timeOut: 3000
-                  });
-                });
-
-              } else if (result.isDenied) {
-                Swal.fire('Carga de información cancelada', '', 'error')
-                this.cambiarEstatusSpinner(false);
-              }
-            })
-
-          }
-        });
-      } else {
-        this.cambiarEstatusSpinner(false);
-        this.toastr.error('Debe de cargar el excel', 'Error', {
-          timeOut: 3000
-        });
-      }
-}
-
-public CargarDatosExcel() {
-  switch (this.selectExcelTipos.excelTipoId) {
-    case 2:
-      this.CargarDatos(this.indexTemplate, this.temporalJson, this.columnaNombresTemplate, this.excelTipoIdTemplate);
-      break;
-    case 3:
-      this.CargarDatos(this.indexTemplate, this.temporalJson, this.columnaNombresTemplate, this.excelTipoIdTemplate);
-      break;
-    case 4:
-      this.CargarDatos(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
-      break;
-    case 5:
-      this.CargarDatos(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
-      break;
-    case 6:
-      this.CargarDatos(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
-      break;
-    default:
-      console.log("Error ");
-      break;
+        }
+      });
+    } else {
+      this.cambiarEstatusSpinner(false);
+      this.toastr.error('Debe de cargar el excel', 'Error', {
+        timeOut: 3000
+      });
+    }
   }
-}
+
+  public CargarDatosExcel() {
+    switch (this.selectExcelTipos.excelTipoId) {
+      case 2:
+        this.CargarDatos(this.indexTemplate, this.temporalJson, this.columnaNombresTemplate, this.excelTipoIdTemplate);
+        break;
+      case 3:
+        this.CargarDatos(this.indexTemplate, this.temporalJson, this.columnaNombresTemplate, this.excelTipoIdTemplate);
+        break;
+      case 4:
+        this.CargarDatos(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
+        break;
+      case 5:
+        this.CargarDatos(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
+        break;
+      case 6:
+        this.CargarDatos(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
+        break;
+      default:
+        console.log("Error ");
+        break;
+    }
+  }
 
 
   //Función para cargar los nombres de las columnas por cada excel
   public CargarColumnas(columnas, excelTipo) {
-  var excelColumna : ExcelColumna = {};
-  for (let index = 0; index < columnas.length; index++) {
-    const element = columnas[index];
-    excelColumna = {
-      excelColumnaNombre: element,
-      excelTipoId: excelTipo,
-      excelPosicion: index
+    var excelColumna: ExcelColumna = {};
+    for (let index = 0; index < columnas.length; index++) {
+      const element = columnas[index];
+      excelColumna = {
+        excelColumnaNombre: element,
+        excelTipoId: excelTipo,
+        excelPosicion: index
+      }
+      this.dataApi.Post('/ExcelColumnas', excelColumna).subscribe(result => {
+        this.toastr.success('Datos registrados con exito', 'Exito', {
+          timeOut: 3000
+        });
+      }, error => {
+        this.toastr.error('Columna ya registrada: ' + columnas[index], 'Error', {
+          timeOut: 3000
+        });
+      });
     }
-    this.dataApi.Post('/ExcelColumnas', excelColumna).subscribe(result => {
-      this.toastr.success('Datos registrados con exito', 'Exito', {
-        timeOut: 3000
-      });
-    }, error => {
-      this.toastr.error('Columna ya registrada: ' + columnas[index], 'Error', {
-        timeOut: 3000
-      });
-    });
-  }
 
-}
+  }
 
 
 
   //Se valida que las columnas en los excel sean correctas 
   public ValidarArregloColumnas(jsonExcel, excelTipo) {
-  for (let index = 0; index < jsonExcel.length; index++) {
-    const element = jsonExcel[index];
-    if (excelTipo == 4) {
-      if (element.length > 7) {
-        if (element[0] == "Número de Afiliación") {
-          this.indexSua = index;
-          this.columnaNombresSua = element;
-          break;
-        } else {
-          this.toastr.error('El archivo "SUA" debe de comensar con la columna "Número de Afiliación"', 'Error', {
-            timeOut: 3000
-          });
-          this.myInput.nativeElement.value = '';
-          this.suaJson = [];
-        }
-      }
-    } else {
-      if (element.length > 1) {
-        if (excelTipo == 2 || excelTipo == 3) {
-          if (element[0] == "No. S.S.") {
-            this.indexTemplate = index;
-            this.columnaNombresTemplate = element;
+    for (let index = 0; index < jsonExcel.length; index++) {
+      const element = jsonExcel[index];
+      if (excelTipo == 4) {
+        if (element.length > 7) {
+          if (element[0] == "Número de Afiliación") {
+            this.indexSua = index;
+            this.columnaNombresSua = element;
             break;
           } else {
-            this.toastr.error('El archivo "Template" debe de comensar con la columna "No. S.S."', 'Error', {
+            this.toastr.error('El archivo "SUA" debe de comensar con la columna "Número de Afiliación"', 'Error', {
               timeOut: 3000
             });
             this.myInput.nativeElement.value = '';
-            this.temporalJson = [];
-            break;
+            this.suaJson = [];
           }
-        } else {
-          if (element[0] == "NSS") {
-            this.indexEma = index;
-            this.columnaNombresEma = element;
-            break;
+        }
+      } else {
+        if (element.length > 1) {
+          if (excelTipo == 2 || excelTipo == 3) {
+            if (element[0] == "No. S.S.") {
+              this.indexTemplate = index;
+              this.columnaNombresTemplate = element;
+              break;
+            } else {
+              this.toastr.error('El archivo "Template" debe de comensar con la columna "No. S.S."', 'Error', {
+                timeOut: 3000
+              });
+              this.myInput.nativeElement.value = '';
+              this.temporalJson = [];
+              break;
+            }
           } else {
-            this.toastr.error('El archivo "EMA" o "EBA" debe de comensar con la columna "NSS"', 'Error', {
-              timeOut: 3000
-            });
-            this.myInput.nativeElement.value = '';
-            this.emaJson = [];
-            break;
+            if (element[0] == "NSS") {
+              this.indexEma = index;
+              this.columnaNombresEma = element;
+              break;
+            } else {
+              this.toastr.error('El archivo "EMA" o "EBA" debe de comensar con la columna "NSS"', 'Error', {
+                timeOut: 3000
+              });
+              this.myInput.nativeElement.value = '';
+              this.emaJson = [];
+              break;
+            }
           }
         }
       }
     }
   }
-}
 
   //Se agregan las columnas del Template en la base de datos
   public CargarColumnasTem() {
-  if (this.temporalJson.length > 0) {
-    if (this.selectPeriodo.tipoPeriodoId === 1) {
-      Swal.fire({
-        title: 'Cargara las columnas del template mensual, ¿Quiere continuar?',
-        showDenyButton: true,
-        confirmButtonText: `Continuar`,
-        denyButtonText: `Cancelar`,
-        icon: 'question'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.CargarArregloColumnas(this.temporalJson, 2);
-        } else if (result.isDenied) {
-        }
-      })
+    if (this.temporalJson.length > 0) {
+      if (this.selectPeriodo.tipoPeriodoId === 1) {
+        Swal.fire({
+          title: 'Cargara las columnas del template mensual, ¿Quiere continuar?',
+          showDenyButton: true,
+          confirmButtonText: `Continuar`,
+          denyButtonText: `Cancelar`,
+          icon: 'question',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.CargarArregloColumnas(this.temporalJson, 2);
+          } else if (result.isDenied) {
+          }
+        })
+      } else {
+        Swal.fire({
+          title: 'Cargara las columnas del template bimestral, ¿Quiere continuar?',
+          showDenyButton: true,
+          confirmButtonText: `Continuar`,
+          denyButtonText: `Cancelar`,
+          icon: 'question',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.CargarArregloColumnas(this.temporalJson, 3);
+          } else if (result.isDenied) {
+          }
+        })
+      }
     } else {
-      Swal.fire({
-        title: 'Cargara las columnas del template bimestral, ¿Quiere continuar?',
-        showDenyButton: true,
-        confirmButtonText: `Continuar`,
-        denyButtonText: `Cancelar`,
-        icon: 'question'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.CargarArregloColumnas(this.temporalJson, 3);
-        } else if (result.isDenied) {
-        }
-      })
+      this.toastr.error('Ingrese un archivo valido para poder cargar las columnas.', 'Error', {
+        timeOut: 3000
+      });
     }
-  } else {
-    this.toastr.error('Ingrese un archivo valido para poder cargar las columnas.', 'Error', {
-      timeOut: 3000
-    });
-  }
 
-}
+  }
 
   //Se agregan las columnas del SUA en la base de datos
   public CargarColumnasSua() {
-  if (this.suaJson.length > 0) {
-    Swal.fire({
-      title: 'Cargara las columnas del archivo SUA, ¿Quiere continuar?',
-      showDenyButton: true,
-      confirmButtonText: `Continuar`,
-      denyButtonText: `Cancelar`,
-      icon: 'question'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.CargarArregloColumnas(this.suaJson, 4);
-      } else if (result.isDenied) {
-      }
-    })
+    if (this.suaJson.length > 0) {
+      Swal.fire({
+        title: 'Cargara las columnas del archivo SUA, ¿Quiere continuar?',
+        showDenyButton: true,
+        confirmButtonText: `Continuar`,
+        denyButtonText: `Cancelar`,
+        icon: 'question',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.CargarArregloColumnas(this.suaJson, 4);
+        } else if (result.isDenied) {
+        }
+      })
 
-  } else {
-    this.toastr.error('Ingrese un archivo valido para poder cargar las columnas.', 'Error', {
-      timeOut: 3000
-    });
+    } else {
+      this.toastr.error('Ingrese un archivo valido para poder cargar las columnas.', 'Error', {
+        timeOut: 3000
+      });
+    }
+
   }
-
-}
 
   //Se agregan las columnas del EMA en la base de datos
   public CargarColumnasEma() {
-  if (this.emaJson.length > 0) {
-    if (this.selectPeriodo.tipoPeriodoId === 1) {
-      Swal.fire({
-        title: 'Cargara las columnas del archivo EMA, ¿Quiere continuar?',
-        showDenyButton: true,
-        confirmButtonText: `Continuar`,
-        denyButtonText: `Cancelar`,
-        icon: 'question'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.CargarArregloColumnas(this.emaJson, 5);
-        } else if (result.isDenied) {
-        }
-      })
+    if (this.emaJson.length > 0) {
+      if (this.selectPeriodo.tipoPeriodoId === 1) {
+        Swal.fire({
+          title: 'Cargara las columnas del archivo EMA, ¿Quiere continuar?',
+          showDenyButton: true,
+          confirmButtonText: `Continuar`,
+          denyButtonText: `Cancelar`,
+          icon: 'question',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.CargarArregloColumnas(this.emaJson, 5);
+          } else if (result.isDenied) {
+          }
+        })
+      } else {
+        Swal.fire({
+          title: 'Cargara las columnas del archivo EBA, ¿Quiere continuar?',
+          showDenyButton: true,
+          confirmButtonText: `Continuar`,
+          denyButtonText: `Cancelar`,
+          icon: 'question',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.CargarArregloColumnas(this.emaJson, 6);
+          } else if (result.isDenied) {
+          }
+        })
+
+      }
     } else {
-      Swal.fire({
-        title: 'Cargara las columnas del archivo EBA, ¿Quiere continuar?',
-        showDenyButton: true,
-        confirmButtonText: `Continuar`,
-        denyButtonText: `Cancelar`,
-        icon: 'question'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.CargarArregloColumnas(this.emaJson, 6);
-        } else if (result.isDenied) {
-        }
-      })
-
+      this.toastr.error('Ingrese un archivo valido para poder cargar las columnas.', 'Error', {
+        timeOut: 3000
+      });
     }
-  } else {
-    this.toastr.error('Ingrese un archivo valido para poder cargar las columnas.', 'Error', {
-      timeOut: 3000
-    });
-  }
 
-}
+  }
 
   //Se validan los nombres de las columnas del excel
   public CargarArregloColumnas(jsonExcel, excelTipo) {
-  for (let index = 0; index < jsonExcel.length; index++) {
-    const element = jsonExcel[index];
-    if (excelTipo == 4) {
-      if (element.length > 7) {
-        if (element[0] == "Número de Afiliación") {
-          this.CargarColumnas(element, excelTipo);
+    for (let index = 0; index < jsonExcel.length; index++) {
+      const element = jsonExcel[index];
+      if (excelTipo == 4) {
+        if (element.length > 7) {
+          if (element[0] == "Número de Afiliación") {
+            this.CargarColumnas(element, excelTipo);
+            break;
+          } else {
+            this.toastr.error('El archivo "SUA" debe de comensar con la columna "Número de Afiliación"', 'Error', {
+              timeOut: 3000
+            });
+            this.myInput.nativeElement.value = '';
+            this.suaJson = [];
+          }
+        }
+      } else {
+        if (element.length > 1) {
+          if (excelTipo == 2 || excelTipo == 3) {
+            if (element[0] == "No. S.S.") {
+              this.CargarColumnas(element, excelTipo);
+              break;
+            } else {
+              this.toastr.error('El archivo "Template" debe de comensar con la columna "No. S.S."', 'Error', {
+                timeOut: 3000
+              });
+              this.myInput.nativeElement.value = '';
+              this.temporalJson = [];
+            }
+          } else {
+            if (element[0] == "NSS") {
+              this.CargarColumnas(element, excelTipo);
+              break;
+            } else {
+              this.toastr.error('El archivo "EMA" o "EBA" debe de comensar con la columna "NSS"', 'Error', {
+                timeOut: 3000
+              });
+              this.myInput.nativeElement.value = '';
+              this.emaJson = [];
+            }
+          }
           break;
-        } else {
-          this.toastr.error('El archivo "SUA" debe de comensar con la columna "Número de Afiliación"', 'Error', {
-            timeOut: 3000
-          });
-          this.myInput.nativeElement.value = '';
-          this.suaJson = [];
         }
-      }
-    } else {
-      if (element.length > 1) {
-        if (excelTipo == 2 || excelTipo == 3) {
-          if (element[0] == "No. S.S.") {
-            this.CargarColumnas(element, excelTipo);
-            break;
-          } else {
-            this.toastr.error('El archivo "Template" debe de comensar con la columna "No. S.S."', 'Error', {
-              timeOut: 3000
-            });
-            this.myInput.nativeElement.value = '';
-            this.temporalJson = [];
-          }
-        } else {
-          if (element[0] == "NSS") {
-            this.CargarColumnas(element, excelTipo);
-            break;
-          } else {
-            this.toastr.error('El archivo "EMA" o "EBA" debe de comensar con la columna "NSS"', 'Error', {
-              timeOut: 3000
-            });
-            this.myInput.nativeElement.value = '';
-            this.emaJson = [];
-          }
-        }
-        break;
       }
     }
   }
-}
 
 
   public CargarColumnasExcel() {
-  // console.log(this.selectExcelTipos.excelTipoId);
-  switch (this.selectExcelTipos.excelTipoId) {
-    case 2:
-      this.selectPeriodo.tipoPeriodoId = 1
-      this.CargarColumnasTem();
-      break;
-    case 3:
-      this.selectPeriodo.tipoPeriodoId = 2
-      this.CargarColumnasTem();
-      break;
-    case 4:
-      this.selectPeriodo.tipoPeriodoId = 1
-      this.CargarColumnasSua();
-      break;
-    case 5:
-      this.selectPeriodo.tipoPeriodoId = 1
-      this.CargarColumnasEma();
-      break;
-    case 6:
-      this.selectPeriodo.tipoPeriodoId = 2
-      this.CargarColumnasEma();
-      break;
-    default:
-      console.log("Error ");
-      break;
+    // console.log(this.selectExcelTipos.excelTipoId);
+    switch (this.selectExcelTipos.excelTipoId) {
+      case 2:
+        this.selectPeriodo.tipoPeriodoId = 1
+        this.CargarColumnasTem();
+        break;
+      case 3:
+        this.selectPeriodo.tipoPeriodoId = 2
+        this.CargarColumnasTem();
+        break;
+      case 4:
+        this.selectPeriodo.tipoPeriodoId = 1
+        this.CargarColumnasSua();
+        break;
+      case 5:
+        this.selectPeriodo.tipoPeriodoId = 1
+        this.CargarColumnasEma();
+        break;
+      case 6:
+        this.selectPeriodo.tipoPeriodoId = 2
+        this.CargarColumnasEma();
+        break;
+      default:
+        console.log("Error ");
+        break;
+    }
   }
-}
 
   public Cargar(ev) {
-  // console.log(this.selectExcelTipos.excelTipoId);
-  switch (this.selectExcelTipos.excelTipoId) {
-    case 2:
-      this.selectPeriodo.tipoPeriodoId = 1
-      this.CargarTem(ev);
-      break;
-    case 3:
-      this.selectPeriodo.tipoPeriodoId = 2
-      this.CargarTem(ev);
-      break;
-    case 4:
-      this.selectPeriodo.tipoPeriodoId = 1
-      this.CargarExcelSua(ev);
-      break;
-    case 5:
-      this.selectPeriodo.tipoPeriodoId = 1
-      this.CargarEMA(ev);
-      break;
-    case 6:
-      this.selectPeriodo.tipoPeriodoId = 2
-      this.CargarEMA(ev);
-      break;
-    default:
-      console.log("Error ");
-      break;
+    // console.log(this.selectExcelTipos.excelTipoId);
+    switch (this.selectExcelTipos.excelTipoId) {
+      case 2:
+        this.selectPeriodo.tipoPeriodoId = 1
+        this.CargarTem(ev);
+        break;
+      case 3:
+        this.selectPeriodo.tipoPeriodoId = 2
+        this.CargarTem(ev);
+        break;
+      case 4:
+        this.selectPeriodo.tipoPeriodoId = 1
+        this.CargarExcelSua(ev);
+        break;
+      case 5:
+        this.selectPeriodo.tipoPeriodoId = 1
+        this.CargarEMA(ev);
+        break;
+      case 6:
+        this.selectPeriodo.tipoPeriodoId = 2
+        this.CargarEMA(ev);
+        break;
+      default:
+        console.log("Error ");
+        break;
+    }
   }
-}
 }

@@ -7,6 +7,7 @@ import { Usuario } from 'src/app/models/usuario';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { ConfiguracionSua } from 'src/app/models/Sua/configuracionSua';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-config-sua',
@@ -66,16 +67,28 @@ export class ConfigSuaComponent implements OnInit {
   }
 
   onDeleteSua(configuracionSua: ConfiguracionSua): void {
-    const confirmacion = confirm('¿Quiere eliminar el registro?');
-    if (confirmacion) {
-      configuracionSua.confSuaEstatus = true;
-      this.dataApi.Put('/ConfiguracionSuas', configuracionSua.configuracionSuaId, configuracionSua)
-
-      setTimeout(() => {
-        this.getListConfigSua();
-      }, 500);
-
-    }
+    this.cambiarEstatusSpinner(true);
+    Swal.fire({
+      title: '¿Quiere eliminar el registro?',
+      
+      showDenyButton: true,
+      confirmButtonText: `Continuar`,
+      denyButtonText: `Cancelar`,
+      icon: 'question',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        configuracionSua.confSuaEstatus = true;
+        this.dataApi.Put('/ConfiguracionSuas', configuracionSua.configuracionSuaId, configuracionSua);
+        this.cambiarEstatusSpinner(false);
+        setTimeout(() => {
+          this.getListConfigSua();
+        }, 500);
+      } else if (result.isDenied) {
+        Swal.fire('Carga de información cancelada', '', 'error')
+        this.cambiarEstatusSpinner(false);
+      }
+    })
   }
 
   onPreUpdateSua(configuracionSua: ConfiguracionSua) {

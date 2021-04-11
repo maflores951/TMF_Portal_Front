@@ -43,23 +43,15 @@
             <td>{{parametro.parametroClave}}</td>
             <td>{{parametro.parametroValorInicial}}</td>
             <td>{{parametro.parametroValorFinal}}</td>
-            <td *ngIf="isAdmin == true; else noOwner">
+            <td >
               <button class="btn btn-primary" data-toggle="modal" data-target="#modalParametro" (click)="onPreUpdateParametro(parametro)">Actualizar</button>
             </td>
-            <ng-template #noOwner>
-              <td>
-                <button class="btn btn-secondary" disabled="true">Actualizar</button>
-              </td>
-            </ng-template>
+           
   
-            <td *ngIf="isAdmin == true; else noAdmin">
+            <td >
               <button class="btn btn-danger" (click)="onDeleteParametro(parametro)">Eliminar</button>
             </td>
-            <ng-template #noAdmin>
-              <td>
-                <button class="btn btn-danger" disabled='true'>Eliminar</button>
-              </td>
-            </ng-template>
+           
           </tr>
         </tbody>
       </table>

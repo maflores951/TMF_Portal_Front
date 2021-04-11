@@ -41,7 +41,6 @@
             <th scope="col">Apellido paterno</th>
             <th scope="col">Apellido materno</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Estatus</th>
             <th scope="col">Email</th>
             <th scope="col">Tipo</th>
             <th scope="col">&nbsp;</th>
@@ -55,26 +54,17 @@
             <td>{{user.usuarioApellidoP}}</td>
             <td>{{user.usuarioApellidoM}}</td>
             <td>{{user.usuarioNombre}}</td>
-            <td>{{user.usuarioEstatusSesion}}</td>
             <td>{{user.email}}</td>
             <td>{{user.rol.rolNombre}}</td>
-            <td *ngIf="isAdmin == true; else noOwner">
+            <td >
               <button class="btn btn-primary" data-toggle="modal" data-target="#modalUsuario" (click)="onPreUpdateUser(user)">Actualizar</button>
             </td>
-            <ng-template #noOwner>
-              <td>
-                <button class="btn btn-secondary" disabled="true">Actualizar</button>
-              </td>
-            </ng-template>
+           
   
-            <td *ngIf="isAdmin == true; else noAdmin">
+            <td>
               <button class="btn btn-danger" (click)="onDeleteUser(user)">Eliminar</button>
             </td>
-            <ng-template #noAdmin>
-              <td>
-                <button class="btn btn-danger" disabled='true'>Eliminar</button>
-              </td>
-            </ng-template>
+            
           </tr>
         </tbody>
       </table>

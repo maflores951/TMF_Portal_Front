@@ -12,6 +12,7 @@ import { CifradoDatosService } from 'src/app/services/cifrado-datos.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Parametro } from 'src/app/models/parametro';
+import { TimerService } from 'src/app/services/timer.service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
   public UsuarioForm: FormGroup;
   public parametro: Parametro;
 
-  constructor(private router: Router, private apiAuth: AuthUserService, private toastr: ToastrService, private cifrado: CifradoDatosService, private spinner: SpinnerService, private dataApi: DataApiService) {
+  constructor(private router: Router, private apiAuth: AuthUserService, private toastr: ToastrService, private cifrado: CifradoDatosService, private spinner: SpinnerService, private dataApi: DataApiService, private timer: TimerService) {
     this.UsuarioForm = this.createForm();
   }
 
@@ -74,13 +75,13 @@ export class LoginComponent implements OnInit {
         ]),
       PasswordLogin: new FormControl('',
         [Validators.required
-        // Validators.minLength(8)
+          // Validators.minLength(8)
         ]),
     });
   }
 
   ngOnInit() {
-
+    console.log("V 2.0 31/03/2021");
   }
 
   cambiarEstatusSpinner(estatus: boolean) {
@@ -94,6 +95,10 @@ export class LoginComponent implements OnInit {
       this.apiAuth.login(this.UsuarioForm.value.EmailLogin, this.UsuarioForm.value.PasswordLogin).subscribe(response => {
         if (response.exito === 1) {
           this.cambiarEstatusSpinner(false);
+          this.timer.validarTimer(true);
+          // setTimeout(() => {
+          //   this.apiAuth.logout()
+          // }, 1000 * 60 * 60 * 8);
           this.onLoginRedirect();
         } else {
           this.cambiarEstatusSpinner(false);
@@ -110,7 +115,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
- 
+
 
   onLogout() {
     sessionStorage.clear();

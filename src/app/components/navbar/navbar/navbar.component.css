@@ -109,3 +109,64 @@ div.izq {
 div.der {
   float: right;
 }
+
+section {
+  width: 10%;
+  height: 2%;
+  min-height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul {
+  display: flex;
+  justify-content: center;
+}
+
+.coming-soon {
+  width: 50%;
+}
+
+.time-countdown ul {
+  margin: 2px;
+}
+
+.time-countdown ul li.count-bg-one {
+  background: #468dbc;
+}
+
+.time-countdown ul li.count-bg-two {
+  background: #ef9024;
+}
+
+.time-countdown ul li.count-bg-three {
+  background: #ee337f;
+}
+
+.time-countdown ul li.count-bg-four {
+  /* background: #1fb1f4; */
+  margin-right: 0;
+}
+
+.time-countdown ul li {
+  width: 100%;
+  margin-right: 2%;
+  text-align: center;
+  display: inline-block;
+  /* padding: 1px 1px; */
+  color: #fff;
+}
+
+.radius {
+  border-radius: 5px;
+}
+
+.time-countdown ul li span {
+  color: #FFF;
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 350;
+  display: block;
+}

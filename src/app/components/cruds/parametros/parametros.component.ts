@@ -6,6 +6,7 @@ import { AuthUserService } from 'src/app/services/auth-user.service';
 import { Usuario } from 'src/app/models/usuario';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-parametros',
@@ -66,16 +67,27 @@ export class ParametrosComponent implements OnInit {
   }
 
   onDeleteParametro(parametro: Parametro): void {
-    const confirmacion = confirm('¿Quiere eliminar el registro?');
-    if (confirmacion) {
-      parametro.parametroEstatusDelete = true;
-      this.dataApi.Put('/Parametros', parametro.parametroId, parametro)
-
-      setTimeout(() => {
-        this.getListParametros();
-      }, 500);
-
-    }
+    this.cambiarEstatusSpinner(true);
+    Swal.fire({
+      title: '¿Quiere eliminar el registro?',
+      confirmButtonText: `Continuar`,
+      denyButtonText: `Cancelar`,
+      showDenyButton: true,
+      icon: 'question',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        parametro.parametroEstatusDelete = true;
+        this.dataApi.Put('/Parametros', parametro.parametroId, parametro);
+        this.cambiarEstatusSpinner(false);
+        setTimeout(() => {
+          this.getListParametros();
+        }, 500);
+      } else if (result.isDenied) {
+        Swal.fire('Carga de información cancelada', '', 'error')
+        this.cambiarEstatusSpinner(false);
+      }
+    })
   }
 
   onPreUpdateParametro(parametro: Parametro) {

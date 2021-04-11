@@ -219,6 +219,12 @@ export class ConfiguracionSuaComponent implements OnInit {
     this.dataApi.cargarTipoExcelConfObservable.subscribe(response => {
       //  console.log(JSON.stringify(response) + " *****");
       this.excelTipos = response;
+      this.suaExcel = [];
+      this.ngSuaNNombre = "";
+      this.confSuaNEstatus = false;
+      this.confSuaNPosicion = 0;
+      this.opcionSeleccionado = this.excelTipos[0];
+      this.capturar()
     });
 
     this.dataApi.cargarTipoPeriodoConfObservable.subscribe(response => {
@@ -267,7 +273,8 @@ export class ConfiguracionSuaComponent implements OnInit {
         confirmButtonText: `Continuar`,
         denyButtonText: `Cancelar`,
         showDenyButton: true,
-        icon: 'question'
+        icon: 'question',
+        reverseButtons: true
       }).then((result) => {
 
         if (result.isConfirmed) {
@@ -285,6 +292,8 @@ export class ConfiguracionSuaComponent implements OnInit {
           this.ngSuaNNombre = "";
           this.confSuaNEstatus = false;
           this.confSuaNPosicion = 0;
+          this.opcionSeleccionado = this.excelTipos[0];
+          this.capturar()
           // this.ngExcelColumna = "";
         }else{
           if (this.selectPeriodo.tipoPeriodoId == 1) {
@@ -314,6 +323,8 @@ export class ConfiguracionSuaComponent implements OnInit {
         this.ngSuaNNombre = "";
         this.confSuaNEstatus = false;
         this.confSuaNPosicion = 0;
+        this.opcionSeleccionado = this.excelTipos[0];
+        this.capturar()
       }
     }
 

@@ -61,6 +61,9 @@ export class DataApiService {
 
     this.http.put<any>(this.url + '/' + id.toString(), model, httpOption)
       .subscribe(result => {
+        this.toastr.success('Actualización exitosa.', 'Exito', {
+          timeOut: 3000
+        });
       }, error => {
         console.error(JSON.stringify(error));
         this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
