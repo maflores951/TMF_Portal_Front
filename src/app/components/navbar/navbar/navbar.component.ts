@@ -13,6 +13,16 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  public inicioTiempo: number;
+
+  public repeticiones: number;
+
+  public inicio: number;
+
+  public repe: number;
+
+
+
   public static updateUserStatus: Subject<boolean> = new Subject();
 
   constructor(private dataApi: DataApiService, private apiAuthService: AuthUserService, private timer: TimerService) {
@@ -35,11 +45,11 @@ export class NavbarComponent implements OnInit {
   public email: string;
   public foto: string;
   public tiempo = 0;
-  public   inscribir: any;
+  public inscribir: any;
 
   _second = 1000;
   _minute = this._second * 60;
-   _hour = this._minute * 60;
+  _hour = this._minute * 60;
   // _day = this._hour * 24;
   end: any;
   now: any;
@@ -47,53 +57,72 @@ export class NavbarComponent implements OnInit {
   hours: any;
   minutes: any;
   seconds: any;
-  public inicioTiempo = 600000;
 
-  public repeticiones = 600;
-  
+
   public clock: any;
 
   ngOnInit() {
     this.getCurrentUser();
-
    
+    // this.timer.tiempoObservable.subscribe(tiempo => {
+
+    //   this.repe = tiempo * 60;
+    //   this.inicio = tiempo * 6000;
+
+      // console.log("Entra nav " + this.repeticiones + ' ' + this.inicioTiempo);
+      // this.clock.unsubscribe();
+      // this.iniciarTimer()
+    // });
 
     this.timer.timerObservable.subscribe(timer => {
       if (timer == true) {
-        // if (this.clock.subscribe){
-          this.clock.unsubscribe();
+        // console.log("ENtra nav " + this.inicio);
+        // if (this.inicio > 0) {
+
+        this.clock.unsubscribe();
+        this.iniciarTimer();
         // }
-       
-    this.iniciarTimer()
-      }else{
+
+      } else {
         this.clock.unsubscribe();
         // this.terminar();
       }
     });
+
+
   }
 
-  iniciarTimer(){
+  iniciarTimer() {
     // console.log("Entra");
+    this.repeticiones = parseInt(sessionStorage.getItem('tiempoSesion')) * 60;
+    if (this.repeticiones < 1) {
+      this.repeticiones = 10*60;
+    }
+    this.inicioTiempo = parseInt(sessionStorage.getItem('tiempoSesion')) * 60000;
+    if (this.repeticiones < 1) {
+      this.repeticiones = 10*60000;
+    }
 
+    // console.log("nav " + this.inicioTiempo + " " + this.repeticiones);
     const numbers = interval(1000);
- 
-const source = numbers.pipe(take(this.repeticiones));
+
+    const source = numbers.pipe(take(this.repeticiones));
 
     // const source = interval(10000);
     // this.end = new Date();
     this.clock = source.subscribe(t => {
       // this.now = new Date().setMinutes(50);
-    
+
       //  console.log("Entra " + t + " *****");
-     
+
       this.showDate(t);
     });
 
   }
 
-  showDate(t){
-    let distance = this.inicioTiempo - t*1000//this.end - this.now;
-      // console.log(distance + " &&&&&");
+  showDate(t) {
+    let distance = this.inicioTiempo - t * 1000//this.end - this.now;
+    // console.log(distance + " &&&&&");
     // this.day = Math.floor(distance / this._day);
     // this.hours = Math.floor((distance % this._day) / this._hour);
     this.minutes = Math.floor((distance % this._hour) / this._minute);
@@ -148,10 +177,10 @@ const source = numbers.pipe(take(this.repeticiones));
   }
 
   onLogout() {
-     this.clock.unsubscribe();
-     this.timer.validarTimer(false);
+    this.clock.unsubscribe();
+    this.timer.validarTimer(false);
     this.apiAuthService.logout();
-    
+
   }
 
 }

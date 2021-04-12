@@ -55,6 +55,11 @@ export class DataApiService {
     return this.http.post<any>(this.url, model, httpOption);
   }
 
+  public RecuperaParametro(controller: string): any {
+    this.url = this.urlBase + this.servicePrefix + controller;
+    return this.http.post<any>(this.url, httpOption);
+  }
+
  
   public Put(controller: string, id: number, model: any) {
     this.url = this.urlBase + this.servicePrefix + controller;

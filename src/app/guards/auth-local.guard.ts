@@ -15,10 +15,15 @@ export class AuthLocalGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | 
       UrlTree {
         const usuario = this.apiAuthService.usuarioData;
-        if (usuario.rolId == 2 || usuario.rolId == 1 || usuario.rolId == 4){
-          return true;
+        // console.log(usuario );
+        if(usuario != null){
+          if (usuario.rolId == 2 || usuario.rolId == 1 || usuario.rolId == 4){
+            return true;
+          }
         }
-           this.router.navigate(['']);
+       
+        // console.log("Entra");
+           this.router.navigate(['/user/login']);
            return false;
       }  
 }

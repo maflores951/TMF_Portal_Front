@@ -43,16 +43,16 @@ export class LoginComponent implements OnInit {
     'EmailLogin': [
       {
         type: 'required',
-        message: 'El email es requerido'
-      },
-      {
-        type: 'minlength',
-        message: 'El email debe de contener mínimo 6 caracteres'
-      },
-      {
-        type: 'pattern',
-        message: 'El email no es valido'
-      }
+        message: 'El usuario es requerido'
+       }
+      // {
+      //   type: 'minlength',
+      //   message: 'El email debe de contener mínimo 6 caracteres'
+      // },
+      // {
+      //   type: 'pattern',
+      //   message: 'El email no es valido'
+      // }
     ],
     'PasswordLogin': [
       {
@@ -70,8 +70,8 @@ export class LoginComponent implements OnInit {
     return new FormGroup({
       EmailLogin: new FormControl('',
         [Validators.required,
-        Validators.minLength(6),
-        Validators.pattern(this.emailPattern)
+        // Validators.minLength(6),
+        // Validators.pattern(this.emailPattern)
         ]),
       PasswordLogin: new FormControl('',
         [Validators.required
@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("V 2.0 31/03/2021");
+    console.log("V 2.1 14/04/2021");
   }
 
   cambiarEstatusSpinner(estatus: boolean) {
@@ -94,15 +94,28 @@ export class LoginComponent implements OnInit {
       this.UsuarioForm.value.PasswordLogin = this.cifrado.encrypt(this.UsuarioForm.value.PasswordLogin);
       this.apiAuth.login(this.UsuarioForm.value.EmailLogin, this.UsuarioForm.value.PasswordLogin).subscribe(response => {
         if (response.exito === 1) {
-          this.cambiarEstatusSpinner(false);
-          this.timer.validarTimer(true);
-          // setTimeout(() => {
-          //   this.apiAuth.logout()
-          // }, 1000 * 60 * 60 * 8);
-          this.onLoginRedirect();
+          this.dataApi.RecuperaParametro("/Parametros/RecuperaParametro/SETSES").subscribe(parametro => {
+            // var usuario = this.apiAuth.usuarioData;
+            this.cambiarEstatusSpinner(false);
+            sessionStorage.setItem("tiempoSesion", parametro.parametroValorInicial);
+            this.timer.asignarTiempo(parseInt(parametro.parametroValorInicial));
+            this.timer.validarTimer(true);
+           
+            // setTimeout(() => {
+            //   this.apiAuth.logout()
+            // }, 1000 * 60 * 60 * 8);
+            this.onLoginRedirect();
+            
+          }), error => {
+            this.cambiarEstatusSpinner(false);
+            this.toastr.error(error.error.error_description, 'Error', {
+              timeOut: 3000
+            });
+          }
+         
         } else {
           this.cambiarEstatusSpinner(false);
-          this.toastr.error('Error en los datos solicitados', 'Error', {
+          this.toastr.error(response.mensaje, 'Error', {
             timeOut: 3000
           });
         }

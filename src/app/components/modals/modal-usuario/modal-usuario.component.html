@@ -74,30 +74,37 @@
   
             </div>
   
-            <div class="form-group required">
+            <div class="form-group noRequired">
               <label for="UsuarioApellidoM">Apellido materno:</label>
               <input type="text" name="UsuarioApellidoM" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.usuarioApellidoM" maxlength="50" formControlName="UsuarioApellidoM" placeholder="Ingresa tu apellido materno">
   
-              <div class="alert-danger" *ngIf="UsuarioApellidoM.invalid && (UsuarioApellidoM.dirty || UsuarioApellidoM.touched)">
+              <!-- <div class="alert-danger" *ngIf="UsuarioApellidoM.invalid && (UsuarioApellidoM.dirty || UsuarioApellidoM.touched)">
   
                 <div *ngFor="let validation of user_validation_messages.UsuarioApellidoM">
                   <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('UsuarioApellidoM').hasError(validation.type) && (UsuarioForm.get('UsuarioApellidoM').dirty || UsuarioForm.get('UsuarioApellidoM').touched)">
                     {{validation.message}}
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
   
   
-            <div class="form-group required">
-  
-              
-                
-              
-            </div>
+          
   
            
               <div class="form-group required" *ngIf="this.dataApi.SelectedUsuario.usuarioId == null; else noOwner"> 
+                <label for="UsuarioClave">Usuario:</label>
+                <input type="text" name="UsuarioClave" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.usuarioClave" maxlength="50" formControlName="UsuarioClave" placeholder="Ingresa tu clave de usuario">
+    
+                <div class="alert-danger" *ngIf="UsuarioClave.invalid && (UsuarioClave.dirty || UsuarioClave.touched)">
+    
+                  <div *ngFor="let validation of user_validation_messages.UsuarioClave">
+                    <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('UsuarioClave').hasError(validation.type) && (UsuarioForm.get('UsuarioClave').dirty || UsuarioForm.get('UsuarioClave').touched)">
+                      {{validation.message}}
+                    </div>
+                  </div>
+                </div>
+
                 <label for="Email">Email</label>
                 <input type="email" name="Email" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.email" maxlength="100" placeholder="Ingresa tu email" formControlName="Email">
   
@@ -126,6 +133,18 @@
 
             <ng-template #noOwner>
               <div class="form-group required" > 
+                <label for="UsuarioClave">Usuario:</label>
+                <input type="text" name="UsuarioClave" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.usuarioClave" maxlength="50" formControlName="UsuarioClave" placeholder="Ingresa tu clave de usuario" readonly="readonly">
+    
+                <div class="alert-danger" *ngIf="UsuarioClave.invalid && (UsuarioClave.dirty || UsuarioClave.touched)">
+    
+                  <div *ngFor="let validation of user_validation_messages.UsuarioClave">
+                    <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('UsuarioClave').hasError(validation.type) && (UsuarioForm.get('UsuarioClave').dirty || UsuarioForm.get('UsuarioClave').touched)">
+                      {{validation.message}}
+                    </div>
+                  </div>
+                </div>
+
                 <label for="Email">Email</label>
                 <input type="email" name="Email" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.email" maxlength="100" placeholder="Ingresa tu email" formControlName="Email" readonly="readonly">
   

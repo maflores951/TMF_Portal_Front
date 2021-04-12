@@ -8,17 +8,18 @@ import { AuthUserService } from '../services/auth-user.service';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router,private apiAuthService: AuthUserService ){}
+  constructor(private router: Router, private apiAuthService: AuthUserService) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const usuario = this.apiAuthService.usuarioData;
-    if (usuario.rolId == 4 || usuario.rolId == 3){
-      return true;
+    if (usuario != null) {
+      if (usuario.rolId == 4 || usuario.rolId == 3) {
+        return true;
+      }
     }
-
-       this.router.navigate(['']);
-       return false;
+    this.router.navigate(['/user/login']);
+    return false;
   }
 }

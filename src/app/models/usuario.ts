@@ -19,6 +19,8 @@ export interface Usuario {
 
   email?: string | null;
 
+  usuarioClave?: string |null;
+
   imagePath?: string | null;
 
   imageFullPath?: string;

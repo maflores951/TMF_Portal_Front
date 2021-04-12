@@ -48,6 +48,7 @@ export class ModalUsuarioComponent implements OnInit {
   get UsuarioId() { return this.UsuarioForm.get('UsuarioId'); }
   get Password() { return this.UsuarioForm.get('Password'); }
   get Foto() { return this.UsuarioForm.get('Foto'); }
+  get UsuarioClave() { return this.UsuarioForm.get('UsuarioClave'); }
 
   user_validation_messages = {
     'UsuarioId': [],
@@ -94,18 +95,32 @@ export class ModalUsuarioComponent implements OnInit {
       }
     ],
     'UsuarioApellidoM': [
+      // {
+      //   type: 'required',
+      //   message: 'El apellido paterno es requerido'
+      // },
+      // {
+      //   type: 'minlength',
+      //   message: 'El apellido paterno  debe de contener mínimo 3 caracteres'
+      // },
+      // {
+      //   type: 'pattern',
+      //   message: 'El apellido paterno  debe de comenzar con mayúscula y contener solamente letras'
+      // }
+    ],
+    'UsuarioClave': [
       {
         type: 'required',
-        message: 'El apellido materno es requerido'
+        message: 'El usuario es requerido'
       },
       {
         type: 'minlength',
-        message: 'El apellido materno  debe de contener mínimo 3 caracteres'
-      },
-      {
-        type: 'pattern',
-        message: 'El apellido materno  debe de comenzar con mayúscula y contener solamente letras'
+        message: 'El usuario  debe de contener mínimo 3 caracteres'
       }
+      // {
+      //   type: 'pattern',
+      //   message: 'El apellido materno  debe de comenzar con mayúscula y contener solamente letras'
+      // }
     ],
     'Email': [
       {
@@ -144,9 +159,11 @@ export class ModalUsuarioComponent implements OnInit {
         Validators.pattern(this.nombrePattern)
         ]),
       UsuarioApellidoM: new FormControl('',
+        [
+        ]),
+      UsuarioClave: new FormControl('',
         [Validators.required,
-        Validators.minLength(3),
-        Validators.pattern(this.nombrePattern)
+        Validators.minLength(3)
         ]),
       Email: new FormControl('',
         [Validators.required,
@@ -244,18 +261,18 @@ export class ModalUsuarioComponent implements OnInit {
           }
           this.UsuarioForm.value.RolId = parseInt(this.UsuarioForm.value.RolId);
           this.dataApi.Post('/Usuarios', this.UsuarioForm.value).subscribe(result => {
-            if(result.exito == 1){
+            if (result.exito == 1) {
               this.toastr.success(result.mensaje, 'Exito', {
                 timeOut: 3000
               });
               this.cambiarEstatusSpinner(false);
-            formUsuario.resetForm();
-            this.UsuarioForm.reset();
-            UsuariosComponent.updateUsers.next(true);
-            NavbarComponent.updateUserStatus.next(true);
-            PerfilComponent.updateUsers.next(true);
-            this.btnClose.nativeElement.click();
-            }else{
+              formUsuario.resetForm();
+              this.UsuarioForm.reset();
+              UsuariosComponent.updateUsers.next(true);
+              NavbarComponent.updateUserStatus.next(true);
+              PerfilComponent.updateUsers.next(true);
+              this.btnClose.nativeElement.click();
+            } else {
               this.toastr.error(result.mensaje, 'Error', {
                 timeOut: 3000
               });
@@ -296,10 +313,10 @@ export class ModalUsuarioComponent implements OnInit {
           this.dataApi.Put('/Usuarios', this.UsuarioForm.value.UsuarioId, this.UsuarioForm.value);
         }, 300)
         setTimeout(() => {
-       
+
           if (this.usuario.usuarioId == this.UsuarioForm.value.UsuarioId) {
             this.dataApi.GetListId('/Usuarios', this.usuario.usuarioId).subscribe(result => {
-  
+
               const usuario: Usuario = result;
               usuario.usuarioToken = this.usuario.usuarioToken;
               setTimeout(() => {
@@ -331,7 +348,7 @@ export class ModalUsuarioComponent implements OnInit {
           }
         }, 500);
       }
-     
+
 
 
     } else {

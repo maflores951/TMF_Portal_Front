@@ -21,11 +21,13 @@ export class AppComponent {
   public lastPing?: Date = null;
   public isLogged: boolean = false;
 
+  public tiempo = 600;
+
   constructor(private spinner: SpinnerService, private router: Router, private idle: Idle, private keepalive: Keepalive, private timer: TimerService, private apiAuthService: AuthUserService) {
     // sets an idle timeout of 5 seconds, for testing purposes.
     idle.setIdle(1);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
-    idle.setTimeout(600);
+    idle.setTimeout(this.tiempo);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
@@ -95,6 +97,15 @@ export class AppComponent {
         this.terminar();
         this.isLogged = false;
       }
+    });
+
+    this.timer.tiempoObservable.subscribe(tiempo => {
+      // this.tiempo = 1;
+      // console.log("Entra app " + tiempo);
+      this.tiempo = tiempo*60;
+      // console.log("Entra app v " + this.tiempo);
+      this.idle.setTimeout(tiempo*60);
+     
     });
   
   }

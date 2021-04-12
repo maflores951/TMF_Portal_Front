@@ -8,7 +8,7 @@
                 <form #formLogin="ngForm" [formGroup]="UsuarioForm" (submit)="onLogin()">
                   <h1 class="h3 mb-3 font-weight-normal">Login</h1>
                   <div class="form-group">
-                    <input formControlName="EmailLogin" type="email" id="EmailLogin" name="EmailLogin" class="form-control" placeholder="Email" required>
+                    <input formControlName="EmailLogin" id="EmailLogin" name="EmailLogin" class="form-control" placeholder="Usuario" required>
   
                     <div class="alert-danger" *ngIf="EmailLogin.invalid && (EmailLogin.dirty || EmailLogin.touched)">
   
@@ -38,9 +38,9 @@
                   <div class="form-group">
                     <a routerLink="/user/RecuperaPass" class="form-control login-user">Recuperar contraseña</a>
                   </div>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <a routerLink="/user/registro" class="form-control login-user">Registro</a>
-                  </div>
+                  </div> -->
                 </form>
               </div>
             </div>

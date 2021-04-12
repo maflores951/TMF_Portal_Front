@@ -53,14 +53,16 @@ export class UsuariosComponent implements OnInit {
         this.isAdmin = false;
       }
     }
-    this.cambiarEstatusSpinner(false);
+   
   }
 
   getListUsers() {
     this.dataApi.GetList('/Usuarios').subscribe(users => {
+      this.cambiarEstatusSpinner(false);
       this.users = users;
     }, error => {
       console.error(error);
+      this.cambiarEstatusSpinner(false);
       this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
         timeOut: 3000
       });
