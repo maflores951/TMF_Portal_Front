@@ -77,6 +77,11 @@ export class DataApiService {
       });
   }
 
+  public PutSub(controller: string, id: number, model: any): any {
+    this.url = this.urlBase + this.servicePrefix + controller;
+    return this.http.put<any>(this.url + '/' + id.toString(), model, httpOption);
+  }
+
   public SetPassword(controller: string, id: number, model: any): any {
     this.url = this.urlBase + this.servicePrefix + controller;
     this.http.put<any>(this.url + '/' + id.toString(), model, httpOption);
