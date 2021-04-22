@@ -40,6 +40,7 @@ export class ReporteCompararSuaComponent implements OnInit {
     this.dataApi.GetList('/ConfiguracionSuas').subscribe(confSuaList => {
       this.configuracionSuas = confSuaList;
       this.configuracionSua = confSuaList[0];
+      this.tipoConfig()
       this.cambiarEstatusSpinner(false);
     }, error => {
       console.error(error);
@@ -73,6 +74,18 @@ export class ReporteCompararSuaComponent implements OnInit {
 
   public selectMes = this.meses[0];
 
+  //Lista de bimestres
+  public bimestres = [{ "bimestreId": 13, "bimestreNombre": "Enero-febrero" },
+  { "bimestreId": 14, "bimestreNombre": "Marzo-Abril" },
+  { "bimestreId": 15, "bimestreNombre": "Mayo-Junio" },
+  { "bimestreId": 16, "bimestreNombre": "Julio-Agosto" },
+  { "bimestreId": 17, "bimestreNombre": "Septiembre-Octubre" },
+  { "bimestreId": 18, "bimestreNombre": "Noviembre-Diciembre" },
+  ];
+
+  //Inicio del filtro del mes
+  public selectBimestre = this.bimestres[0];
+
   //Se asignan los años
   public anios = this.recuperaAnios();
 
@@ -82,7 +95,7 @@ export class ReporteCompararSuaComponent implements OnInit {
     var selectAnio = [];
 
 
-    var anio = new Date().getFullYear();
+    var anio = new Date().getFullYear() - 1;
 
     for (let index = 1; index < 5; index++) {
       var itemAnio = {
@@ -96,12 +109,37 @@ export class ReporteCompararSuaComponent implements OnInit {
     return selectAnio;
   };
 
+  //     //Función para determinar el tipo de comparativo
+  //     tipoPeriodo() {
+  //       if (this.selectPeriodo.tipoPeriodoId == 1) {
+  //         this.excelTipos = this.excelTiposMensual;
+  //       } else {
+  //         this.excelTipos = this.excelTiposBimestral;
+  //       }
+
+  //       this.selectBimestre = this.bimestres[0];
+  //       this.selectMes = this.meses[0];
+
+
+  // }
+  tipoConfig() {
+    console.log("Entra reporte " + this.configuracionSua.configuracionSuaTipo)
+    if (this.configuracionSua.configuracionSuaTipo == 1) {
+      this.selectPeriodo = this.tipoPeriodos[0];
+    } else {
+      this.selectPeriodo = this.tipoPeriodos[1];
+    }
+  }
+
   cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
 
   //Se ejecuta una API que solicita el reporte que se genera en el BackEnd
   public GenerarReporte() {
+    if (this.selectPeriodo.tipoPeriodoId == 2) {
+      this.selectMes.mesId = this.selectBimestre.bimestreId;
+    }
     this.cambiarEstatusSpinner(true);
     const reader = new FileReader();
 
@@ -160,17 +198,17 @@ export class ReporteCompararSuaComponent implements OnInit {
                 timeOut: 3000
               });
             });
-          }else if (resultado.isDenied) {
+          } else if (resultado.isDenied) {
             Swal.fire('Comparativo cancelado', '', 'error')
             this.cambiarEstatusSpinner(false);
           }
         })
-      }else{
+      } else {
         this.cambiarEstatusSpinner(false);
         this.toastr.error(variable.mensaje, 'Error', {
           timeOut: 3000
         });
-      } 
+      }
     }, error => {
       this.cambiarEstatusSpinner(false);
       this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {

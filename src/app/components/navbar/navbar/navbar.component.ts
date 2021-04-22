@@ -47,6 +47,10 @@ export class NavbarComponent implements OnInit {
   public tiempo = 0;
   public inscribir: any;
 
+  public fechaPass: any;
+  public fechaMensaje: string;
+  public fechaBandera: boolean;
+
   _second = 1000;
   _minute = this._second * 60;
   _hour = this._minute * 60;
@@ -63,58 +67,41 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.getCurrentUser();
-   
-    // this.timer.tiempoObservable.subscribe(tiempo => {
 
-    //   this.repe = tiempo * 60;
-    //   this.inicio = tiempo * 6000;
+    ////Se comenta, pero es el timer que ve el usuario
+    // this.timer.timerObservable.subscribe(timer => {
+    //   if (timer == true) {
+    //     // console.log("ENtra nav " + this.inicio);
+    //     // if (this.inicio > 0) {
 
-      // console.log("Entra nav " + this.repeticiones + ' ' + this.inicioTiempo);
-      // this.clock.unsubscribe();
-      // this.iniciarTimer()
+    //     this.clock.unsubscribe();
+    //     this.iniciarTimer();
+    //     // }
+
+    //   } else {
+    //     this.clock.unsubscribe();
+    //     // this.terminar();
+    //   }
     // });
-
-    this.timer.timerObservable.subscribe(timer => {
-      if (timer == true) {
-        // console.log("ENtra nav " + this.inicio);
-        // if (this.inicio > 0) {
-
-        this.clock.unsubscribe();
-        this.iniciarTimer();
-        // }
-
-      } else {
-        this.clock.unsubscribe();
-        // this.terminar();
-      }
-    });
 
 
   }
 
   iniciarTimer() {
-    // console.log("Entra");
     this.repeticiones = parseInt(sessionStorage.getItem('tiempoSesion')) * 60;
     if (this.repeticiones < 1) {
-      this.repeticiones = 10*60;
+      this.repeticiones = 10 * 60;
     }
     this.inicioTiempo = parseInt(sessionStorage.getItem('tiempoSesion')) * 60000;
     if (this.repeticiones < 1) {
-      this.repeticiones = 10*60000;
+      this.repeticiones = 10 * 60000;
     }
 
-    // console.log("nav " + this.inicioTiempo + " " + this.repeticiones);
     const numbers = interval(1000);
 
     const source = numbers.pipe(take(this.repeticiones));
 
-    // const source = interval(10000);
-    // this.end = new Date();
     this.clock = source.subscribe(t => {
-      // this.now = new Date().setMinutes(50);
-
-      //  console.log("Entra " + t + " *****");
-
       this.showDate(t);
     });
 
@@ -122,9 +109,6 @@ export class NavbarComponent implements OnInit {
 
   showDate(t) {
     let distance = this.inicioTiempo - t * 1000//this.end - this.now;
-    // console.log(distance + " &&&&&");
-    // this.day = Math.floor(distance / this._day);
-    // this.hours = Math.floor((distance % this._day) / this._hour);
     this.minutes = Math.floor((distance % this._hour) / this._minute);
     this.seconds = Math.floor((distance % this._minute) / this._second);
   }
@@ -142,12 +126,42 @@ export class NavbarComponent implements OnInit {
   //   this.clock.unsubscribe();
   // }
 
+  recuperaDias(f1, f2) {
+    var aFecha1 = f1.split('/');
+    var aFecha2 = f2.split('/');
+    var fFecha1 = Date.UTC(aFecha1[2], aFecha1[1] - 1, aFecha1[0]);
+    var fFecha2 = Date.UTC(aFecha2[2], aFecha2[1] - 1, aFecha2[0]);
+    var dif = fFecha2 - fFecha1;
+    var dias = Math.floor(dif / (1000 * 60 * 60 * 24));
+    return dias;
+  }
+
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
     if (!this.usuario) {
       this.isLogged = false;
     } else {
-      this.iniciarTimer();
+      //Se utiliza para iniciar el timer
+      // this.iniciarTimer();
+      var today = new Date().toLocaleDateString();
+
+      //  var day = new Date().getDay();
+      //  var month = today.getMonth();
+      //  var year = today.getFullYear();
+      // console.log(day +"/"+month+"/"+year + " ***");
+      var usuarioFecha = new Date(this.usuario.usuarioFechaLimite).toLocaleDateString();
+      //  console.log(usuarioFecha);
+
+      this.fechaPass = this.recuperaDias(today, usuarioFecha);
+
+      //  console.log(this.fechaPass + " Dias****");
+      if (this.fechaPass <= 10) {
+        this.fechaBandera = true;
+        this.fechaMensaje = "Su contraseña expira en " + this.fechaPass + " días, solicite una nueva desde el Login de la aplicación."
+      } else {
+        this.fechaBandera = false;
+      }
+      // this.fechaPass = this.usuario.usuarioFechaLimite - new Date()
       this.UserTypeId = this.usuario.rolId;
 
       // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath.substr(1);
@@ -177,7 +191,8 @@ export class NavbarComponent implements OnInit {
   }
 
   onLogout() {
-    this.clock.unsubscribe();
+    // this.clock.unsubscribe();
+    this.fechaBandera = false;
     this.timer.validarTimer(false);
     this.apiAuthService.logout();
 

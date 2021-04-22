@@ -61,11 +61,11 @@ export class CargarExcelComponent implements OnInit {
   public excelColumnas: ExcelColumna[];
 
   //Lista de los tipos de periodos
-  public tipoPeriodos = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },
+  public periodoTipos = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },
   { "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]
 
   //Inicio del filtro
-  public selectPeriodo = this.tipoPeriodos[0];
+  public selectPeriodo = this.periodoTipos[0];
 
   //Lista de meses
   public meses = [{ "mesId": 1, "mesNombre": "Enero" },
@@ -85,6 +85,18 @@ export class CargarExcelComponent implements OnInit {
   //Inicio del filtro del mes
   public selectMes = this.meses[0];
 
+  //Lista de bimestres
+  public bimestres = [{ "bimestreId": 13, "bimestreNombre": "Enero-febrero" },
+  { "bimestreId": 14, "bimestreNombre": "Marzo-Abril" },
+  { "bimestreId": 15, "bimestreNombre": "Mayo-Junio" },
+  { "bimestreId": 16, "bimestreNombre": "Julio-Agosto" },
+  { "bimestreId": 17, "bimestreNombre": "Septiembre-Octubre" },
+  { "bimestreId": 18, "bimestreNombre": "Noviembre-Diciembre" },
+  ];
+
+  //Inicio del filtro del mes
+  public selectBimestre = this.bimestres[0];
+
   //Se recuperan los años con respecto al año actual
   public anios = this.recuperaAnios();
 
@@ -92,7 +104,8 @@ export class CargarExcelComponent implements OnInit {
 
   public recuperaAnios() {
     var selectAnio = [];
-    var anio = new Date().getFullYear();
+    var anio = new Date().getFullYear() - 1;
+    // selectAnio.push(anio--);
     for (let index = 1; index < 5; index++) {
       var itemAnio = {
         anioId: anio,
@@ -103,16 +116,55 @@ export class CargarExcelComponent implements OnInit {
     }
     return selectAnio;
   };
+  //Arreglo con los tipos de excel mensual
+  public excelTiposMensual: ExcelTipo[] = [
+  { "excelTipoId": 2, "excelNombre": "Template", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 4, "excelNombre": "SUA", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 5, "excelNombre": "EMA", "excelTipoPeriodo": 1 }];
+
+  //Arreglo con los tipos de excel bimestral
+  public excelTiposBimestral: ExcelTipo[] = [
+  { "excelTipoId": 3, "excelNombre": "Template bimestral", "excelTipoPeriodo": 2 },
+  { "excelTipoId": 4, "excelNombre": "SUA", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 6, "excelNombre": "EBA", "excelTipoPeriodo": 2 }];
+
+  public excelTipos: ExcelTipo[] = [
+  { "excelTipoId": 2, "excelNombre": "Template", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 4, "excelNombre": "SUA", "excelTipoPeriodo": 1 },
+  { "excelTipoId": 5, "excelNombre": "EMA", "excelTipoPeriodo": 1 }];
 
   //Arreglo con los tipos de excel
-  public excelTipos: ExcelTipo[] = [{ "excelTipoId": 2, "excelNombre": "Template mensual" },
-  { "excelTipoId": 3, "excelNombre": "Template bimestral" },
-  { "excelTipoId": 4, "excelNombre": "SUA" },
-  { "excelTipoId": 5, "excelNombre": "EMA" },
-  { "excelTipoId": 6, "excelNombre": "EBA" }];
+  // public excelTipos: ExcelTipo[] = [{ "excelTipoId": 2, "excelNombre": "Template mensual" },
+  // { "excelTipoId": 3, "excelNombre": "Template bimestral" },
+  // { "excelTipoId": 4, "excelNombre": "SUA" },
+  // { "excelTipoId": 5, "excelNombre": "EMA" },
+  // { "excelTipoId": 6, "excelNombre": "EBA" }];
 
   //Inicio del filtro del archivo
   public selectExcelTipos: ExcelTipo = this.excelTipos[0];//this.excelTipos[0];
+
+   //Función para determinar el tipo de comparativo
+   tipoPeriodo() {
+      console.log(this.selectPeriodo.tipoPeriodoId);
+          if (this.selectPeriodo.tipoPeriodoId == 1) {
+            this.excelTipos = this.excelTiposMensual;
+            this.selectExcelTipos = this.excelTipos[0];
+          } else {
+            this.excelTipos = this.excelTiposBimestral;
+            this.selectExcelTipos = this.excelTipos[0];
+          }
+          this.myInput.nativeElement.value = '';
+          this.archivoNombre = "";
+          this.temporalJson = [];
+          this.suaJson = [];
+          this.emaJson = [];
+          this.empleadoColumnas = [];
+          this.excelTipoIdSua = 0;
+          this.excelTipoIdTemplate = 0;
+          this.excelTipoIdEma = 0;
+          this.selectBimestre = this.bimestres[0];
+          this.selectMes = this.meses[0];
+    }
 
   ngOnInit(): void {
     this.getCurrentUser();
@@ -143,18 +195,18 @@ export class CargarExcelComponent implements OnInit {
   public indexEma: number;
 
   //Al cambiar el tipo de periodo se reinicia todo ya que por esta variable se determina lo que se ha cargado
-  public tipoPeriodo() {
-    this.myInput.nativeElement.value = '';
-    // this.myInputSua.nativeElement.value = '';
-    // this.myInputEma.nativeElement.value = '';
-    this.temporalJson = [];
-    this.suaJson = [];
-    this.emaJson = [];
-    this.empleadoColumnas = [];
-    this.excelTipoIdSua = 0;
-    this.excelTipoIdTemplate = 0;
-    this.excelTipoIdEma = 0;
-  };
+  // public tipoPeriodo() {
+  //   this.myInput.nativeElement.value = '';
+  //   // this.myInputSua.nativeElement.value = '';
+  //   // this.myInputEma.nativeElement.value = '';
+  //   this.temporalJson = [];
+  //   this.suaJson = [];
+  //   this.emaJson = [];
+  //   this.empleadoColumnas = [];
+  //   this.excelTipoIdSua = 0;
+  //   this.excelTipoIdTemplate = 0;
+  //   this.excelTipoIdEma = 0;
+  // };
 
   public excelTipo() {
     this.myInput.nativeElement.value = '';
@@ -468,16 +520,18 @@ export class CargarExcelComponent implements OnInit {
           });
           // }, 5000);
         } else {
+          this.cambiarEstatusSpinner(false);
           Swal.fire({
-            title: 'Ya existe registro de columnas para este periodo, si continua las columnas se actualizarán, ¿Quiere continuar?',
-
+            title: 'Ya existe información cargada para este periodo, si continua se actualizarán los datos ¿Quiere continuar?',
             confirmButtonText: `Continuar`,
             denyButtonText: `Cancelar`,
             showDenyButton: true,
             icon: 'question',
             reverseButtons: true
           }).then((resultado) => {
+           
             if (resultado.isConfirmed) {
+              this.cambiarEstatusSpinner(true);
               var excelComparativoApi: ExcelComparativo = {
                 excelComparativoMes: this.selectMes.mesId,
                 excelComparativoAnio: this.selectAnio.anioId,
@@ -519,6 +573,7 @@ export class CargarExcelComponent implements OnInit {
                           timeOut: 5000
                         });
                       } else {
+                        this.cambiarEstatusSpinner(false);
                         this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
                           timeOut: 3000
                         });
@@ -549,9 +604,10 @@ export class CargarExcelComponent implements OnInit {
                   timeOut: 3000
                 });
               });
-            } else if (result.isDenied) {
-              Swal.fire('Carga de información cancelada', '', 'error')
+            } else {
               this.cambiarEstatusSpinner(false);
+              Swal.fire('Carga de información cancelada', '', 'error')
+              
             }
           })
 
@@ -566,6 +622,9 @@ export class CargarExcelComponent implements OnInit {
   }
 
   public CargarDatosExcel() {
+    if (this.selectPeriodo.tipoPeriodoId == 2){
+      this.selectMes.mesId = this.selectBimestre.bimestreId;
+    }
     switch (this.selectExcelTipos.excelTipoId) {
       case 2:
         this.CargarDatos(this.indexTemplate, this.temporalJson, this.columnaNombresTemplate, this.excelTipoIdTemplate);
@@ -857,26 +916,30 @@ export class CargarExcelComponent implements OnInit {
   }
 
   public Cargar(ev) {
-    // console.log(this.selectExcelTipos.excelTipoId);
+    //  console.log(this.selectExcelTipos.excelTipoId + " ***");
     switch (this.selectExcelTipos.excelTipoId) {
       case 2:
-        this.selectPeriodo.tipoPeriodoId = 1
+        this.selectPeriodo = this.periodoTipos[0]
         this.CargarTem(ev);
         break;
       case 3:
-        this.selectPeriodo.tipoPeriodoId = 2
+        this.selectPeriodo = this.periodoTipos[1]
         this.CargarTem(ev);
         break;
       case 4:
-        this.selectPeriodo.tipoPeriodoId = 1
+          if (this.selectPeriodo.tipoPeriodoId == 1){
+          this.selectPeriodo = this.periodoTipos[0]
+          }else{
+          this.selectPeriodo = this.periodoTipos[1]
+          }
         this.CargarExcelSua(ev);
         break;
       case 5:
-        this.selectPeriodo.tipoPeriodoId = 1
+        this.selectPeriodo = this.periodoTipos[0]
         this.CargarEMA(ev);
         break;
       case 6:
-        this.selectPeriodo.tipoPeriodoId = 2
+        this.selectPeriodo = this.periodoTipos[1]
         this.CargarEMA(ev);
         break;
       default:

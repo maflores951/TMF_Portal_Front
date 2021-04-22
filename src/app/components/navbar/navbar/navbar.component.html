@@ -2,11 +2,15 @@
 
     <!-- <a class="navbar-brand"  routerLink="/">{{app_name}}</a> -->
     <!--<a class="navbar-brand " routerLink=""><img class="imgRedonda" src="https://media.licdn.com/dms/image/C4E0BAQGtTED2gCqfwA/company-logo_200_200/0?e=2159024400&v=beta&t=74WfkzA5dSIitR6XKT54Sjsl4uCzBg9WXVPiHGEgczQ"></a>-->
-    <a class="navbar-brand " routerLink=""><img class="imgRedonda" src="assets/TMF_Logo_Esp.png"></a>
+    <a class="navbar-brand " routerLink=""><img class="imgRedonda" src="assets/TMF_Group_logo.gif"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar"
             aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <div *ngIf="fechaBandera">
+      <span style="color: #d9cc00">{{fechaMensaje}}</span>
+    </div>
   
     <div class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav ml-auto">
@@ -38,7 +42,7 @@
           <a class="nav-link">Configuración</a>
           <ul>
 
-            <li><a routerLink="/configuracion/catalogo-sua">Configuración SUA</a></li>
+            <li><a routerLink="/configuracion/catalogo-sua">Configuración Reportes</a></li>
             <!-- <li><a routerLink="/catalogos/catalogo-parametros">Parametros</a></li>
             <li><a routerLink="/catalogos/catalogo-roles">Tipos de usuario</a></li>
             <li><a routerLink="/catalogos/catalogo-usuarios">Usuarios</a></li> -->
@@ -61,7 +65,7 @@
         <span>{{email}}</span>
       </div>
 
-      <section>
+      <!-- <section>
         <div class="coming-soon" *ngIf="isLogged">
             <div class="time-countdown">
                 <ul>
@@ -69,14 +73,9 @@
                     <li class="count-bg-four radius"><span id="puntos">:</span></li>
                     <li class="count-bg-four radius"><span id="seconds">{{seconds}}</span></li>
                 </ul>
-                <!-- <ul>
-                  <button (click)="onComenzar()">Comenzar</button>
-                </ul>
-                <ul>
-                  <button (click)="onDetener()">Detener</button>
-                </ul> -->
+               
             </div>
         </div>
-    </section>
+    </section> -->
     </div>
   </nav>

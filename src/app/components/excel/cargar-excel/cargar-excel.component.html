@@ -6,23 +6,43 @@
 
     <table cellpadding="10">
 
-      <tr>
-        <td width="5%"><b>Mes</b></td>
 
-        <td width="30%"><select id="meses" name="meses" class="form-control" [(ngModel)]="selectMes">
-            <option *ngFor="let mes of meses; let index = index" [ngValue]="mes">{{mes.mesNombre}}</option>
+      <tr>
+        <td width="5%"><b>Tipo periodo</b></td>
+
+        <td width="30%"><select id="selectPeriodo" name="periodoTipoId" class="form-control"
+            [(ngModel)]="selectPeriodo"  (change)="tipoPeriodo()">
+
+            <option *ngFor="let periodoTipo of periodoTipos; let index = index" [ngValue]="periodoTipo">
+              {{periodoTipo.tipoPeriodoNombre}}</option>
           </select></td>
+
+        
+          <td width="5%" *ngIf="this.selectPeriodo.tipoPeriodoId == 2; else noOwner"><b>Bimestre</b></td>
+
+          <td width="30%" *ngIf="this.selectPeriodo.tipoPeriodoId == 2;"><select id="bimestres" name="bimestres" class="form-control" [(ngModel)]="selectBimestre">
+              <option *ngFor="let bimestre of bimestres; let index = index" [ngValue]="bimestre">
+                {{bimestre.bimestreNombre}}</option>
+            </select></td>
+
+        <ng-template #noOwner>
+          <td width="5%"><b>Mes</b></td>
+
+          <td width="30%"><select id="meses" name="meses" class="form-control" [(ngModel)]="selectMes">
+              <option *ngFor="let mes of meses; let index = index" [ngValue]="mes">{{mes.mesNombre}}</option>
+            </select></td>
+        </ng-template>
+
+
+      </tr>
+
+      <tr>
 
         <td width="5%"><b>Año</b></td>
 
         <td width="30%"><select id="anios" name="anios" class="form-control" [(ngModel)]="selectAnio">
             <option *ngFor="let anio of anios; let index = index" [ngValue]="anio">{{anio.anioValor}}</option>
           </select></td>
-      </tr>
-      
-      <tr>
-
-
         <!-- <td width="5%"><b>Periodo</b></td>
 
         <td width="30%"><select id="tipoPeriodo" name="tipoPeriodo" class="form-control" [(ngModel)]="selectPeriodo"
@@ -31,17 +51,19 @@
               {{tipoPeriodo.tipoPeriodoNombre}}</option>
           </select></td> -->
 
-          <td width="5%"><b>Archivo</b></td>
+        <td width="5%"><b>Archivo</b></td>
 
-          <td width="30%"><select id="excelTipo" name="excelTipo" class="form-control" [(ngModel)]="selectExcelTipos" (change)="excelTipo()">
-              <option *ngFor="let excelTipo of excelTipos; let index = index" [ngValue]="excelTipo">{{excelTipo.excelNombre}}</option>
-            </select></td>
+        <td width="30%"><select id="excelTipo" name="excelTipo" class="form-control" [(ngModel)]="selectExcelTipos"
+            (change)="excelTipo()">
+            <option *ngFor="let excelTipo of excelTipos; let index = index" [ngValue]="excelTipo">
+              {{excelTipo.excelNombre}}</option>
+          </select></td>
 
 
 
       </tr>
 
-      
+
 
     </table>
   </div>
@@ -53,7 +75,7 @@
 
       <div class="container">
 
-         <div class="card">
+        <div class="card">
           <!--<th>
             <div class="container">
               <div class="row">

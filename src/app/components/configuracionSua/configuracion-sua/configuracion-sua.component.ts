@@ -504,7 +504,8 @@ export class ConfiguracionSuaComponent implements OnInit {
           this.configuracionSua = {
             confSuaNombre: formSua.value.confSuaNombre,
             confSuaEstatus: false,
-            configuracionSuaNivel: this.configuracionSuaNivel
+            configuracionSuaNivel: this.configuracionSuaNivel,
+            configuracionSuaTipo: this.selectPeriodo.tipoPeriodoId
           }
           this.configuracionSuaService.add(this.configuracionSua).subscribe(response => {
             if (response.exito === 1) {
