@@ -156,9 +156,13 @@ export class NavbarComponent implements OnInit {
 
       //  console.log(this.fechaPass + " Dias****");
       if (this.fechaPass <= 10) {
+        if(this.fechaPass > 1){
         this.fechaBandera = true;
         this.fechaMensaje = "Su contraseña expira en " + this.fechaPass + " días, solicite una nueva desde el Login de la aplicación."
-      } else {
+      }else{
+        this.fechaBandera = true;
+        this.fechaMensaje = "Su contraseña expira en " + this.fechaPass + " día, solicite una nueva desde el Login de la aplicación."
+      }} else {
         this.fechaBandera = false;
       }
       // this.fechaPass = this.usuario.usuarioFechaLimite - new Date()

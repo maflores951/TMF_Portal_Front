@@ -45,8 +45,8 @@ export class AppComponent {
     //  idle.onIdleEnd.subscribe(() => this.idleState = 'No longer idle.');
     idle.onTimeout.subscribe(() => {
       this.idleState = 'Timed out!';
-      this.apiAuthService.logout();
       this.timedOut = true;
+      this.apiAuthService.logout();
     });
     //  idle.onIdleStart.subscribe(() => this.idleState = 'You\'ve gone idle!');
     idle.onTimeoutWarning.subscribe((countdown) => {

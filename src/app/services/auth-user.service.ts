@@ -59,6 +59,7 @@ export class AuthUserService {
       NavbarComponent.updateUserStatus.next(true);
       // this.router.navigate(['']);
       this.router.navigate(['/user/login']);
+      
     }
 
     actualizarLogin(usuario){

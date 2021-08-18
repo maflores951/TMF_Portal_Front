@@ -123,7 +123,7 @@ export class ReporteCompararSuaComponent implements OnInit {
 
   // }
   tipoConfig() {
-    console.log("Entra reporte " + this.configuracionSua.configuracionSuaTipo)
+    // console.log("Entra reporte " + this.configuracionSua.configuracionSuaTipo)
     if (this.configuracionSua.configuracionSuaTipo == 1) {
       this.selectPeriodo = this.tipoPeriodos[0];
     } else {
@@ -165,8 +165,10 @@ export class ReporteCompararSuaComponent implements OnInit {
         }).then((resultado) => {
           if (resultado.isConfirmed) {
             this.cambiarEstatusSpinner(true);
+            //APi para ejecutar reporte sin hilos
             this.dataApi.Post('/Sua/Excel', parametros).subscribe(result => {
-
+              //Api para ejecutar reporte con hilos
+              // this.dataApi.Post('/SuaHilos/Excel', parametros).subscribe(result => {
               //Se recupera un string en base64 y se restaura a un archivo xlsx
               var variable: Response = result;
               if (variable.exito == 1) {

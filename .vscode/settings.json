@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/fb0a1a91-095e-49f2-9897-d3d5a23599fc/resourceGroups/jeycenine/providers/Microsoft.Web/sites/FintechFrontV1",
+    "appService.deploySubpath": "dist\\loginBaseApp"
+}

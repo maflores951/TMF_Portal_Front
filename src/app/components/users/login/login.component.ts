@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("V 2.1.3 21/04/2021");
+    console.log("V 2.1.6 03/08/2021");
   }
 
   cambiarEstatusSpinner(estatus: boolean) {
