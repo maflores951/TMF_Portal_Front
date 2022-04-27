@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="modalEmpleados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -11,7 +11,7 @@
         </div>
   
         <div class="modal-body">
-          <form #formUsuario="ngForm" [formGroup]="UsuarioForm" (ngSubmit)="onSaveUsuario(formUsuario)">
+          <form #formUsuario="ngForm" [formGroup]="UsuarioForm" (ngSubmit)="onSaveEmpleado(formUsuario)">
             <input type="hidden" name="UsuarioId" [(ngModel)]="this.dataApi.SelectedUsuario.usuarioId" formControlName="UsuarioId">
             <input type="hidden" name="userUid" [value]="userUid">
   
@@ -172,7 +172,7 @@
             </ng-template>
                
   
-            <div class="form-group required">
+            <!-- <div class="form-group required">
               <label for="RolId">Tipo</label>
               <select name="RolId" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.rolId" formControlName="RolId">
                 <option [value]="i.rolId" *ngFor="let i of userTypes">{{i.rolNombre}}</option>
@@ -186,12 +186,11 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
   
-            <div class="form-group noRequired">
+            <div class="form-group required">
               <label for="EmpresaId">Empresa</label>
               <select name="EmpresaId" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.empresaId" formControlName="EmpresaId">
-                <option [value]="null">selección:</option>
                 <option [value]="i.empresaId" *ngFor="let i of empresas">{{i.empresaNombre}}</option>
               </select>
   
@@ -205,7 +204,7 @@
               </div>
             </div>
 
-            <div class="form-group noRequired" > 
+            <div class="form-group required" > 
               <label for="EmpleadoNoEmp">Número de empleado:</label>
               <input type="text" name="EmpleadoNoEmp" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.empleadoNoEmp" maxlength="50" formControlName="EmpleadoNoEmp" placeholder="Ingresa el número de empleado">
   
@@ -213,6 +212,20 @@
   
                 <div *ngFor="let validation of user_validation_messages.EmpleadoNoEmp">
                   <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('UsuarioClave').hasError(validation.type) && (UsuarioForm.get('EmpleadoNoEmp').dirty || UsuarioForm.get('EmpleadoNoEmp').touched)">
+                    {{validation.message}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group required" > 
+              <label for="EmpleadoRFC">Empleado RFC:</label>
+              <input type="text" name="EmpleadoRFC" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.empleadoRFC" maxlength="20" formControlName="EmpleadoRFC" placeholder="Ingresa el RFC del empleado">
+  
+              <div class="alert-danger" *ngIf="EmpleadoRFC.invalid && (EmpleadoRFC.dirty || EmpleadoRFC.touched)">
+  
+                <div *ngFor="let validation of user_validation_messages.EmpleadoRFC">
+                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('UsuarioClave').hasError(validation.type) && (UsuarioForm.get('EmpleadoRFC').dirty || UsuarioForm.get('EmpleadoRFC').touched)">
                     {{validation.message}}
                   </div>
                 </div>
@@ -253,7 +266,7 @@
   
   
             <div class="modal-footer">
-              <button type="button" (click)="CerrarMU(formUsuario)" class="btn btn-secondary" #btnClose data-dismiss="modal">Cerrar</button>
+              <button type="button" (click)="CerrarME(formUsuario)" class="btn btn-secondary" #btnClose data-dismiss="modal">Cerrar</button>
               <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
   

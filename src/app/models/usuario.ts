@@ -1,3 +1,4 @@
+import { Empresa } from './empresa';
 import { Rol } from "./rol";
 
 export interface Usuario {
@@ -35,4 +36,15 @@ export interface Usuario {
 
   usuarioFullName?: string;
 
+  empleadoNoEmp?: string;
+
+  empleadoRFC?: string;
+
+  empresaId?: number;
+
+  empresa?: Empresa;
 }
+
+
+
+

@@ -1,0 +1,27 @@
+.noRequired label {
+    font-weight: bold;
+  }
+  
+  .required label {
+    font-weight: bold;
+  }
+  
+    .required label:after {
+      color: #e32;
+      content: ' *';
+      display: inline;
+    }
+  
+  .image-upload > input {
+    display: none;
+  }
+  
+  .image-upload img {
+    width: 150px;
+    cursor: pointer;
+    align-content: center;
+    margin-left: 100%;
+    border-radius: 150px;
+  }
+  
+  

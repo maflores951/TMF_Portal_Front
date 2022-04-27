@@ -1,0 +1,52 @@
+<section class="row mt-5">
+    <div class="col">
+      <p></p>
+      <h1 class="h3 mb-3 font-weight-normal">Empresas</h1>
+      <table cellpadding="10" >
+  
+        <tr>
+  
+          <!-- <td width="10%"><b>Id</b></td>
+  
+          <td width="40%"><input type="text" name="empresaId" class="form-control" [(ngModel)]="empresaId"/></td>
+   -->
+          <td width="10%"><b>Nombre</b></td>
+  
+          <td width="40%"><input type="text" name="empresaNombre" class="form-control" [(ngModel)]="empresaNombre"/></td>
+  
+        </tr>
+  
+      </table>
+      <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#modalEmpresa" (click)="onPreUpdateEmpresa(null)">
+        Nuevo
+        registro
+      </button>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <!-- <th scope="col">Id</th> -->
+            <th scope="col">Nombre</th>
+            <th scope="col">&nbsp;</th>
+            <th scope="col">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let empresa of empresas | filterEmpresas: empresaNombre : empresaNombre ; index as i ">
+            <th scope="row">{{i+1}}</th>
+            <!-- <td>{{empresa.empresaId}}</td> -->
+            <td>{{empresa.empresaNombre}}</td>
+            <td >
+              <button class="btn btn-primary" data-toggle="modal" data-target="#modalEmpresa" (click)="onPreUpdateEmpresa(empresa)">Actualizar</button>
+            </td>  
+            <td>
+              <button class="btn btn-danger" (click)="onDeleteEmpresa(empresa)">Eliminar</button>
+            </td>
+            
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <app-modal-empresa [userUid]='userUid'></app-modal-empresa>
+  

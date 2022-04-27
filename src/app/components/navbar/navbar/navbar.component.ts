@@ -51,6 +51,10 @@ export class NavbarComponent implements OnInit {
   public fechaMensaje: string;
   public fechaBandera: boolean;
 
+  //Variables para configurar la empresa
+  public fotoEmpresa: string;
+  public color: string;
+
   _second = 1000;
   _minute = this._second * 60;
   _hour = this._minute * 60;
@@ -139,8 +143,10 @@ export class NavbarComponent implements OnInit {
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
     if (!this.usuario) {
+      this.fotoEmpresa = "assets/TMF_Logo.png"
       this.isLogged = false;
     } else {
+      // console.log( JSON.stringify(this.usuario) + ' ******')
       //Se utiliza para iniciar el timer
       // this.iniciarTimer();
       var today = new Date().toLocaleDateString();
@@ -154,15 +160,16 @@ export class NavbarComponent implements OnInit {
 
       this.fechaPass = this.recuperaDias(today, usuarioFecha);
 
-      //  console.log(this.fechaPass + " Dias****");
-      if (this.fechaPass <= 10) {
+        // console.log(this.fechaPass + " Dias****");
+      if (this.fechaPass <= 10 && this.fechaPass >= 1) {
         if(this.fechaPass > 1){
         this.fechaBandera = true;
         this.fechaMensaje = "Su contraseña expira en " + this.fechaPass + " días, solicite una nueva desde el Login de la aplicación."
-      }else{
+        }else{
         this.fechaBandera = true;
         this.fechaMensaje = "Su contraseña expira en " + this.fechaPass + " día, solicite una nueva desde el Login de la aplicación."
-      }} else {
+        }
+      } else {
         this.fechaBandera = false;
       }
       // this.fechaPass = this.usuario.usuarioFechaLimite - new Date()
@@ -191,6 +198,21 @@ export class NavbarComponent implements OnInit {
         // this.foto = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
 
       }
+
+      if (this.usuario.empresa.empresaLogo == null) {
+        this.fotoEmpresa = "assets/TMF_Logo.png"//"https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+      } else {
+        this.fotoEmpresa = environment.baseUrl + "/" + this.usuario.empresa.empresaLogo;
+        // this.foto = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+
+      }
+
+       if(this.usuario.empresa.empresaColor !== null){
+        this.color = this.usuario.empresa.empresaColor;
+        console.log(this.color + ' *****')
+       }
+
+      
     }
   }
 

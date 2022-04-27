@@ -1,0 +1,78 @@
+<section class="row mt-5">
+    <div class="col">
+      <p></p>
+      <h1 class="h3 mb-3 font-weight-normal">Empleados</h1>
+      <table cellpadding="10" >
+  
+        <tr>
+  
+          <td width="10%"><b>No Empleado</b></td>
+  
+          <td width="40%"><input type="text" name="empleadoNoEmp" class="form-control" [(ngModel)]="empleadoNoEmp"/></td>
+  
+          <td width="10%"><b>Email</b></td>
+  
+          <td width="40%"><input type="text" name="email" class="form-control" [(ngModel)]="email"/></td>
+  
+        </tr>
+  
+        <tr>
+  
+          <td width="10%"><b>Apellido Paterno</b></td>
+  
+          <td width="40%"><input type="text" name="usuarioApellidoP" class="form-control" [(ngModel)]="usuarioApellidoP"/></td>
+  
+          <td width="10%"><b>Empresa</b></td>
+  
+          <td width="40%"><input type="text" name="empresaNombre" class="form-control" [(ngModel)]="empresaNombre"/></td>
+  
+        </tr>
+  
+      </table>
+      <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#modalEmpleados" (click)="onPreUpdateEmpleado(null)">
+        Nuevo
+        registro
+      </button>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Empleado No.</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Apellido paterno</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Email</th>
+            <!-- <th scope="col">Tipo</th> -->
+            <th scope="col">No. Emp.</th>
+            <th scope="col">Empresa</th>
+            <th scope="col">&nbsp;</th>
+            <th scope="col">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users | filterEmpleados:{ empleadoNoEmp : empleadoNoEmp, email : email, usuarioApellidoP : usuarioApellidoP,empresaNombre : empresaNombre } ; index as i ">
+            <th scope="row">{{i+1}}</th>
+            <td>{{user.empleadoNoEmp}}</td>
+            <td>{{user.usuarioClave}}</td>
+            <td>{{user.usuarioApellidoP}}</td>
+            <td>{{user.usuarioNombre}}</td>
+            <td>{{user.email}}</td>
+            <!-- <td>{{user.rol.rolNombre}}</td> -->
+            <td>{{user.empleadoNoEmp}}</td>
+            <td>{{user.empresa.empresaNombre}}</td>
+            <td >
+              <button class="btn btn-primary" data-toggle="modal" data-target="#modalEmpleados" (click)="onPreUpdateEmpleado(user)">Actualizar</button>
+            </td>
+           
+  
+            <td>
+              <button class="btn btn-danger" (click)="onDeleteEmpleado(user)">Eliminar</button>
+            </td>
+            
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <app-modal-empleados [userUid]='userUid'></app-modal-empleados>
+  

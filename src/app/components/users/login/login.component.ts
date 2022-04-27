@@ -89,6 +89,12 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
+
+    // var prueba = this.cifrado.encrypt('123456');
+
+    // var prueba = this.cifrado.desEncrypt('TzXXRuCVUw+9dB2kLNNSnw==');
+
+    
     if (this.UsuarioForm.valid) {
       this.cambiarEstatusSpinner(true);
       this.UsuarioForm.value.PasswordLogin = this.cifrado.encrypt(this.UsuarioForm.value.PasswordLogin);

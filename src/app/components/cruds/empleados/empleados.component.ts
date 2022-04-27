@@ -9,25 +9,25 @@ import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-usuarios',
-  templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.css']
+  selector: 'app-empleados',
+  templateUrl: './empleados.component.html',
+  styleUrls: ['./empleados.component.css']
 })
-export class UsuariosComponent implements OnInit {
-  public static updateUsers: Subject<boolean> = new Subject();
+export class EmpleadosComponent implements OnInit {
+  public static updateEmpleados: Subject<boolean> = new Subject();
 
   constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService, private toastr: ToastrService) {
-    UsuariosComponent.updateUsers.subscribe(res => {
+    EmpleadosComponent.updateEmpleados.subscribe(res => {
       setTimeout(() => {
         this.getListUsers();
       }, 100)
     })
   }
 
-  public usuarioId = '';
+  public empleadoNoEmp = '';
   public email = '';
   public usuarioApellidoP = '';
-  public usuarioApellidoM = '';
+  public empresaNombre = '';
   public usuario: Usuario;
   public users: Observable<Usuario[]>;
   public isAdmin: any = null;
@@ -69,7 +69,7 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  onDeleteUser(user: Usuario): void {
+  onDeleteEmpleado(user: Usuario): void {
     this.cambiarEstatusSpinner(true);
     Swal.fire({
       title: '¿Quiere eliminar el registro?',
@@ -94,8 +94,7 @@ export class UsuariosComponent implements OnInit {
     })
   }
 
-  onPreUpdateUser(user: Usuario) {
-    console.log(JSON.stringify(user))
+  onPreUpdateEmpleado(user: Usuario) {
     if (user == null){
       this.dataApi.SelectedUsuario = Object.assign({}, user);
     }else{

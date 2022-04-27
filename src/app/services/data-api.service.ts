@@ -1,15 +1,12 @@
+import { Empresa } from './../models/empresa';
 import { Injectable } from '@angular/core';
 import { Observable, from, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams, HttpClientModule } from '@angular/common/http';
 import { Usuario } from '../models/usuario';
 import { Parametro } from '../models/parametro';
 import { Rol } from '../models/rol';
-import { ConfiguracionSua } from '../models/Sua/configuracionSua';
-import { ConfiguracionSuaNivel } from '../models/Sua/configuracionSuaNivel';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
-import { TipoPeriodo } from '../models/TipoPeriodo';
-import { ExcelTipo } from '../models/Excel/ExcelTipo';
 
 const httpOption = {
   headers: new HttpHeaders({
@@ -123,28 +120,8 @@ export class DataApiService {
     rolId: null
   };
 
-  private cargarModalConfSubject = new Subject<ConfiguracionSuaNivel[]>();
-  cargarModalConfObservable = this.cargarModalConfSubject.asObservable();
-
-  validarEspera(modal: ConfiguracionSuaNivel[]) {
-    this.cargarModalConfSubject.next(modal);
-  }
-
-  private cargarTipoExcelConfSubject = new Subject<ExcelTipo[]>();
-  cargarTipoExcelConfObservable = this.cargarTipoExcelConfSubject.asObservable();
-
-  cargarTipoExcel(modal: ExcelTipo[]) {
-    this.cargarTipoExcelConfSubject.next(modal);
-  }
-
-  private cargarTipoPeriodoConfSubject = new Subject<TipoPeriodo[]>();
-  cargarTipoPeriodoConfObservable = this.cargarTipoPeriodoConfSubject.asObservable();
-
-  cargarTipoPeriodo(modal: TipoPeriodo[]) {
-    this.cargarTipoPeriodoConfSubject.next(modal);
-  }
-
-  public SelectedconfiguracionSua: ConfiguracionSua = {
-    configuracionSuaId: null
+  public SelectedEmpresa: Empresa = {
+    empresaId: null
   };
+
 }

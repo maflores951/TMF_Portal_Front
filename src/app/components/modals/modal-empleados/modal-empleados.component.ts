@@ -1,3 +1,4 @@
+import { EmpleadosComponent } from './../../cruds/empleados/empleados.component';
 import { Empresa } from './../../../models/empresa';
 import { Component, OnInit, ViewChild, ElementRef, Input, NgModule } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -17,11 +18,11 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 import { AuthUserService } from 'src/app/services/auth-user.service';
 
 @Component({
-  selector: 'app-modal-usuario',
-  templateUrl: './modal-usuario.component.html',
-  styleUrls: ['./modal-usuario.component.css']
+  selector: 'app-modal-empleados',
+  templateUrl: './modal-empleados.component.html',
+  styleUrls: ['./modal-empleados.component.css']
 })
-export class ModalUsuarioComponent implements OnInit {
+export class ModalEmpleadosComponent implements OnInit {
 
   private emailPattern: any = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
   private nombrePattern: any = /^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$/;
@@ -52,6 +53,7 @@ export class ModalUsuarioComponent implements OnInit {
   get UsuarioClave() { return this.UsuarioForm.get('UsuarioClave'); }
   get EmpleadoNoEmp() { return this.UsuarioForm.get('EmpleadoNoEmp'); }
   get EmpresaId() { return this.UsuarioForm.get('EmpresaId'); }
+  get EmpleadoRFC() { return this.UsuarioForm.get('EmpleadoRFC'); }
 
   user_validation_messages = {
     'UsuarioId': [],
@@ -135,10 +137,28 @@ export class ModalUsuarioComponent implements OnInit {
         message: 'El email no es valido'
       }
     ],
-    'RolId': [
+    // 'RolId': [
+    //   {
+    //     type: 'required',
+    //     message: 'El tipo de usuario es requerido'
+    //   }
+    // ],
+    'EmpleadoNoEmp': [
       {
         type: 'required',
-        message: 'El tipo de usuario es requerido'
+        message: 'El número de empleado es requerido'
+      }
+    ],
+    'EmpresaId': [
+      {
+        type: 'required',
+        message: 'La empresa es requerida'
+      }
+    ],
+    'EmpleadoRFC': [
+      {
+        type: 'required',
+        message: 'La empresa es requerida'
       }
     ],
   }
@@ -172,15 +192,17 @@ export class ModalUsuarioComponent implements OnInit {
         [Validators.required,
         Validators.pattern(this.emailPattern)
         ]),
-      RolId: new FormControl('',
-        [Validators.required
-        ]),
+      // RolId: new FormControl('',
+      //   [Validators.required
+      //   ]),
       Foto: new FormControl('',
         []),
       EmpleadoNoEmp: new FormControl('',
-      []),
+      [Validators.required]),
       EmpresaId: new FormControl('',
-      []),
+      [Validators.required]),
+      EmpleadoRFC: new FormControl('',
+      [Validators.required]),
     });
   }
 
@@ -195,11 +217,11 @@ export class ModalUsuarioComponent implements OnInit {
   urlImage: Observable<string>;
 
   ngOnInit() {
-    this.cambiarEstatusSpinner(true);
+    // this.cambiarEstatusSpinner(true);
     this.RecuperaUserTypes();
     this.RecuperaEmpresas();
     this.imageSrc = ""
-    this.cambiarEstatusSpinner(false);
+    // this.cambiarEstatusSpinner(false);
   }
 
   cambiarEstatusSpinner(estatus: boolean) {
@@ -269,13 +291,14 @@ export class ModalUsuarioComponent implements OnInit {
   }
 
 
-  onSaveUsuario(formUsuario): void {
+  onSaveEmpleado(formUsuario): void {
     this.cambiarEstatusSpinner(true);
     if (this.UsuarioForm.valid) {
       if (this.UsuarioForm.value.UsuarioId == null) {
         this.UsuarioForm.value.Password = this.cifrado.encrypt(this.UsuarioForm.value.Password);
         this.UsuarioForm.value.UsuarioId = 0;
         this.UsuarioForm.value.UsuarioEstatusSesion = false;
+        this.UsuarioForm.value.RolId = 2; //TODO actualizar al id correcto
         if (this.file != null) {
           let file = this.file;
           let reader = new FileReader();
@@ -305,9 +328,9 @@ export class ModalUsuarioComponent implements OnInit {
               this.cambiarEstatusSpinner(false);
               formUsuario.resetForm();
               this.UsuarioForm.reset();
-              UsuariosComponent.updateUsers.next(true);
+              EmpleadosComponent.updateEmpleados.next(true);
               NavbarComponent.updateUserStatus.next(true);
-              PerfilComponent.updateUsers.next(true);
+              // PerfilComponent.updateUsers.next(true);
               this.btnClose.nativeElement.click();
             } else {
               this.toastr.error(result.mensaje, 'Error', {
@@ -349,42 +372,43 @@ export class ModalUsuarioComponent implements OnInit {
           this.UsuarioForm.value.Password = this.cifrado.encrypt(this.UsuarioForm.value.Password);
           this.UsuarioForm.value.RolId = parseInt(this.UsuarioForm.value.RolId);
           this.UsuarioForm.value.UsuarioEstatusSesion = false;
+          this.UsuarioForm.value.RolId = 2; //TODO actualizar al id correcto
           this.dataApi.Put('/Usuarios', this.UsuarioForm.value.UsuarioId, this.UsuarioForm.value);
         }, 300)
         setTimeout(() => {
 
-          if (this.usuario.usuarioId == this.UsuarioForm.value.UsuarioId) {
-            this.dataApi.GetListId('/Usuarios', this.usuario.usuarioId).subscribe(result => {
+          // if (this.usuario.usuarioId == this.UsuarioForm.value.UsuarioId) {
+          //   this.dataApi.GetListId('/Usuarios', this.usuario.usuarioId).subscribe(result => {
 
-              const usuario: Usuario = result;
-              usuario.usuarioToken = this.usuario.usuarioToken;
-              setTimeout(() => {
-                this.authUserService.actualizarLogin(usuario);
-              }, 500)
-              setTimeout(() => {
-                this.cambiarEstatusSpinner(false);
-                formUsuario.resetForm();
-                this.UsuarioForm.reset();
-                UsuariosComponent.updateUsers.next(true);
-                NavbarComponent.updateUserStatus.next(true);
-                PerfilComponent.updateUsers.next(true);
-                this.btnClose.nativeElement.click();
-              }, 1000)
-                , error => {
-                  this.toastr.error('Errores en el servidor intente más tarde.', 'Error', {
-                    timeOut: 3000
-                  });
-                };
-            });
-          } else {
+          //     const usuario: Usuario = result;
+          //     usuario.usuarioToken = this.usuario.usuarioToken;
+          //     setTimeout(() => {
+          //       this.authUserService.actualizarLogin(usuario);
+          //     }, 500)
+          //     setTimeout(() => {
+          //       this.cambiarEstatusSpinner(false);
+          //       formUsuario.resetForm();
+          //       this.UsuarioForm.reset();
+          //       UsuariosComponent.updateUsers.next(true);
+          //       NavbarComponent.updateUserStatus.next(true);
+          //       PerfilComponent.updateUsers.next(true);
+          //       this.btnClose.nativeElement.click();
+          //     }, 1000)
+          //       , error => {
+          //         this.toastr.error('Errores en el servidor intente más tarde.', 'Error', {
+          //           timeOut: 3000
+          //         });
+          //       };
+          //   });
+          // } else {
             this.cambiarEstatusSpinner(false);
             formUsuario.resetForm();
             this.UsuarioForm.reset();
-            UsuariosComponent.updateUsers.next(true);
+            EmpleadosComponent.updateEmpleados.next(true);
             NavbarComponent.updateUserStatus.next(true);
-            PerfilComponent.updateUsers.next(true);
+            // PerfilComponent.updateUsers.next(true);
             this.btnClose.nativeElement.click();
-          }
+          // }
         }, 500);
       }
 
@@ -399,7 +423,7 @@ export class ModalUsuarioComponent implements OnInit {
 
   }
 
-  CerrarMU(formUsuario): void {
+  CerrarME(formUsuario): void {
     this.imageSrc = ""
     formUsuario.resetForm();
     this.UsuarioForm.reset();

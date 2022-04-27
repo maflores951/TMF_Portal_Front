@@ -29,18 +29,23 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { FilterParametroPipe } from './pipes/filter-parametro.pipe';
 import { FilterRolPipe } from './pipes/filter-rol.pipe';
 import { MatSpinnerOverlayComponent } from './spinner/mat-spinner-overlay/mat-spinner-overlay.component';
-import { ConfiguracionSuaComponent } from './components/configuracionSua/configuracion-sua/configuracion-sua.component';
  import { MatFormFieldModule } from '@angular/material/form-field';
  import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { ConfigSuaComponent } from './components/cruds/config-sua/config-sua.component';
-import { FilterSuaPipe } from './pipes/filter-sua.pipe';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
-import { CargarExcelComponent } from './components/excel/cargar-excel/cargar-excel.component';
-import { ReporteCompararSuaComponent } from './components/reportes/reporte-comparar-sua/reporte-comparar-sua.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { EmpresasComponent } from './components/cruds/empresas/empresas.component';
+import { ModalEmpresaComponent } from './components/modals/modal-empresa/modal-empresa.component';
+import { CargarRecibosComponent } from './components/cargarRecibos/cargar-recibos/cargar-recibos.component';
+import { ConsultaReciboComponent } from './components/consultaRecibo/consulta-recibo/consulta-recibo.component';
+import { EnviarRecibosComponent } from './components/enviar-recibos/enviar-recibos.component';
+import { BorrarRecibosComponent } from './components/borrar-recibos/borrar-recibos.component';
+import { FilterEmpresasPipe } from './pipes/filter-empresas.pipe';
+import { EmpleadosComponent } from './components/cruds/empleados/empleados.component';
+import { ModalEmpleadosComponent } from './components/modals/modal-empleados/modal-empleados.component';
+import { FilterEmpleadosPipe } from './pipes/filter-empleados.pipe';
 
 
 
@@ -65,11 +70,16 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
     FilterParametroPipe,
     FilterRolPipe,
     MatSpinnerOverlayComponent,
-    ConfiguracionSuaComponent,
-    ConfigSuaComponent,
-    FilterSuaPipe,
-    CargarExcelComponent,
-    ReporteCompararSuaComponent,
+    EmpresasComponent,
+    ModalEmpresaComponent,
+    CargarRecibosComponent,
+    ConsultaReciboComponent,
+    EnviarRecibosComponent,
+    BorrarRecibosComponent,
+    FilterEmpresasPipe,
+    EmpleadosComponent,
+    ModalEmpleadosComponent,
+    FilterEmpleadosPipe,
     
   ],
   imports: [

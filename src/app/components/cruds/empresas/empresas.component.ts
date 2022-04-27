@@ -1,3 +1,4 @@
+import { Empresa } from './../../../models/empresa';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, Observable } from 'rxjs';
@@ -9,33 +10,33 @@ import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-usuarios',
-  templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.css']
+  selector: 'app-empresas',
+  templateUrl: './empresas.component.html',
+  styleUrls: ['./empresas.component.css']
 })
-export class UsuariosComponent implements OnInit {
-  public static updateUsers: Subject<boolean> = new Subject();
+export class EmpresasComponent implements OnInit {
+  public static updateEmpresas: Subject<boolean> = new Subject();
 
   constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService, private toastr: ToastrService) {
-    UsuariosComponent.updateUsers.subscribe(res => {
+    EmpresasComponent.updateEmpresas.subscribe(res => {
       setTimeout(() => {
-        this.getListUsers();
+        this.getListEmpresas();
       }, 100)
     })
   }
 
-  public usuarioId = '';
-  public email = '';
-  public usuarioApellidoP = '';
-  public usuarioApellidoM = '';
+  public empresaId = '';
+  public empresaNombre = '';
+  // public usuarioApellidoP = '';
+  // public usuarioApellidoM = '';
   public usuario: Usuario;
-  public users: Observable<Usuario[]>;
+  public empresas: Observable<Empresa[]>;
   public isAdmin: any = null;
   public userUid: number = null;
 
   ngOnInit() {
-    this.cambiarEstatusSpinner(true);
-    this.getListUsers();
+    // this.cambiarEstatusSpinner(true);
+    this.getListEmpresas();
     this.getCurrentUser();
   }
 
@@ -56,10 +57,10 @@ export class UsuariosComponent implements OnInit {
    
   }
 
-  getListUsers() {
-    this.dataApi.GetList('/Usuarios').subscribe(users => {
+  getListEmpresas() {
+    this.dataApi.GetList('/Empresas').subscribe(empresas => {
       this.cambiarEstatusSpinner(false);
-      this.users = users;
+      this.empresas = empresas;
     }, error => {
       console.error(error);
       this.cambiarEstatusSpinner(false);
@@ -69,7 +70,7 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  onDeleteUser(user: Usuario): void {
+  onDeleteEmpresa(empresa: Empresa): void {
     this.cambiarEstatusSpinner(true);
     Swal.fire({
       title: '¿Quiere eliminar el registro?',
@@ -80,12 +81,12 @@ export class UsuariosComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        user.usuarioEstatusSesion = true;
+        empresa.empresaEstatus = true;
         // console.log(JSON.stringify(user));
-        this.dataApi.Put('/Usuarios', user.usuarioId, user)
+        this.dataApi.Put('/Empresas', empresa.empresaId, empresa)
         this.cambiarEstatusSpinner(false);
         setTimeout(() => {
-          this.getListUsers();
+          this.getListEmpresas();
         }, 500);
       } else if (result.isDenied) {
         Swal.fire('Carga de información cancelada', '', 'error')
@@ -94,22 +95,23 @@ export class UsuariosComponent implements OnInit {
     })
   }
 
-  onPreUpdateUser(user: Usuario) {
-    console.log(JSON.stringify(user))
-    if (user == null){
-      this.dataApi.SelectedUsuario = Object.assign({}, user);
+  onPreUpdateEmpresa(empresa: Empresa) {
+   console.log(JSON.stringify(empresa))
+    if (empresa == null){
+      this.dataApi.SelectedEmpresa = Object.assign({}, empresa);
     }else{
-     
-      if (user.imagePath == null){
-        user.imageFullPath = "assets/user.png"
+      if (empresa.empresaLogo == null){
+        empresa.empresaLogoFullPath = "assets/user.png"
       } else{
         // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath;
         //  user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
        
-        user.imageFullPath = environment.baseUrl + "/" + user.imagePath;
+        empresa.empresaLogoFullPath = environment.baseUrl + "/" + empresa.empresaLogo;
         // console.log(user.imageFullPath + " ***** Crud usuario");
       }
-      this.dataApi.SelectedUsuario = Object.assign({}, user);
+
+      // console.log(empresa)
+      this.dataApi.SelectedEmpresa = Object.assign({}, empresa);
     }
   }
 }

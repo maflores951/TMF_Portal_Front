@@ -43,6 +43,8 @@
             <th scope="col">Nombre</th>
             <th scope="col">Email</th>
             <th scope="col">Tipo</th>
+            <!-- <th scope="col">No. Emp.</th>
+            <th scope="col">Empresa</th> -->
             <th scope="col">&nbsp;</th>
             <th scope="col">&nbsp;</th>
           </tr>
@@ -56,6 +58,8 @@
             <td>{{user.usuarioNombre}}</td>
             <td>{{user.email}}</td>
             <td>{{user.rol.rolNombre}}</td>
+            <!-- <td>{{user.empleadoNoEmp}}</td>
+            <td>{{user.empresa.empresaNombre}}</td> -->
             <td >
               <button class="btn btn-primary" data-toggle="modal" data-target="#modalUsuario" (click)="onPreUpdateUser(user)">Actualizar</button>
             </td>
