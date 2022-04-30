@@ -25,7 +25,7 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <!-- <th scope="col">Id</th> -->
+            <th scope="col">Id</th> 
             <th scope="col">Nombre</th>
             <th scope="col">&nbsp;</th>
             <th scope="col">&nbsp;</th>
@@ -34,7 +34,7 @@
         <tbody>
           <tr *ngFor="let empresa of empresas | filterEmpresas: empresaNombre : empresaNombre ; index as i ">
             <th scope="row">{{i+1}}</th>
-            <!-- <td>{{empresa.empresaId}}</td> -->
+             <td>{{empresa.empresaId}}</td> 
             <td>{{empresa.empresaNombre}}</td>
             <td >
               <button class="btn btn-primary" data-toggle="modal" data-target="#modalEmpresa" (click)="onPreUpdateEmpresa(empresa)">Actualizar</button>

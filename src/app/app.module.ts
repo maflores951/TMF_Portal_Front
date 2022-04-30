@@ -46,6 +46,8 @@ import { FilterEmpresasPipe } from './pipes/filter-empresas.pipe';
 import { EmpleadosComponent } from './components/cruds/empleados/empleados.component';
 import { ModalEmpleadosComponent } from './components/modals/modal-empleados/modal-empleados.component';
 import { FilterEmpleadosPipe } from './pipes/filter-empleados.pipe';
+import { ModalCargaMasivaComponent } from './components/modals/modal-carga-masiva/modal-carga-masiva.component';
+import { FilterEnvioPipe } from './pipes/filter-envio.pipe';
 
 
 
@@ -80,6 +82,8 @@ import { FilterEmpleadosPipe } from './pipes/filter-empleados.pipe';
     EmpleadosComponent,
     ModalEmpleadosComponent,
     FilterEmpleadosPipe,
+    ModalCargaMasivaComponent,
+    FilterEnvioPipe,
     
   ],
   imports: [

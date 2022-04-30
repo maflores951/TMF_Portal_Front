@@ -1,3 +1,4 @@
+import { Usuario } from './usuario';
 import { Empresa } from './empresa';
 import { PeriodoTipo } from "./periodoTipo";
 
@@ -25,4 +26,6 @@ export interface Recibo {
     empresa?: Empresa;
 
     empresaId?: number;
+
+    usuario?: Usuario;
   }

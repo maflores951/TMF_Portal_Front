@@ -29,9 +29,14 @@
         </tr>
   
       </table>
+     
       <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#modalEmpleados" (click)="onPreUpdateEmpleado(null)">
         Nuevo
         registro
+      </button>
+
+      <button class="btn btn-info float-right mb-3 mx-4" data-toggle="modal" data-target="#modalCargaMasiva" (click)="onPreUpdateEmpleado(null)" >
+        Carga masiva
       </button>
       <table class="table table-hover">
         <thead>
@@ -75,4 +80,5 @@
     </div>
   </section>
   <app-modal-empleados [userUid]='userUid'></app-modal-empleados>
+  <app-modal-carga-masiva [userUid]='userUid'></app-modal-carga-masiva>
   

@@ -34,7 +34,7 @@ export class EmpleadosComponent implements OnInit {
   public userUid: number = null;
 
   ngOnInit() {
-    this.cambiarEstatusSpinner(true);
+    // this.cambiarEstatusSpinner(true);
     this.getListUsers();
     this.getCurrentUser();
   }
