@@ -272,7 +272,7 @@ export class EnviarRecibosComponent implements OnInit {
     console.log(new Date().getDay() + ' #######');
 
     setTimeout(() => {
-      this.dataApi.Post('/Recibos/EnviarIndividual', this.recibo).subscribe(
+      this.dataApi.Post('/Recibos/EnviarNotificacion', this.recibo).subscribe(
         (result) => {
           if (result.exito == 1) {
             this.cambiarEstatusSpinner(false);
@@ -332,7 +332,7 @@ export class EnviarRecibosComponent implements OnInit {
     };
 
     setTimeout(() => {
-      this.dataApi.Post('/Recibos/EnviarMasivo', this.recibo).subscribe(
+      this.dataApi.Post('/Recibos/NotificarMasivo', this.recibo).subscribe(
         (result) => {
           if (result.exito == 1) {
             this.cambiarEstatusSpinner(false);

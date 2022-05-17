@@ -6,7 +6,7 @@ export const environment = {
   //Azure
   //baseUrl: "https://tmfback.azurewebsites.net",
   //QA
-   baseUrl: "http://legvit.ddns.me:81/Tmf_Back",
+   baseUrl: "http://legvit.ddns.me:9096/Tmf_Masivo_Back",
     // baseUrl: "http://localhost:81/Tmf_Back",
   //Produccion
   //baseUrl: "https://stelvio/Tmf_Back",

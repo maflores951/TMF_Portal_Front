@@ -19,7 +19,9 @@ export interface Recibo {
 
     reciboEstatus: boolean;
   
-    reciboPath?: string;
+    reciboPathPDF?: string;
+
+    reciboPathXML?: string;
 
     usuarioNoEmp?: string;
 

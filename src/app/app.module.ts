@@ -48,6 +48,7 @@ import { ModalEmpleadosComponent } from './components/modals/modal-empleados/mod
 import { FilterEmpleadosPipe } from './pipes/filter-empleados.pipe';
 import { ModalCargaMasivaComponent } from './components/modals/modal-carga-masiva/modal-carga-masiva.component';
 import { FilterEnvioPipe } from './pipes/filter-envio.pipe';
+import { FilterConsultaPipe } from './pipes/filter-consulta.pipe';
 
 
 
@@ -84,6 +85,7 @@ import { FilterEnvioPipe } from './pipes/filter-envio.pipe';
     FilterEmpleadosPipe,
     ModalCargaMasivaComponent,
     FilterEnvioPipe,
+    FilterConsultaPipe,
     
   ],
   imports: [

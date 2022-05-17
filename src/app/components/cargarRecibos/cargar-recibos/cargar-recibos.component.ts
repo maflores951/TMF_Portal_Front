@@ -316,7 +316,7 @@ console.log(image)
         //  if (this.file != null) {
         var buscaComa: number = image.indexOf(',') + 1;
 
-        this.recibo.reciboPath = image.substr(buscaComa);
+        this.recibo.reciboPathPDF = image.substr(buscaComa);
 
         // console.log(JSON.stringify(this.recibo) + ' *****')
         this.dataApi
@@ -329,10 +329,34 @@ console.log(image)
                 .subscribe(
                   (result) => {
                     this.cambiarEstatusSpinner(false);
-                    // console.log(JSON.stringify(result) + ' entra');
-                    this.toastr.success(result.mensaje, 'Exito', {
-                      timeOut: 3000
-                    });
+                    // // console.log(JSON.stringify(result) + ' entra');
+                    // this.toastr.success(result.mensaje, 'Exito', {
+                    //   timeOut: 3000
+                    // });
+                    var respuestaDel: Response = result;
+                    if (respuestaDel.exito == 1) {
+                      this.cambiarEstatusSpinner(false);
+                      // this.CrearEmpleadoColumnas(index, json, columnaNombres, excelTipoId);
+                      // this.CrearEmpleadoColumnas(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
+                      // this.CrearEmpleadoColumnas(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
+                      this.toastr.success(result.mensaje, 'Exito', {
+                        timeOut: 3000
+                      });
+                      // setTimeout(() => {
+                      // }, 5000);
+                    } else {
+                      this.cambiarEstatusSpinner(false);
+                      // this.toastr.success(
+                      //   'Error en el servidor, contacte al administrador del sistema.',
+                      //   'Exito',
+                      //   {
+                      //     timeOut: 3000,
+                      //   }
+                      // );
+                      this.toastr.error(result.mensaje, 'Error', {
+                        timeOut: 3000
+                      });
+                    }
                   },
                   (error) => {
                     this.cambiarEstatusSpinner(false);
