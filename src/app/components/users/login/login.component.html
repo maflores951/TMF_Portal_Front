@@ -1,52 +1,112 @@
 <section id="login" class="mb-5 mt-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 mx-auto main-section">
-          <div class="card_login">
-            <div class="card">
-              <div class="card-body text-center">
-                <form #formLogin="ngForm" [formGroup]="UsuarioForm" (submit)="onLogin()">
-                  <h1 class="h3 mb-3 font-weight-normal">Login</h1>
-                  <div class="form-group">
-                    <input formControlName="EmailLogin" id="EmailLogin" name="EmailLogin" class="form-control" placeholder="Usuario" required>
-  
-                    <div class="alert-danger" *ngIf="EmailLogin.invalid && (EmailLogin.dirty || EmailLogin.touched)">
-  
-                      <div *ngFor="let validation of user_validation_messages.EmailLogin">
-                        <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('EmailLogin').hasError(validation.type) && (UsuarioForm.get('EmailLogin').dirty || UsuarioForm.get('EmailLogin').touched)">
-                          {{validation.message}}
-                        </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-4 mx-auto main-section">
+        <div class="card_login">
+          <div class="card">
+            <div class="card-body text-center">
+              <form
+                #formLogin="ngForm"
+                [formGroup]="UsuarioForm"
+                (submit)="onLogin()"
+              >
+                <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+                <div class="form-group">
+                  <input
+                    formControlName="EmailLogin"
+                    id="EmailLogin"
+                    name="EmailLogin"
+                    class="form-control"
+                    placeholder="Usuario"
+                    required
+                  />
+
+                  <div
+                    class="alert-danger"
+                    *ngIf="
+                      EmailLogin.invalid &&
+                      (EmailLogin.dirty || EmailLogin.touched)
+                    "
+                  >
+                    <div
+                      *ngFor="
+                        let validation of user_validation_messages.EmailLogin
+                      "
+                    >
+                      <div
+                        style="font-size: smaller !important"
+                        *ngIf="
+                          UsuarioForm.get('EmailLogin').hasError(
+                            validation.type
+                          ) &&
+                          (UsuarioForm.get('EmailLogin').dirty ||
+                            UsuarioForm.get('EmailLogin').touched)
+                        "
+                      >
+                        {{ validation.message }}
                       </div>
                     </div>
                   </div>
-  
-                  <div class="form-group">
-                    <input formControlName="PasswordLogin" type="password" id="PasswordLogin" name="PasswordLogin" class="form-control" placeholder="Contraseña" required>
-  
-                    <div class="alert-danger" *ngIf="PasswordLogin.invalid && (PasswordLogin.dirty || PasswordLogin.touched)">
-  
-                      <div *ngFor="let validation of user_validation_messages.PasswordLogin">
-                        <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('PasswordLogin').hasError(validation.type) && (UsuarioForm.get('PasswordLogin').dirty || UsuarioForm.get('PasswordLogin').touched)">
-                          {{validation.message}}
-                        </div>
+                </div>
+
+                <div class="form-group">
+                  <input
+                    formControlName="PasswordLogin"
+                    type="password"
+                    id="PasswordLogin"
+                    name="PasswordLogin"
+                    class="form-control"
+                    placeholder="Contraseña"
+                    required
+                  />
+
+                  <div
+                    class="alert-danger"
+                    *ngIf="
+                      PasswordLogin.invalid &&
+                      (PasswordLogin.dirty || PasswordLogin.touched)
+                    "
+                  >
+                    <div
+                      *ngFor="
+                        let validation of user_validation_messages.PasswordLogin
+                      "
+                    >
+                      <div
+                        style="font-size: smaller !important"
+                        *ngIf="
+                          UsuarioForm.get('PasswordLogin').hasError(
+                            validation.type
+                          ) &&
+                          (UsuarioForm.get('PasswordLogin').dirty ||
+                            UsuarioForm.get('PasswordLogin').touched)
+                        "
+                      >
+                        {{ validation.message }}
                       </div>
                     </div>
                   </div>
-  
-                  <button type="submit" class="btn btn-lg btn-primary btn-block">Ingresar</button>
-                  <p></p>
-                  <div class="form-group">
-                    <a routerLink="/user/RecuperaPass" class="form-control login-user">Recuperar contraseña</a>
-                  </div>
-                  <!-- <div class="form-group">
+                </div>
+
+                <button type="submit" class="btn btn-lg btn-primary btn-block">
+                  Ingresar
+                </button>
+                <p></p>
+                <div class="form-group">
+                  <a
+                    routerLink="/user/RecuperaPass"
+                    class="form-control login-user"
+                    >Recuperar contraseña</a
+                  >
+                </div>
+                <!-- <div class="form-group">
                     <a routerLink="/user/registro" class="form-control login-user">Registro</a>
                   </div> -->
-                </form>
-              </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
-  
+  </div>
+</section>

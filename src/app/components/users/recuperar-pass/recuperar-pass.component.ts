@@ -9,81 +9,90 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 @Component({
   selector: 'app-recuperar-pass',
   templateUrl: './recuperar-pass.component.html',
-  styleUrls: ['./recuperar-pass.component.css']
+  styleUrls: ['./recuperar-pass.component.css'],
 })
-
 @Injectable()
-
 export class RecuperarPassComponent implements OnInit {
-
   public UsuarioForm: FormGroup;
-  private emailPattern: any = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
+  private emailPattern: any =
+    /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
 
-  constructor(private router: Router, private dataApi: DataApiService, private cifrado: CifradoDatosService, private toastr: ToastrService, private spinner: SpinnerService ) {
+  constructor(
+    private router: Router,
+    private dataApi: DataApiService,
+    private cifrado: CifradoDatosService,
+    private toastr: ToastrService,
+    private spinner: SpinnerService
+  ) {
     this.UsuarioForm = this.createForm();
   }
 
-
-
-  get EmailLogin() { return this.UsuarioForm.get('EmailLogin'); }
+  get EmailLogin() {
+    return this.UsuarioForm.get('EmailLogin');
+  }
 
   user_validation_messages = {
-    'EmailLogin': [
+    EmailLogin: [
       {
         type: 'required',
-        message: 'El email es requerido'
+        message: 'El email es requerido',
       },
       {
         type: 'minlength',
-        message: 'El email debe de contener mínimo 6 caracteres'
+        message: 'El email debe de contener mínimo 6 caracteres',
       },
       {
         type: 'pattern',
-        message: 'El email no es valido'
-      }
-    ]
-  }
+        message: 'El email no es valido',
+      },
+    ],
+  };
 
   createForm() {
     return new FormGroup({
-      EmailLogin: new FormControl('',
-        [Validators.required,
+      EmailLogin: new FormControl('', [
+        Validators.required,
         Validators.minLength(6),
-        Validators.pattern(this.emailPattern)
-        ]),
+        Validators.pattern(this.emailPattern),
+      ]),
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  cambiarEstatusSpinner(estatus : boolean){
+  cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
 
   RecuperaPass(): void {
     this.cambiarEstatusSpinner(true);
     if (this.UsuarioForm.valid) {
-      
-      this.dataApi.EnviarEmail(this.UsuarioForm.value.EmailLogin).subscribe(result => {
-        if (result.exito === 1){
-        this.cambiarEstatusSpinner(false);
-        this.toastr.success('Se envio un link a su email para asignar un nuevo password.', 'Exito', {
-          timeOut: 3000
-        });
-        this.onLoginRedirect();
-      }else{
-        this.cambiarEstatusSpinner(false);
-        this.toastr.error(result.mensaje, 'Error', {
-          timeOut: 3000
-        });
-      }
-      }, error => {
-        this.cambiarEstatusSpinner(false);
-        this.toastr.error(error.error.error_description, 'Error', {
-          timeOut: 3000
-        });
-      });
+      this.dataApi.EnviarEmail(this.UsuarioForm.value.EmailLogin).subscribe(
+        (result) => {
+          if (result.exito === 1) {
+            this.cambiarEstatusSpinner(false);
+            this.toastr.success(
+              'Se envio un link a su email para asignar un nuevo password.',
+              'Exito',
+              {
+                timeOut: 3000,
+              }
+            );
+            this.onLoginRedirect();
+          } else {
+            this.cambiarEstatusSpinner(false);
+            this.toastr.error(result.mensaje, 'Error', {
+              timeOut: 3000,
+            });
+          }
+        },
+        (error) => {
+          this.cambiarEstatusSpinner(false);
+          this.toastr.error(error.error.error_description, 'Error', {
+            timeOut: 3000,
+          });
+        }
+      );
     } else {
       this.cambiarEstatusSpinner(false);
       this.toastr.error('Error en el email, favor de verificar', 'Error');
@@ -93,5 +102,4 @@ export class RecuperarPassComponent implements OnInit {
   onLoginRedirect(): void {
     this.router.navigate(['/user/login']);
   }
-
 }

@@ -1,43 +1,61 @@
-<div class="modal fade" id="modalCargaMasiva" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div
+  class="modal fade"
+  id="modalCargaMasiva"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  data-backdrop="static"
+  data-keyboard="false"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">
-            Carga de empleados de forma masiva
+          Carga de empleados de forma masiva
         </h5>
-        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="false">&times;</span>
-        </button> -->
         <a href="assets/Ejemplo_CargarEmpleados.xlsx">
-          <img src="assets/icons8-ms-excel-48.png"  title="Puedes descargar el archivo de ejemplo para realizar una carga masiva de empleados.">
+          <img
+            src="assets/icons8-ms-excel-48.png"
+            title="Puedes descargar el archivo de ejemplo para realizar una carga masiva de empleados."
+          />
         </a>
       </div>
       <div class="modal-body">
-
-        <form #formCarga="ngForm" (ngSubmit)="onSaveEmpelados(formCarga)" [formGroup]="UsuarioForm">
-
+        <form
+          #formCarga="ngForm"
+          (ngSubmit)="onSaveEmpelados(formCarga)"
+          [formGroup]="UsuarioForm"
+        >
           <div class="form-group required">
-            <label for="ArchivoEmpleados" class="col-form-label">Archivo para la carga masiva:</label>
+            <label for="ArchivoEmpleados" class="col-form-label"
+              >Archivo para la carga masiva:</label
+            >
 
-              <input id="file-input" name="ArchivoEmpleados" formControlName="ArchivoEmpleados" type='file' (change)="readURL($event);" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" #myInput/>
-
-            <!-- <div class="alert-danger"
-              *ngIf="ArchivoEmpleados.invalid && (ArchivoEmpleados.dirty || ArchivoEmpleados.touched)">
-
-              <div *ngFor="let validation of user_validation_messages.ArchivoEmpleados">
-                <div style="font-size: smaller !important;"
-                  *ngIf="UsuarioForm.get('ArchivoEmpleados').hasError(validation.type) && (UsuarioForm.get('ArchivoEmpleados').dirty || UsuarioForm.get('ParametroNombre').touched)">
-                  {{validation.message}}
-                </div>
-              </div>
-            </div> -->
+            <input
+              id="file-input"
+              name="ArchivoEmpleados"
+              formControlName="ArchivoEmpleados"
+              type="file"
+              (change)="readURL($event)"
+              accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              #myInput
+            />
           </div>
 
           <div class="modal-footer">
-            <button type="button" (click)="CerrarMCM(formCarga)" class="btn btn-secondary" #btnClose
-              data-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-primary form-actions">Guardar</button>
+            <button
+              type="button"
+              (click)="CerrarMCM(formCarga)"
+              class="btn btn-secondary"
+              #btnClose
+              data-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary form-actions">
+              Guardar
+            </button>
           </div>
         </form>
       </div>

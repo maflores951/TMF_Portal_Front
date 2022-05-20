@@ -1,67 +1,80 @@
-<nav [ngStyle]="{'background-color': color}" id="menu" class="navbar navbar-expand-md navbar-dark fixed-top badge-secondary"> 
+<nav
+  [ngStyle]="{ 'background-color': color }"
+  id="menu"
+  class="navbar navbar-expand-md navbar-dark fixed-top badge-secondary"
+>
+  <!-- <a class="navbar-brand"  routerLink="/">{{app_name}}</a> -->
+  <!--<a class="navbar-brand " routerLink=""><img class="imgRedonda" src="https://media.licdn.com/dms/image/C4E0BAQGtTED2gCqfwA/company-logo_200_200/0?e=2159024400&v=beta&t=74WfkzA5dSIitR6XKT54Sjsl4uCzBg9WXVPiHGEgczQ"></a>-->
+  <a class="navbar-brand" routerLink=""
+    ><img class="imgRedonda" src="{{ fotoEmpresa }}"
+  /></a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#mainNavbar"
+    aria-controls="mainNavbar"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <!-- <a class="navbar-brand"  routerLink="/">{{app_name}}</a> -->
-    <!--<a class="navbar-brand " routerLink=""><img class="imgRedonda" src="https://media.licdn.com/dms/image/C4E0BAQGtTED2gCqfwA/company-logo_200_200/0?e=2159024400&v=beta&t=74WfkzA5dSIitR6XKT54Sjsl4uCzBg9WXVPiHGEgczQ"></a>-->
-    <a class="navbar-brand " routerLink=""><img class="imgRedonda" src="{{fotoEmpresa}}"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar"
-            aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <div *ngIf="fechaBandera">
+    <span style="color: #d9cc00">{{ fechaMensaje }}</span>
+  </div>
 
-    <div *ngIf="fechaBandera">
-      <span style="color: #d9cc00">{{fechaMensaje}}</span>
-    </div>
-  
-    <div class="collapse navbar-collapse" id="mainNavbar">
-      <ul class="navbar-nav ml-auto">
-        <!-- <li class="nav-item" *ngIf="!isLogged">
+  <div class="collapse navbar-collapse" id="mainNavbar">
+    <ul class="navbar-nav ml-auto">
+      <!-- <li class="nav-item" *ngIf="!isLogged">
           <a class="nav-link" routerLink="/user/registro">
             Nueva cuenta
           </a>
         </li> -->
-        <li class="nav-item" *ngIf="isLogged && (isAdmin || isLocal || isSuper)">
-          <a class="nav-link">Recibos</a>
-          <ul>
-            <li><a routerLink="/recibo/consultar-recibo">Consultar</a></li>
-          </ul>
-        </li>
-        <li class="nav-item" *ngIf="isLogged && (isIT || isSuper)">
-          <a class="nav-link">Catálogos</a>
-          <ul>
-            <li><a routerLink="/catalogos/catalogo-empleados">Empleados</a></li>
-            <li><a routerLink="/catalogos/catalogo-empresas">Empresas</a></li>
-            <li><a routerLink="/catalogos/catalogo-parametros">Parametros</a></li>
-            <li><a routerLink="/catalogos/catalogo-roles">Tipos de usuario</a></li>
-            <li><a routerLink="/catalogos/catalogo-usuarios">Usuarios</a></li>
+      <li class="nav-item" *ngIf="isLogged && (isAdmin || isLocal || isSuper)">
+        <a class="nav-link">Recibos</a>
+        <ul>
+          <li><a routerLink="/recibo/consultar-recibo">Consultar</a></li>
+        </ul>
+      </li>
+      <li class="nav-item" *ngIf="isLogged && (isIT || isSuper)">
+        <a class="nav-link">Catálogos</a>
+        <ul>
+          <li><a routerLink="/catalogos/catalogo-empleados">Empleados</a></li>
+          <li><a routerLink="/catalogos/catalogo-empresas">Empresas</a></li>
+          <li><a routerLink="/catalogos/catalogo-parametros">Parametros</a></li>
+          <li>
+            <a routerLink="/catalogos/catalogo-roles">Tipos de usuario</a>
+          </li>
+          <li><a routerLink="/catalogos/catalogo-usuarios">Usuarios</a></li>
+        </ul>
+      </li>
 
-          </ul>
-        </li>
+      <li class="nav-item" *ngIf="isLogged && (isAdmin || isSuper)">
+        <a class="nav-link">Recibos</a>
+        <ul>
+          <li><a routerLink="/recibo/borrar-recibo">Borrar</a></li>
+          <li><a routerLink="/recibo/cargar-recibo">Cargar</a></li>
+          <li><a routerLink="/recibo/enviar-recibo">Enviar</a></li>
+        </ul>
+      </li>
 
-        <li class="nav-item" *ngIf="isLogged && (isAdmin || isSuper)">
-          <a class="nav-link">Recibos</a>
-          <ul>
-            <li><a routerLink="/recibo/borrar-recibo">Borrar</a></li>
-            <li><a routerLink="/recibo/cargar-recibo">Cargar</a></li>
-            <li><a routerLink="/recibo/enviar-recibo">Enviar</a></li>
-          </ul>
-        </li>
+      <li class="nav-item" *ngIf="!isLogged">
+        <a class="nav-link" routerLink="/user/login"> Iniciar sesión </a>
+      </li>
+      <li class="nav-item" *ngIf="isLogged">
+        <a routerLink="/user/login" class="nav-link" (click)="onLogout()">
+          Cerrar sesión
+        </a>
+      </li>
+    </ul>
 
-        <li class="nav-item" *ngIf="!isLogged">
-          <a class="nav-link" routerLink="/user/login">
-            Iniciar sesión
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="isLogged">
-          <a routerLink="/user/login" class="nav-link" (click)="onLogout()">
-            Cerrar sesión
-          </a>
-      </ul>
-      <div class='img' *ngIf="isLogged">
-        <img class="imgRedondaPerfil" src="{{foto}}">
-        <span>{{email}}</span>
-      </div>
+    <div class="img" *ngIf="isLogged">
+      <img class="imgRedondaPerfil" src="{{ foto }}" />
+      <span>{{ email }}</span>
+    </div>
 
-      <!-- <section>
+    <!-- <section>
         <div class="coming-soon" *ngIf="isLogged">
             <div class="time-countdown">
                 <ul>
@@ -73,5 +86,5 @@
             </div>
         </div>
     </section> -->
-    </div>
-  </nav>
+  </div>
+</nav>

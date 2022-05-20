@@ -1,24 +1,21 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Empresa } from 'src/app/models/empresa';
 import { PeriodoTipo } from 'src/app/models/periodoTipo';
 import { Recibo } from 'src/app/models/recibo';
-import { Response } from 'src/app/models/response';
 import { Usuario } from 'src/app/models/usuario';
 import { AuthUserService } from 'src/app/services/auth-user.service';
-import { CifradoDatosService } from 'src/app/services/cifrado-datos.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import Swal from 'sweetalert2';
-import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-borrar-recibos',
   templateUrl: './borrar-recibos.component.html',
-  styleUrls: ['./borrar-recibos.component.css']
+  styleUrls: ['./borrar-recibos.component.css'],
 })
-export class BorrarRecibosComponent implements OnInit  {
+export class BorrarRecibosComponent implements OnInit {
   public usuario: Usuario;
   public isAdmin: boolean = false;
   public isIT: boolean = false;
@@ -73,19 +70,6 @@ export class BorrarRecibosComponent implements OnInit  {
   //Inicio del filtro del mes
   public selectMes = this.meses[0];
 
-  //Lista de bimestres
-  // public bimestres = [
-  //   { bimestreId: 13, bimestreNombre: 'Enero-febrero' },
-  //   { bimestreId: 14, bimestreNombre: 'Marzo-Abril' },
-  //   { bimestreId: 15, bimestreNombre: 'Mayo-Junio' },
-  //   { bimestreId: 16, bimestreNombre: 'Julio-Agosto' },
-  //   { bimestreId: 17, bimestreNombre: 'Septiembre-Octubre' },
-  //   { bimestreId: 18, bimestreNombre: 'Noviembre-Diciembre' },
-  // ];
-
-  //Inicio del filtro del mes
-  // public selectBimestre = this.bimestres[0];
-
   //Se recuperan los años con respecto al año actual
   public anios = this.recuperaAnios();
 
@@ -94,7 +78,6 @@ export class BorrarRecibosComponent implements OnInit  {
   public recuperaAnios() {
     var selectAnio = [];
     var anio = new Date().getFullYear() - 1;
-    // selectAnio.push(anio--);
     for (let index = 1; index < 5; index++) {
       var itemAnio = {
         anioId: anio,
@@ -128,14 +111,14 @@ export class BorrarRecibosComponent implements OnInit  {
   public selectPeriodoNumeroQ = this.periodoNumerosQ[0];
   public selectPeriodoNumeroM = this.periodoNumerosM[0];
 
-
-
+  //Se recuperan los datos del usuario, los tipos de periodo y las empresas
   ngOnInit(): void {
     this.getCurrentUser();
     this.RecuperaPeriodoTipo();
     this.RecuperaEmpresas();
   }
 
+  //Se recuperan los tipos de periodo y se ordenan alfabeticamente
   RecuperaPeriodoTipo() {
     this.dataApi.GetList('/PeriodoTipos').subscribe(
       (periodoTipos) => {
@@ -146,7 +129,6 @@ export class BorrarRecibosComponent implements OnInit  {
           if (a.periodoTipoNombre < b.periodoTipoNombre) {
             return -1;
           }
-          // a must be equal to b
           return 0;
         });
         this.selectPeriodoTipo = this.periodoTipos[0];
@@ -164,6 +146,7 @@ export class BorrarRecibosComponent implements OnInit  {
     );
   }
 
+  //Se recuperan las empresas y se ordenan de forma alfabetica
   RecuperaEmpresas() {
     this.dataApi.GetList('/Empresas').subscribe(
       (empresas) => {
@@ -174,7 +157,6 @@ export class BorrarRecibosComponent implements OnInit  {
           if (a.empresaNombre < b.empresaNombre) {
             return -1;
           }
-          // a must be equal to b
           return 0;
         });
         this.selectEmpresa = this.empresas[0];
@@ -191,6 +173,7 @@ export class BorrarRecibosComponent implements OnInit  {
     );
   }
 
+  //Se recuperan todos los recibos
   RecuperaRecibo() {
     this.dataApi.GetList('/Recibos').subscribe(
       (recibos) => {
@@ -201,12 +184,10 @@ export class BorrarRecibosComponent implements OnInit  {
           if (a.usuarioNoEmp < b.usuarioNoEmp) {
             return -1;
           }
-          // a must be equal to b
           return 0;
         });
 
-        console.log("Entra " + this.recibos)
-        // this.selectEmpresa = this.empresas[0];
+        console.log('Entra ' + this.recibos);
       },
       (error) => {
         this.toastr.error(
@@ -220,6 +201,7 @@ export class BorrarRecibosComponent implements OnInit  {
     );
   }
 
+  //Se recupera el usuario y se asigna su rol
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
     this.UserTypeId = this.usuario.rolId;
@@ -234,10 +216,12 @@ export class BorrarRecibosComponent implements OnInit  {
     }
   }
 
+  //Se activa o inactiva el spinner
   cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
 
+  //Se elimina solo un recibo
   onBorradoIndividual(recibo: Recibo) {
     this.cambiarEstatusSpinner(true);
     Swal.fire({
@@ -246,12 +230,10 @@ export class BorrarRecibosComponent implements OnInit  {
       denyButtonText: `Cancelar`,
       showDenyButton: true,
       icon: 'question',
-      reverseButtons: true
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-       
-      
-    var periodoNumero = 0;
+        var periodoNumero = 0;
 
         switch (this.selectPeriodoTipo.periodoTipoId) {
           case 1:
@@ -313,13 +295,13 @@ export class BorrarRecibosComponent implements OnInit  {
           );
         }, 1000);
       } else if (result.isDenied) {
-        Swal.fire('Carga de información cancelada', '', 'error')
+        Swal.fire('Carga de información cancelada', '', 'error');
         this.cambiarEstatusSpinner(false);
       }
-    })
+    });
   }
 
-
+  //Se eliminan todos los recibos segun los filtros de busqueda
   borradoMasivo() {
     this.cambiarEstatusSpinner(true);
 
@@ -329,79 +311,72 @@ export class BorrarRecibosComponent implements OnInit  {
       denyButtonText: `Cancelar`,
       showDenyButton: true,
       icon: 'question',
-      reverseButtons: true
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-       
-     
-    var periodoNumero = 0;
+        var periodoNumero = 0;
 
-    switch (this.selectPeriodoTipo.periodoTipoId) {
-      case 1:
-        periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
-        break;
-      case 2:
-        periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
-        break;
-      case 3:
-        periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
-        break;
-      default:
-        break;
-    }
+        switch (this.selectPeriodoTipo.periodoTipoId) {
+          case 1:
+            periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
+            break;
+          case 2:
+            periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
+            break;
+          case 3:
+            periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
+            break;
+          default:
+            break;
+        }
 
-    this.recibo = {
-      reciboId: 0,
-      reciboPeriodoA: this.selectAnio.anioValor,
-      reciboPeriodoM: this.selectMes.mesId,
-      reciboPeriodoD: new Date().getDay(),
-      reciboPeriodoNumero: periodoNumero,
-      periodoTipoId: this.selectPeriodoTipo.periodoTipoId,
-      usuarioNoEmp: null,
-      reciboEstatus: true,
-      empresa: this.selectEmpresa,
-      empresaId: this.selectEmpresa.empresaId,
-    };
+        this.recibo = {
+          reciboId: 0,
+          reciboPeriodoA: this.selectAnio.anioValor,
+          reciboPeriodoM: this.selectMes.mesId,
+          reciboPeriodoD: new Date().getDay(),
+          reciboPeriodoNumero: periodoNumero,
+          periodoTipoId: this.selectPeriodoTipo.periodoTipoId,
+          usuarioNoEmp: null,
+          reciboEstatus: true,
+          empresa: this.selectEmpresa,
+          empresaId: this.selectEmpresa.empresaId,
+        };
 
-    setTimeout(() => {
-      this.dataApi.Post('/Recibos/BorrarMasivo', this.recibo).subscribe(
-        (result) => {
-          if (result.exito == 1) {
-            this.cambiarEstatusSpinner(false);
-            this.toastr.success(result.mensaje, 'Exito', {
-              timeOut: 3000,
-            });
-            setTimeout(() => {
-              this.RecuperaRecibo();
-            }, 500);
-          } else {
-            this.cambiarEstatusSpinner(false);
-            this.toastr.error(
-              result.mensaje,
-              'Error',
-              {
-                timeOut: 3000,
+        setTimeout(() => {
+          this.dataApi.Post('/Recibos/BorrarMasivo', this.recibo).subscribe(
+            (result) => {
+              if (result.exito == 1) {
+                this.cambiarEstatusSpinner(false);
+                this.toastr.success(result.mensaje, 'Exito', {
+                  timeOut: 3000,
+                });
+                setTimeout(() => {
+                  this.RecuperaRecibo();
+                }, 500);
+              } else {
+                this.cambiarEstatusSpinner(false);
+                this.toastr.error(result.mensaje, 'Error', {
+                  timeOut: 3000,
+                });
               }
-            );
-          }
-        },
-        (error) => {
-          this.cambiarEstatusSpinner(false);
-          this.toastr.error(
-            'Error en el servidor, contacte al administrador del sistema.',
-            'Error',
-            {
-              timeOut: 3000,
+            },
+            (error) => {
+              this.cambiarEstatusSpinner(false);
+              this.toastr.error(
+                'Error en el servidor, contacte al administrador del sistema.',
+                'Error',
+                {
+                  timeOut: 3000,
+                }
+              );
             }
           );
-        }
-      );
-    }, 1000);
-  } else if (result.isDenied) {
-    Swal.fire('Carga de información cancelada', '', 'error')
-    this.cambiarEstatusSpinner(false);
+        }, 1000);
+      } else if (result.isDenied) {
+        Swal.fire('Carga de información cancelada', '', 'error');
+        this.cambiarEstatusSpinner(false);
+      }
+    });
   }
-})
-  }
-  
 }

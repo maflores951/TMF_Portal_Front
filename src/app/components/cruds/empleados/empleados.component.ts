@@ -11,17 +11,22 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-empleados',
   templateUrl: './empleados.component.html',
-  styleUrls: ['./empleados.component.css']
+  styleUrls: ['./empleados.component.css'],
 })
 export class EmpleadosComponent implements OnInit {
   public static updateEmpleados: Subject<boolean> = new Subject();
 
-  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService, private toastr: ToastrService) {
-    EmpleadosComponent.updateEmpleados.subscribe(res => {
+  constructor(
+    private dataApi: DataApiService,
+    private apiAuthService: AuthUserService,
+    private spinner: SpinnerService,
+    private toastr: ToastrService
+  ) {
+    EmpleadosComponent.updateEmpleados.subscribe((res) => {
       setTimeout(() => {
         this.getListUsers();
-      }, 100)
-    })
+      }, 100);
+    });
   }
 
   public empleadoNoEmp = '';
@@ -34,15 +39,14 @@ export class EmpleadosComponent implements OnInit {
   public userUid: number = null;
 
   ngOnInit() {
-    // this.cambiarEstatusSpinner(true);
     this.getListUsers();
     this.getCurrentUser();
   }
 
-  cambiarEstatusSpinner(estatus : boolean){
+  cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
-  
+
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
     if (this.usuario) {
@@ -53,20 +57,26 @@ export class EmpleadosComponent implements OnInit {
         this.isAdmin = false;
       }
     }
-   
   }
 
   getListUsers() {
-    this.dataApi.GetList('/Usuarios').subscribe(users => {
-      this.cambiarEstatusSpinner(false);
-      this.users = users;
-    }, error => {
-      console.error(error);
-      this.cambiarEstatusSpinner(false);
-      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
-        timeOut: 3000
-      });
-    });
+    this.dataApi.GetList('/Usuarios').subscribe(
+      (users) => {
+        this.cambiarEstatusSpinner(false);
+        this.users = users;
+      },
+      (error) => {
+        console.error(error);
+        this.cambiarEstatusSpinner(false);
+        this.toastr.error(
+          'Error en el servidor, contacte al administrador del sistema.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+    );
   }
 
   onDeleteEmpleado(user: Usuario): void {
@@ -77,39 +87,32 @@ export class EmpleadosComponent implements OnInit {
       denyButtonText: `Cancelar`,
       showDenyButton: true,
       icon: 'question',
-      reverseButtons: true
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         user.usuarioEstatusSesion = true;
-        // console.log(JSON.stringify(user));
-        this.dataApi.Put('/Usuarios', user.usuarioId, user)
+        this.dataApi.Put('/Usuarios', user.usuarioId, user);
         this.cambiarEstatusSpinner(false);
         setTimeout(() => {
           this.getListUsers();
         }, 500);
       } else if (result.isDenied) {
-        Swal.fire('Carga de información cancelada', '', 'error')
+        Swal.fire('Carga de información cancelada', '', 'error');
         this.cambiarEstatusSpinner(false);
       }
-    })
+    });
   }
 
   onPreUpdateEmpleado(user: Usuario) {
-    if (user == null){
+    if (user == null) {
       this.dataApi.SelectedUsuario = Object.assign({}, user);
-    }else{
-     
-      if (user.imagePath == null){
-        user.imageFullPath = "assets/user.png"
-      } else{
-        // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath;
-        //  user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
-       
-        user.imageFullPath = environment.baseUrl + "/" + user.imagePath;
-        // console.log(user.imageFullPath + " ***** Crud usuario");
+    } else {
+      if (user.imagePath == null) {
+        user.imageFullPath = 'assets/user.png';
+      } else {
+        user.imageFullPath = environment.baseUrl + '/' + user.imagePath;
       }
       this.dataApi.SelectedUsuario = Object.assign({}, user);
     }
   }
 }
-

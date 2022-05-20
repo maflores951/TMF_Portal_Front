@@ -10,7 +10,6 @@ import { CifradoDatosService } from 'src/app/services/cifrado-datos.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import Swal from 'sweetalert2';
-import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-cargar-recibos',
@@ -21,10 +20,6 @@ export class CargarRecibosComponent implements OnInit {
   //Variables para limpiar los archivos
   @ViewChild('myInput')
   myInput: ElementRef;
-  // @ViewChild('myInputSua')
-  // myInputSua: ElementRef;
-  // @ViewChild('myInputEma')
-  // myInputEma: ElementRef;
 
   public usuario: Usuario;
   public isAdmin: boolean = false;
@@ -32,25 +27,18 @@ export class CargarRecibosComponent implements OnInit {
   public isLocal: boolean = false;
   public isSuper: boolean = false;
   private UserTypeId: number;
-  private archivoNombre: string;
 
   private recibo: Recibo;
-
-  //Procentaje
-  public percentDone: number;
-  public uploadSuccess: boolean;
 
   constructor(
     public dataApi: DataApiService,
     private toastr: ToastrService,
     private spinner: SpinnerService,
-    private apiAuthService: AuthUserService,
-    private cifrado: CifradoDatosService
+    private apiAuthService: AuthUserService
   ) {
     this.usuario = this.apiAuthService.usuarioData;
   }
 
-  public willDownload = false;
 
   //Lista de los tipos de periodos
   public periodoTipos: PeriodoTipo[]; // = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },{ "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]
@@ -83,18 +71,18 @@ export class CargarRecibosComponent implements OnInit {
   //Inicio del filtro del mes
   public selectMes = this.meses[0];
 
-  //Lista de bimestres
-  public bimestres = [
-    { bimestreId: 13, bimestreNombre: 'Enero-febrero' },
-    { bimestreId: 14, bimestreNombre: 'Marzo-Abril' },
-    { bimestreId: 15, bimestreNombre: 'Mayo-Junio' },
-    { bimestreId: 16, bimestreNombre: 'Julio-Agosto' },
-    { bimestreId: 17, bimestreNombre: 'Septiembre-Octubre' },
-    { bimestreId: 18, bimestreNombre: 'Noviembre-Diciembre' },
-  ];
+  // //Lista de bimestres
+  // public bimestres = [
+  //   { bimestreId: 13, bimestreNombre: 'Enero-febrero' },
+  //   { bimestreId: 14, bimestreNombre: 'Marzo-Abril' },
+  //   { bimestreId: 15, bimestreNombre: 'Mayo-Junio' },
+  //   { bimestreId: 16, bimestreNombre: 'Julio-Agosto' },
+  //   { bimestreId: 17, bimestreNombre: 'Septiembre-Octubre' },
+  //   { bimestreId: 18, bimestreNombre: 'Noviembre-Diciembre' },
+  // ];
 
-  //Inicio del filtro del mes
-  public selectBimestre = this.bimestres[0];
+  // //Inicio del filtro del mes
+  // public selectBimestre = this.bimestres[0];
 
   //Se recuperan los años con respecto al año actual
   public anios = this.recuperaAnios();
@@ -104,7 +92,6 @@ export class CargarRecibosComponent implements OnInit {
   public recuperaAnios() {
     var selectAnio = [];
     var anio = new Date().getFullYear() - 1;
-    // selectAnio.push(anio--);
     for (let index = 1; index < 5; index++) {
       var itemAnio = {
         anioId: anio,
@@ -138,24 +125,10 @@ export class CargarRecibosComponent implements OnInit {
   public selectPeriodoNumeroQ = this.periodoNumerosQ[0];
   public selectPeriodoNumeroM = this.periodoNumerosM[0];
 
-  //Función para determinar el tipo de comparativo
-  //  tipoPeriodo() {
-  // console.log(this.selectPeriodoTipo.periodoTipoId);
-
-  // this.myInput.nativeElement.value = '';
-  // this.archivoNombre = "";
-  // this.selectBimestre = this.bimestres[0];
-  // this.selectMes = this.meses[0];
-
-  // this.selectPeriodoNumero = this.periodoNumerosS[0]
-  // }
-
   ngOnInit(): void {
     this.getCurrentUser();
     this.RecuperaPeriodoTipo();
     this.RecuperaEmpresas();
-    //   this.selectExcelTipos = this.excelTipos[1];
-    // console.log( JSON.stringify(this.selectExcelTipos) + " *** cargar excel");
   }
 
   RecuperaPeriodoTipo() {
@@ -168,7 +141,6 @@ export class CargarRecibosComponent implements OnInit {
           if (a.periodoTipoNombre < b.periodoTipoNombre) {
             return -1;
           }
-          // a must be equal to b
           return 0;
         });
         this.selectPeriodoTipo = this.periodoTipos[0];
@@ -195,7 +167,6 @@ export class CargarRecibosComponent implements OnInit {
           if (a.empresaNombre < b.empresaNombre) {
             return -1;
           }
-          // a must be equal to b
           return 0;
         });
         this.selectEmpresa = this.empresas[0];
@@ -215,9 +186,6 @@ export class CargarRecibosComponent implements OnInit {
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
     this.UserTypeId = this.usuario.rolId;
-
-    // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath.substr(1);
-    //  console.log('Entrar imagen 99 ' + this.usuario.imagePath.substr(1));
     if (this.UserTypeId == 1) {
       this.isAdmin = true;
     } else if (this.UserTypeId == 2) {
@@ -241,13 +209,6 @@ export class CargarRecibosComponent implements OnInit {
 
   cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
-  }
-
-  //Función para completar el numero de empleado
-  public PadLeft(value, length) {
-    return value.toString().length < length
-      ? this.PadLeft('0' + value, length)
-      : value;
   }
 
   public imageSrc: string;
@@ -311,57 +272,38 @@ export class CargarRecibosComponent implements OnInit {
         empresa: this.selectEmpresa,
         empresaId: this.selectEmpresa.empresaId,
       };
-console.log(image)
+      console.log(image);
       setTimeout(() => {
-        //  if (this.file != null) {
         var buscaComa: number = image.indexOf(',') + 1;
 
         this.recibo.reciboPathPDF = image.substr(buscaComa);
 
-        // console.log(JSON.stringify(this.recibo) + ' *****')
         this.dataApi
           .Post('/Recibos/ValidarArchivo', this.recibo)
           .subscribe((result) => {
-            // var excelComparativo: ExcelComparativo = result.data;
             if (result.exito == 0) {
               this.dataApi
                 .Post('/Recibos/cargarArchivo', this.recibo)
                 .subscribe(
                   (result) => {
                     this.cambiarEstatusSpinner(false);
-                    // // console.log(JSON.stringify(result) + ' entra');
-                    // this.toastr.success(result.mensaje, 'Exito', {
-                    //   timeOut: 3000
-                    // });
                     var respuestaDel: Response = result;
                     if (respuestaDel.exito == 1) {
                       this.cambiarEstatusSpinner(false);
-                      // this.CrearEmpleadoColumnas(index, json, columnaNombres, excelTipoId);
-                      // this.CrearEmpleadoColumnas(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
-                      // this.CrearEmpleadoColumnas(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
                       this.toastr.success(result.mensaje, 'Exito', {
-                        timeOut: 3000
+                        timeOut: 3000,
                       });
-                      // setTimeout(() => {
-                      // }, 5000);
                     } else {
                       this.cambiarEstatusSpinner(false);
-                      // this.toastr.success(
-                      //   'Error en el servidor, contacte al administrador del sistema.',
-                      //   'Exito',
-                      //   {
-                      //     timeOut: 3000,
-                      //   }
-                      // );
                       this.toastr.error(result.mensaje, 'Error', {
-                        timeOut: 3000
+                        timeOut: 3000,
                       });
                     }
                   },
                   (error) => {
                     this.cambiarEstatusSpinner(false);
                     this.toastr.error(result.mensaje, 'Error', {
-                      timeOut: 3000
+                      timeOut: 3000,
                     });
                   }
                 );
@@ -379,15 +321,6 @@ console.log(image)
               }).then((resultado) => {
                 if (resultado.isConfirmed) {
                   this.cambiarEstatusSpinner(true);
-                  // var excelComparativoApi: ExcelComparativo = {
-                  //   excelComparativoMes: this.selectMes.mesId,
-                  //   excelComparativoAnio: this.selectAnio.anioId,
-                  //   usuarioId: this.usuario.usuarioId,
-                  //   excelTipoId: excelTipoId,
-                  //   excelComparativoNombre: this.archivoNombre,
-                  //   excelTipoPeriodo:  this.selectPeriodo.tipoPeriodoId,
-                  //   excelComparativoId:  excelComparativo.excelComparativoId
-                  // }
                   this.dataApi
                     .Post('/Recibos/cargarArchivo', this.recibo)
                     .subscribe(
@@ -395,25 +328,13 @@ console.log(image)
                         var respuestaDel: Response = result;
                         if (respuestaDel.exito == 1) {
                           this.cambiarEstatusSpinner(false);
-                          // this.CrearEmpleadoColumnas(index, json, columnaNombres, excelTipoId);
-                          // this.CrearEmpleadoColumnas(this.indexSua, this.suaJson, this.columnaNombresSua, this.excelTipoIdSua);
-                          // this.CrearEmpleadoColumnas(this.indexEma, this.emaJson, this.columnaNombresEma, this.excelTipoIdEma);
                           this.toastr.success(result.mensaje, 'Exito', {
-                            timeOut: 3000
+                            timeOut: 3000,
                           });
-                          // setTimeout(() => {
-                          // }, 5000);
                         } else {
                           this.cambiarEstatusSpinner(false);
-                          // this.toastr.success(
-                          //   'Error en el servidor, contacte al administrador del sistema.',
-                          //   'Exito',
-                          //   {
-                          //     timeOut: 3000,
-                          //   }
-                          // );
                           this.toastr.error(result.mensaje, 'Error', {
-                            timeOut: 3000
+                            timeOut: 3000,
                           });
                         }
                       },
@@ -434,8 +355,8 @@ console.log(image)
                 }
               });
             }
-      });
-    }, 1000);
+          });
+      }, 1000);
     } else {
       this.toastr.error(
         'Ingrese un archivo .zip para poder continuar.',

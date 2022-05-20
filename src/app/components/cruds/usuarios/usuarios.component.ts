@@ -11,17 +11,22 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.css']
+  styleUrls: ['./usuarios.component.css'],
 })
 export class UsuariosComponent implements OnInit {
   public static updateUsers: Subject<boolean> = new Subject();
 
-  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService, private toastr: ToastrService) {
-    UsuariosComponent.updateUsers.subscribe(res => {
+  constructor(
+    private dataApi: DataApiService,
+    private apiAuthService: AuthUserService,
+    private spinner: SpinnerService,
+    private toastr: ToastrService
+  ) {
+    UsuariosComponent.updateUsers.subscribe((res) => {
       setTimeout(() => {
         this.getListUsers();
-      }, 100)
-    })
+      }, 100);
+    });
   }
 
   public usuarioId = '';
@@ -39,10 +44,10 @@ export class UsuariosComponent implements OnInit {
     this.getCurrentUser();
   }
 
-  cambiarEstatusSpinner(estatus : boolean){
+  cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
-  
+
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
     if (this.usuario) {
@@ -53,20 +58,26 @@ export class UsuariosComponent implements OnInit {
         this.isAdmin = false;
       }
     }
-   
   }
 
   getListUsers() {
-    this.dataApi.GetList('/Usuarios').subscribe(users => {
-      this.cambiarEstatusSpinner(false);
-      this.users = users;
-    }, error => {
-      console.error(error);
-      this.cambiarEstatusSpinner(false);
-      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
-        timeOut: 3000
-      });
-    });
+    this.dataApi.GetList('/Usuarios').subscribe(
+      (users) => {
+        this.cambiarEstatusSpinner(false);
+        this.users = users;
+      },
+      (error) => {
+        console.error(error);
+        this.cambiarEstatusSpinner(false);
+        this.toastr.error(
+          'Error en el servidor, contacte al administrador del sistema.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+    );
   }
 
   onDeleteUser(user: Usuario): void {
@@ -77,40 +88,32 @@ export class UsuariosComponent implements OnInit {
       denyButtonText: `Cancelar`,
       showDenyButton: true,
       icon: 'question',
-      reverseButtons: true
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         user.usuarioEstatusSesion = true;
-        // console.log(JSON.stringify(user));
-        this.dataApi.Put('/Usuarios', user.usuarioId, user)
+        this.dataApi.Put('/Usuarios', user.usuarioId, user);
         this.cambiarEstatusSpinner(false);
         setTimeout(() => {
           this.getListUsers();
         }, 500);
       } else if (result.isDenied) {
-        Swal.fire('Carga de información cancelada', '', 'error')
+        Swal.fire('Carga de información cancelada', '', 'error');
         this.cambiarEstatusSpinner(false);
       }
-    })
+    });
   }
 
   onPreUpdateUser(user: Usuario) {
-    console.log(JSON.stringify(user))
-    if (user == null){
+    console.log(JSON.stringify(user));
+    if (user == null) {
       this.dataApi.SelectedUsuario = Object.assign({}, user);
-    }else{
-     
-      if (user.imagePath == null){
-        user.imageFullPath = "assets/user.png"
-      } else{
-        // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath;
-        //  user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
-       
-        user.imageFullPath = environment.baseUrl + "/" + user.imagePath;
-        // console.log(user.imageFullPath + " ***** Crud usuario");
+    } else {
+      if (user.imagePath == null) {
+        user.imageFullPath = 'assets/user.png';
+      } else { user.imageFullPath = environment.baseUrl + '/' + user.imagePath;
       }
       this.dataApi.SelectedUsuario = Object.assign({}, user);
     }
   }
 }
-

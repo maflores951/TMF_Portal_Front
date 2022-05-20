@@ -12,38 +12,40 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-empresas',
   templateUrl: './empresas.component.html',
-  styleUrls: ['./empresas.component.css']
+  styleUrls: ['./empresas.component.css'],
 })
 export class EmpresasComponent implements OnInit {
   public static updateEmpresas: Subject<boolean> = new Subject();
 
-  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService, private toastr: ToastrService) {
-    EmpresasComponent.updateEmpresas.subscribe(res => {
+  constructor(
+    private dataApi: DataApiService,
+    private apiAuthService: AuthUserService,
+    private spinner: SpinnerService,
+    private toastr: ToastrService
+  ) {
+    EmpresasComponent.updateEmpresas.subscribe((res) => {
       setTimeout(() => {
         this.getListEmpresas();
-      }, 100)
-    })
+      }, 100);
+    });
   }
 
   public empresaId = '';
   public empresaNombre = '';
-  // public usuarioApellidoP = '';
-  // public usuarioApellidoM = '';
   public usuario: Usuario;
   public empresas: Observable<Empresa[]>;
   public isAdmin: any = null;
   public userUid: number = null;
 
   ngOnInit() {
-    // this.cambiarEstatusSpinner(true);
     this.getListEmpresas();
     this.getCurrentUser();
   }
 
-  cambiarEstatusSpinner(estatus : boolean){
+  cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
-  
+
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
     if (this.usuario) {
@@ -54,20 +56,26 @@ export class EmpresasComponent implements OnInit {
         this.isAdmin = false;
       }
     }
-   
   }
 
   getListEmpresas() {
-    this.dataApi.GetList('/Empresas').subscribe(empresas => {
-      this.cambiarEstatusSpinner(false);
-      this.empresas = empresas;
-    }, error => {
-      console.error(error);
-      this.cambiarEstatusSpinner(false);
-      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
-        timeOut: 3000
-      });
-    });
+    this.dataApi.GetList('/Empresas').subscribe(
+      (empresas) => {
+        this.cambiarEstatusSpinner(false);
+        this.empresas = empresas;
+      },
+      (error) => {
+        console.error(error);
+        this.cambiarEstatusSpinner(false);
+        this.toastr.error(
+          'Error en el servidor, contacte al administrador del sistema.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+    );
   }
 
   onDeleteEmpresa(empresa: Empresa): void {
@@ -78,41 +86,34 @@ export class EmpresasComponent implements OnInit {
       denyButtonText: `Cancelar`,
       showDenyButton: true,
       icon: 'question',
-      reverseButtons: true
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         empresa.empresaEstatus = true;
-        // console.log(JSON.stringify(user));
-        this.dataApi.Put('/Empresas', empresa.empresaId, empresa)
+        this.dataApi.Put('/Empresas', empresa.empresaId, empresa);
         this.cambiarEstatusSpinner(false);
         setTimeout(() => {
           this.getListEmpresas();
         }, 500);
       } else if (result.isDenied) {
-        Swal.fire('Carga de información cancelada', '', 'error')
+        Swal.fire('Carga de información cancelada', '', 'error');
         this.cambiarEstatusSpinner(false);
       }
-    })
+    });
   }
 
   onPreUpdateEmpresa(empresa: Empresa) {
-   console.log(JSON.stringify(empresa))
-    if (empresa == null){
+    console.log(JSON.stringify(empresa));
+    if (empresa == null) {
       this.dataApi.SelectedEmpresa = Object.assign({}, empresa);
-    }else{
-      if (empresa.empresaLogo == null){
-        empresa.empresaLogoFullPath = "assets/user.png"
-      } else{
-        // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath;
-        //  user.imageFullPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
-       
-        empresa.empresaLogoFullPath = environment.baseUrl + "/" + empresa.empresaLogo;
-        // console.log(user.imageFullPath + " ***** Crud usuario");
+    } else {
+      if (empresa.empresaLogo == null) {
+        empresa.empresaLogoFullPath = 'assets/user.png';
+      } else {
+        empresa.empresaLogoFullPath =
+          environment.baseUrl + '/' + empresa.empresaLogo;
       }
-
-      // console.log(empresa)
       this.dataApi.SelectedEmpresa = Object.assign({}, empresa);
     }
   }
 }
-

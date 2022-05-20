@@ -1,17 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Empresa } from 'src/app/models/empresa';
 import { PeriodoTipo } from 'src/app/models/periodoTipo';
 import { Recibo } from 'src/app/models/recibo';
-import { Response } from 'src/app/models/response';
 import { Usuario } from 'src/app/models/usuario';
 import { AuthUserService } from 'src/app/services/auth-user.service';
-import { CifradoDatosService } from 'src/app/services/cifrado-datos.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
-import Swal from 'sweetalert2';
-import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-enviar-recibos',
@@ -73,19 +69,6 @@ export class EnviarRecibosComponent implements OnInit {
   //Inicio del filtro del mes
   public selectMes = this.meses[0];
 
-  //Lista de bimestres
-  // public bimestres = [
-  //   { bimestreId: 13, bimestreNombre: 'Enero-febrero' },
-  //   { bimestreId: 14, bimestreNombre: 'Marzo-Abril' },
-  //   { bimestreId: 15, bimestreNombre: 'Mayo-Junio' },
-  //   { bimestreId: 16, bimestreNombre: 'Julio-Agosto' },
-  //   { bimestreId: 17, bimestreNombre: 'Septiembre-Octubre' },
-  //   { bimestreId: 18, bimestreNombre: 'Noviembre-Diciembre' },
-  // ];
-
-  //Inicio del filtro del mes
-  // public selectBimestre = this.bimestres[0];
-
   //Se recuperan los años con respecto al año actual
   public anios = this.recuperaAnios();
 
@@ -94,7 +77,6 @@ export class EnviarRecibosComponent implements OnInit {
   public recuperaAnios() {
     var selectAnio = [];
     var anio = new Date().getFullYear() - 1;
-    // selectAnio.push(anio--);
     for (let index = 1; index < 5; index++) {
       var itemAnio = {
         anioId: anio,
@@ -128,8 +110,6 @@ export class EnviarRecibosComponent implements OnInit {
   public selectPeriodoNumeroQ = this.periodoNumerosQ[0];
   public selectPeriodoNumeroM = this.periodoNumerosM[0];
 
-
-
   ngOnInit(): void {
     this.getCurrentUser();
     this.RecuperaPeriodoTipo();
@@ -146,7 +126,6 @@ export class EnviarRecibosComponent implements OnInit {
           if (a.periodoTipoNombre < b.periodoTipoNombre) {
             return -1;
           }
-          // a must be equal to b
           return 0;
         });
         this.selectPeriodoTipo = this.periodoTipos[0];
@@ -174,7 +153,6 @@ export class EnviarRecibosComponent implements OnInit {
           if (a.empresaNombre < b.empresaNombre) {
             return -1;
           }
-          // a must be equal to b
           return 0;
         });
         this.selectEmpresa = this.empresas[0];
@@ -201,12 +179,10 @@ export class EnviarRecibosComponent implements OnInit {
           if (a.usuarioNoEmp < b.usuarioNoEmp) {
             return -1;
           }
-          // a must be equal to b
           return 0;
         });
 
-        console.log("Entra " + this.recibos)
-        // this.selectEmpresa = this.empresas[0];
+        console.log('Entra ' + this.recibos);
       },
       (error) => {
         this.toastr.error(
@@ -341,13 +317,9 @@ export class EnviarRecibosComponent implements OnInit {
             });
           } else {
             this.cambiarEstatusSpinner(false);
-            this.toastr.error(
-              result.mensaje,
-              'Error',
-              {
-                timeOut: 3000,
-              }
-            );
+            this.toastr.error(result.mensaje, 'Error', {
+              timeOut: 3000,
+            });
           }
         },
         (error) => {

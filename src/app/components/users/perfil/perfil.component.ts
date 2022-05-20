@@ -3,23 +3,21 @@ import { Subject } from 'rxjs';
 import { Usuario } from 'src/app/models/usuario';
 import { DataApiService } from 'src/app/services/data-api.service';
 
-
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
-  styleUrls: ['./perfil.component.css']
+  styleUrls: ['./perfil.component.css'],
 })
 export class PerfilComponent implements OnInit {
   public static updateUsers: Subject<boolean> = new Subject();
 
   constructor(private dataApi: DataApiService) {
-    PerfilComponent.updateUsers.subscribe(res => {
+    PerfilComponent.updateUsers.subscribe((res) => {
       setTimeout(() => {
         this.getCurrentUser();
-      }, 300)
-    })
+      }, 300);
+    });
   }
-
 
   public user: Usuario;
   public email: string;
@@ -33,17 +31,9 @@ export class PerfilComponent implements OnInit {
     this.getCurrentUser();
   }
 
-  RecuperaUsuario(TokenType: string, AccessToken: string, email: string) {
+  RecuperaUsuario(TokenType: string, AccessToken: string, email: string) {}
 
-  }
+  onPreUpdateUsuario() {}
 
-  onPreUpdateUsuario() {
-
-  }
-
-  getCurrentUser() {
-
-
-  }
-
+  getCurrentUser() {}
 }
