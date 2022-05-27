@@ -1,3 +1,4 @@
+import { CargaMasivaArchivosComponent } from './components/carga-masiva-archivos/carga-masiva-archivos.component';
 import { EmpleadosComponent } from './components/cruds/empleados/empleados.component';
 import { BorrarRecibosComponent } from './components/borrar-recibos/borrar-recibos.component';
 import { CargarRecibosComponent } from './components/cargarRecibos/cargar-recibos/cargar-recibos.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'recibo/consultar-recibo', component: ConsultaReciboComponent, canActivate: [AuthGuard] },
   { path: 'recibo/cargar-recibo', component: CargarRecibosComponent, canActivate: [AuthGuard] },
   { path: 'recibo/borrar-recibo', component: BorrarRecibosComponent, canActivate: [AuthGuard] },
+  { path: 'recibo/carga-masiva', component: CargaMasivaArchivosComponent, canActivate: [AuthGuard] },
   { path: '**', component: Page404Component }
  
 ];

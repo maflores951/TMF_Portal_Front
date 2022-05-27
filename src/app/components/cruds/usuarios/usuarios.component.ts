@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
 export class UsuariosComponent implements OnInit {
   public static updateUsers: Subject<boolean> = new Subject();
 
+  public p: number = 1;
+  
   constructor(
     private dataApi: DataApiService,
     private apiAuthService: AuthUserService,

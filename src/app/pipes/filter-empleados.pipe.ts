@@ -10,10 +10,12 @@ export class FilterEmpleadosPipe implements PipeTransform {
     arg.email === '' &&
     arg.usuarioApellidoP === ''&&
     arg.empresaNombre === '') return value;
+    // console.log(arg)
     const resultUser = [];
     for(const user of value){
-        const userF: String = user.empleadoNoEmp.toString();
-      if(userF.indexOf(arg.empleadoNoEmp.toString()) > -1)
+      console.log(value)
+        // const userF: String = user.empleadoNoEmp.toString();
+      if(user.empleadoNoEmp.toLowerCase().indexOf(arg.empleadoNoEmp.toLowerCase()) > -1)
       {
         if(user.email.toLowerCase().indexOf(arg.email.toLowerCase()) > -1)
         {

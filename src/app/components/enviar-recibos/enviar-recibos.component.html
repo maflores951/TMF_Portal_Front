@@ -173,6 +173,11 @@
                   selectPeriodoNumeroM: selectPeriodoNumeroM.periodoNumeroId,
                   selectPeriodoNumeroQ: selectPeriodoNumeroQ.periodoNumeroId,
                   selectPeriodoNumeroS: selectPeriodoNumeroS.periodoNumeroId
+                }
+            | paginate
+              : { 
+                  itemsPerPage: 10, 
+                  currentPage: p 
                 };
           index as i
         "
@@ -192,7 +197,38 @@
         </td>
       </tr>
     </tbody>
+    
   </table>
+  
+  <div class="padre">
+          <pagination-controls class="my-pagination" 
+              (pageChange)="p = $event"
+              maxSize="7"
+              directionLinks="true"
+              autoHide="true"
+              responsive="true"
+              previousLabel="Anterior"
+              nextLabel="Siguiente"
+              screenReaderPaginationLabel="Pagination"
+              screenReaderPageLabel="page"
+              screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+  </div>
+
+  <!-- <pagination-controls  id="some_id"
+                      (pageChange)="pageChanged($event)"
+                      (pageBoundsCorrection)="pageChanged($event)"
+                      maxSize="9"
+                      directionLinks="true"
+                      autoHide="true"
+                      responsive="true"
+                      previousLabel="Anterior"
+                      nextLabel="Siguiente"
+                      screenReaderPaginationLabel="Pagination"
+                      screenReaderPageLabel="page"
+                      screenReaderCurrentLabel="You're on page">
+</pagination-controls> -->
+
 
   <button (click)="enviarMasivo()" class="btn btn-lg btn-primary btn-block">
     Enviar correos de forma masiva

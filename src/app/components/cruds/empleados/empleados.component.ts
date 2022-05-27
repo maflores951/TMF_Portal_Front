@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
 export class EmpleadosComponent implements OnInit {
   public static updateEmpleados: Subject<boolean> = new Subject();
 
+  public p: number = 1;
+  
   constructor(
     private dataApi: DataApiService,
     private apiAuthService: AuthUserService,
@@ -60,7 +62,7 @@ export class EmpleadosComponent implements OnInit {
   }
 
   getListUsers() {
-    this.dataApi.GetList('/Usuarios').subscribe(
+    this.dataApi.GetList('/Usuarios/Empleados').subscribe(
       (users) => {
         this.cambiarEstatusSpinner(false);
         this.users = users;

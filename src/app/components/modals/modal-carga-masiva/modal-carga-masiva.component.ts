@@ -73,26 +73,30 @@ export class ModalCargaMasivaComponent implements OnInit {
 
   //Se valida que las columnas en los excel sean correctas
   public ValidarArregloColumnas(jsonExcel) {
+    console.log(jsonExcel)
     for (let index = 0; index < jsonExcel.length; index++) {
       var encabezado = jsonExcel[0];
       const element = jsonExcel[index];
-      if (element.length == 8) {
+     
+      if (encabezado.length == 7) {
         if (encabezado[0] == 'Nombre') {
           if (index > 0) {
-            var empleado = {
-              usuarioId: 0,
-              usuarioNombre: element[0],
-              usuarioApellidoP: element[1],
-              usuarioApellidoM: element[2],
-              email: element[3],
-              usuarioClave: element[4],
-              empleadoRFC: element[5],
-              empleadoNoEmp: element[6],
-              empresaId: element[7],
-              rolId: 2,
-              usuarioEstatusSesion: false,
-            };
-            this.excelEmpleados.push(empleado);
+            if (element.length == 7){
+              var empleado = {
+                usuarioId: 0,
+                usuarioNombre: element[0],
+                usuarioApellidoP: element[1],
+                usuarioApellidoM: element[2],
+                email: element[3],
+                usuarioClave: element[4],
+                // empleadoRFC: element[5],
+                empleadoNoEmp: element[5],
+                empresaId: element[6],
+                rolId: 2,
+                usuarioEstatusSesion: false,
+              };
+              this.excelEmpleados.push(empleado);
+            }
           }
         } else {
           this.toastr.error(
@@ -145,8 +149,16 @@ export class ModalCargaMasivaComponent implements OnInit {
                 timeOut: 10000,
               });
             }
+            setTimeout(() => {
+              this.cambiarEstatusSpinner(false);
+              formCarga.resetForm();
+              this.excelEmpleados = [];
+              EmpleadosComponent.updateEmpleados.next(true);
+              this.btnClose.nativeElement.click();
+            }, 2000);
           },
           (error) => {
+            this.cambiarEstatusSpinner(false);
             this.toastr.error(
               'Error al realizar la carga, contacte al administrador.',
               'Error',
@@ -157,13 +169,7 @@ export class ModalCargaMasivaComponent implements OnInit {
           }
         );
 
-      setTimeout(() => {
-        this.cambiarEstatusSpinner(false);
-        formCarga.resetForm();
-        this.excelEmpleados = [];
-        EmpleadosComponent.updateEmpleados.next(true);
-        this.btnClose.nativeElement.click();
-      }, 2000);
+      
     } else {
       this.cambiarEstatusSpinner(false);
       this.toastr.error(

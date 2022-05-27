@@ -94,7 +94,12 @@
                     email: email,
                     usuarioApellidoP: usuarioApellidoP,
                     empresaNombre: empresaNombre
-                  };
+                  }
+              | paginate
+              : { 
+                  itemsPerPage: 10, 
+                  currentPage: p 
+                };
             index as i
           "
         >
@@ -125,7 +130,24 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="padre">
+      <pagination-controls class="my-pagination" 
+          (pageChange)="p = $event"
+          maxSize="7"
+          directionLinks="true"
+          autoHide="true"
+          responsive="true"
+          previousLabel="Anterior"
+          nextLabel="Siguiente"
+          screenReaderPaginationLabel="Pagination"
+          screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
   </div>
+
+  
 </section>
 <app-modal-empleados [userUid]="userUid"></app-modal-empleados>
 <app-modal-carga-masiva [userUid]="userUid"></app-modal-carga-masiva>

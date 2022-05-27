@@ -48,7 +48,7 @@ export class FilterEnvioPipe implements PipeTransform {
                               resultRecibo.push(recibo);
                             }else{
                               // console.log(recibo.usuarioNoEmp + " arg.empleadoNoEmp " + arg.empleadoNoEmp)
-                              if(recibo.usuarioNoEmp === arg.empleadoNoEmp){
+                              if(recibo.usuarioNoEmp.toLowerCase().indexOf(arg.empleadoNoEmp.toLowerCase()) > -1){
                                 resultRecibo.push(recibo);
                               }
                             }

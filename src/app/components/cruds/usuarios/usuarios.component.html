@@ -39,7 +39,7 @@
           />
         </td>
 
-        <td width="10%"><b>Apellido Materno</b></td>
+        <!-- <td width="10%"><b>Apellido Materno</b></td>
 
         <td width="40%">
           <input
@@ -48,7 +48,7 @@
             class="form-control"
             [(ngModel)]="usuarioApellidoM"
           />
-        </td>
+        </td> -->
       </tr>
     </table>
     <button
@@ -66,6 +66,7 @@
           <th scope="col">Id</th>
           <th scope="col">Usuario</th>
           <th scope="col">Apellido paterno</th>
+          <th scope="col">Apellido materno</th>
           <th scope="col">Nombre</th>
           <th scope="col">Email</th>
           <th scope="col">Tipo</th>
@@ -81,9 +82,13 @@
                 : {
                     usuarioId: usuarioId,
                     email: email,
-                    usuarioApellidoP: usuarioApellidoP,
-                    usuarioApellidoM: usuarioApellidoM
-                  };
+                    usuarioApellidoP: usuarioApellidoP
+                  }
+              | paginate
+              : { 
+                  itemsPerPage: 10, 
+                  currentPage: p 
+                };
             index as i
           "
         >
@@ -91,6 +96,7 @@
           <td>{{ user.usuarioId }}</td>
           <td>{{ user.usuarioClave }}</td>
           <td>{{ user.usuarioApellidoP }}</td>
+          <td>{{ user.usuarioApellidoM }}</td>
           <td>{{ user.usuarioNombre }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.rol.rolNombre }}</td>
@@ -113,6 +119,20 @@
         </tr>
       </tbody>
     </table>
+    <div class="padre">
+      <pagination-controls class="my-pagination" 
+          (pageChange)="p = $event"
+          maxSize="7"
+          directionLinks="true"
+          autoHide="true"
+          responsive="true"
+          previousLabel="Anterior"
+          nextLabel="Siguiente"
+          screenReaderPaginationLabel="Pagination"
+          screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
   </div>
 </section>
 <app-modal-usuario [userUid]="userUid"></app-modal-usuario>

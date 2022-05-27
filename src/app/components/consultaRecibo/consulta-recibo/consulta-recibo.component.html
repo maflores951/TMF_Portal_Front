@@ -52,7 +52,8 @@
         <th scope="col">Apellido paterno</th>
         <th scope="col">Apellido materno</th>
         <th scope="col">Nombre</th>
-        <th scope="col">Email</th>
+        <th scope="col">Periodo</th>
+        <th scope="col">#</th>
         <th scope="col">&nbsp;</th>
         <th scope="col">&nbsp;</th>
       </tr>
@@ -74,7 +75,8 @@
         <td>{{ recibo.usuario.usuarioApellidoP }}</td>
         <td>{{ recibo.usuario.usuarioApellidoM }}</td>
         <td>{{ recibo.usuario.usuarioNombre }}</td>
-        <td>{{ recibo.usuario.email }}</td>
+        <td>{{ recibo.periodoTipo.periodoTipoNombre }}</td>
+        <td>{{ recibo.reciboPeriodoNumero }}</td>
         <td>
           <!-- <a href="{{url + recibo.reciboPathPDF}}" class="btn btn-default"
                 target="_blank"

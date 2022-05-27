@@ -49,6 +49,8 @@ import { FilterEmpleadosPipe } from './pipes/filter-empleados.pipe';
 import { ModalCargaMasivaComponent } from './components/modals/modal-carga-masiva/modal-carga-masiva.component';
 import { FilterEnvioPipe } from './pipes/filter-envio.pipe';
 import { FilterConsultaPipe } from './pipes/filter-consulta.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { CargaMasivaArchivosComponent } from './components/carga-masiva-archivos/carga-masiva-archivos.component';
 
 
 
@@ -86,6 +88,7 @@ import { FilterConsultaPipe } from './pipes/filter-consulta.pipe';
     ModalCargaMasivaComponent,
     FilterEnvioPipe,
     FilterConsultaPipe,
+    CargaMasivaArchivosComponent,
     
   ],
   imports: [
@@ -104,7 +107,8 @@ import { FilterConsultaPipe } from './pipes/filter-consulta.pipe';
     AutocompleteLibModule,
     MatTableExporterModule,
     TooltipModule,
-    NgIdleKeepaliveModule.forRoot()
+    NgIdleKeepaliveModule.forRoot(),
+    NgxPaginationModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

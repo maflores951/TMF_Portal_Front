@@ -26,6 +26,8 @@ export class EnviarRecibosComponent implements OnInit {
 
   private recibo: Recibo;
 
+  public p: number = 1;
+
   constructor(
     public dataApi: DataApiService,
     private toastr: ToastrService,
@@ -111,6 +113,7 @@ export class EnviarRecibosComponent implements OnInit {
   public selectPeriodoNumeroM = this.periodoNumerosM[0];
 
   ngOnInit(): void {
+    this.cambiarEstatusSpinner(true);
     this.getCurrentUser();
     this.RecuperaPeriodoTipo();
     this.RecuperaEmpresas();
@@ -181,10 +184,11 @@ export class EnviarRecibosComponent implements OnInit {
           }
           return 0;
         });
-
-        console.log('Entra ' + this.recibos);
+        this.cambiarEstatusSpinner(false);
+        // console.log('Entra ' + this.recibos);
       },
       (error) => {
+        this.cambiarEstatusSpinner(false);
         this.toastr.error(
           'Error en el servidor, contacte al administrador del sistema.',
           'Error',

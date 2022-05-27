@@ -37,6 +37,7 @@
     "mat-table-exporter": "^9.1.0",
     "ng2-tooltip-directive": "^2.9.22",
     "ngx-angular-autocomplete": "^1.0.7",
+    "ngx-pagination": "^5.1.1",
     "ngx-spinner": "0.0.2",
     "ngx-toastr": "^13.2.0",
     "popper.js": "^1.12.3",

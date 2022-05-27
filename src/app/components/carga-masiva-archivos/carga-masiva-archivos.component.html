@@ -1,0 +1,31 @@
+<section id="TMFGroup" class="mt-5">
+    <h1>Cargar archivos</h1>
+  
+    <div class="container">
+      <table cellpadding="10">
+        <tr>
+          <td width="5%"><b>Número de archivos</b></td>
+  
+    
+            <td width="40%">
+                <input
+                  type="text"
+                  name="numeroArchivos"
+                  class="form-control"
+                  [(ngModel)]="numeroArchivos"
+                />
+              </td>
+        </tr>
+      </table>
+    </div>
+  
+    <p></p>
+          <button
+            (click)="cargarArchivo()"
+            class="btn btn-lg btn-primary btn-block"
+          >
+            Cargar archivos
+          </button>
+        
+  </section>
+  

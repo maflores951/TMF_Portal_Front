@@ -40,4 +40,17 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .padre {
+    display: flex;
+    justify-content: center;
+  }
+
+  .my-pagination /deep/ .ngx-pagination .current {
+    font-size: larger;
+  }
+
+  .my-pagination /deep/ {
+    font-size: medium;
+  }
   

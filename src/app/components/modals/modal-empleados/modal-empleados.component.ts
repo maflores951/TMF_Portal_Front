@@ -82,9 +82,9 @@ export class ModalEmpleadosComponent implements OnInit {
   get EmpresaId() {
     return this.UsuarioForm.get('EmpresaId');
   }
-  get EmpleadoRFC() {
-    return this.UsuarioForm.get('EmpleadoRFC');
-  }
+  // get EmpleadoRFC() {
+  //   return this.UsuarioForm.get('EmpleadoRFC');
+  // }
 
   user_validation_messages = {
     UsuarioId: [],
@@ -189,12 +189,12 @@ export class ModalEmpleadosComponent implements OnInit {
         message: 'La empresa es requerida',
       },
     ],
-    EmpleadoRFC: [
-      {
-        type: 'required',
-        message: 'La empresa es requerida',
-      },
-    ],
+    // EmpleadoRFC: [
+    //   {
+    //     type: 'required',
+    //     message: 'La empresa es requerida',
+    //   },
+    // ],
   };
 
   createForm() {
@@ -230,7 +230,7 @@ export class ModalEmpleadosComponent implements OnInit {
       Foto: new FormControl('', []),
       EmpleadoNoEmp: new FormControl('', [Validators.required]),
       EmpresaId: new FormControl('', [Validators.required]),
-      EmpleadoRFC: new FormControl('', [Validators.required]),
+      // EmpleadoRFC: new FormControl('', [Validators.required]),
     });
   }
 
