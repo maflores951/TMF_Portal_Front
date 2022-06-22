@@ -223,11 +223,11 @@ export class ModalUsuarioComponent implements OnInit {
   urlImage: Observable<string>;
 
   ngOnInit() {
-    this.cambiarEstatusSpinner(true);
+    // this.cambiarEstatusSpinner(true);
     this.RecuperaUserTypes();
     this.RecuperaEmpresas();
     this.imageSrc = '';
-    this.cambiarEstatusSpinner(false);
+    // this.cambiarEstatusSpinner(false);
   }
 
   cambiarEstatusSpinner(estatus: boolean) {

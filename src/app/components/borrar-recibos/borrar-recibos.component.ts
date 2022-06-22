@@ -353,7 +353,7 @@ export class BorrarRecibosComponent implements OnInit {
           this.dataApi.Post('/Recibos/BorrarMasivo', this.recibo).subscribe(
             (result) => {
               if (result.exito == 1) {
-                this.cambiarEstatusSpinner(false);
+                // this.cambiarEstatusSpinner(false);
                 this.toastr.success(result.mensaje, 'Exito', {
                   timeOut: 3000,
                 });

@@ -78,16 +78,24 @@
         <td>{{ recibo.periodoTipo.periodoTipoNombre }}</td>
         <td>{{ recibo.reciboPeriodoNumero }}</td>
         <td>
+          <a href="{{url + recibo.reciboPathPDF}}" 
+                target="_blank">
+              <img
+              src="assets/icono_pdf.png"
+              alt="javaTpoint"
+              width="35"
+              height="38"
+          /></a>
           <!-- <a href="{{url + recibo.reciboPathPDF}}" class="btn btn-default"
-                target="_blank"
-                download="FileName.pdf"> -->
-          <img
+                target="_blank">
+          </a> -->
+          <!-- <img
             src="assets/icono_pdf.png"
             alt="javaTpoint"
             width="35"
             height="38"
             (click)="download(recibo.reciboPathPDF, '.pdf')"
-          />
+          /> -->
         </td>
         <td>
           <img

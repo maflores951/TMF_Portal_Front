@@ -67,7 +67,7 @@ export class CargaMasivaArchivosComponent implements OnInit {
                 'Error en el servidor, contacte al administrador del sistema.',
                 'Error',
                 {
-                  timeOut: 3000,
+                  timeOut: 6000,
                 }
               );
             }

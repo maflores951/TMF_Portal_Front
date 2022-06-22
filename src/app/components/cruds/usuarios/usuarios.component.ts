@@ -40,14 +40,12 @@ export class UsuariosComponent implements OnInit {
   public isAdmin: any = null;
   public userUid: number = null;
 
+ 
+
   ngOnInit() {
     this.cambiarEstatusSpinner(true);
     this.getListUsers();
     this.getCurrentUser();
-  }
-
-  cambiarEstatusSpinner(estatus: boolean) {
-    this.spinner.validarEspera(estatus);
   }
 
   getCurrentUser() {
@@ -80,6 +78,10 @@ export class UsuariosComponent implements OnInit {
         );
       }
     );
+  }
+
+  cambiarEstatusSpinner(estatus: boolean) {
+    this.spinner.validarEspera(estatus);
   }
 
   onDeleteUser(user: Usuario): void {

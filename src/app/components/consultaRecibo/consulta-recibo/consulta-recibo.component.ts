@@ -98,7 +98,7 @@ export class ConsultaReciboComponent implements OnInit {
           return 0;
         });
 
-        console.log('Entra ' + JSON.stringify(this.recibos));
+        // console.log('Entra ' + JSON.stringify(this.recibos));
       },
       (error) => {
         this.toastr.error(
