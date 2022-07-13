@@ -1,3 +1,4 @@
+import { Recibo } from './../models/recibo';
 import { Empresa } from './../models/empresa';
 import { Injectable } from '@angular/core';
 import { Observable, from, Subject } from 'rxjs';
@@ -140,4 +141,6 @@ export class DataApiService {
   public SelectedEmpresa: Empresa = {
     empresaId: null,
   };
+
+  public SelectedUsuarioPDF: string ;
 }

@@ -2,7 +2,7 @@
   <div class="col">
     <p></p>
     <p></p>
-    <h1 class="h3 mb-3 font-weight-normal">Parametros</h1>
+    <h1 class="h3 mb-3 font-weight-normal">Parámetros</h1>
     <table cellpadding="10">
       <tr>
         <td width="10%"><b>Nombre </b></td>
@@ -28,25 +28,26 @@
         </td>
       </tr>
     </table>
-    <button
+    <!-- <button
       class="btn btn-primary float-right mb-3"
       data-toggle="modal"
       data-target="#modalParametro"
       (click)="onPreUpdateParametro(null)"
     >
       Nuevo registro
-    </button>
-    <table class="table table-hover">
+    </button> -->
+    <table class="table table-hover" style="width:100%">
       <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Id</th>
           <th scope="col">Nombre</th>
+          <th scope="col" >Descripción</th>
           <th scope="col">Clave</th>
-          <th scope="col">Valor inicial</th>
-          <th scope="col">Valor final</th>
+          <th scope="col">Valor</th>
+          <!-- <th scope="col">Valor final</th> -->
           <th scope="col">&nbsp;</th>
-          <th scope="col">&nbsp;</th>
+          <!-- <th scope="col">&nbsp;</th> -->
         </tr>
       </thead>
       <tbody>
@@ -62,11 +63,12 @@
           "
         >
           <th scope="row">{{ i + 1 }}</th>
-          <td>{{ parametro.parametroId }}</td>
+          <td >{{ parametro.parametroId }}</td>
           <td>{{ parametro.parametroNombre }}</td>
+          <td >{{ parametro.parametroDescripcion }}</td>
           <td>{{ parametro.parametroClave }}</td>
           <td>{{ parametro.parametroValorInicial }}</td>
-          <td>{{ parametro.parametroValorFinal }}</td>
+          <!-- <td>{{ parametro.parametroValorFinal }}</td> -->
           <td>
             <button
               class="btn btn-primary"
@@ -78,14 +80,14 @@
             </button>
           </td>
 
-          <td>
+          <!-- <td>
             <button
               class="btn btn-danger"
               (click)="onDeleteParametro(parametro)"
             >
               Eliminar
             </button>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>

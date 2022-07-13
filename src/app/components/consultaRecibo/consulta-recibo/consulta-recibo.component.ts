@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Recibo } from 'src/app/models/recibo';
@@ -21,16 +22,19 @@ export class ConsultaReciboComponent implements OnInit {
   public isLocal: boolean = false;
   public isSuper: boolean = false;
   private UserTypeId: number;
-
+  public userUid: number = null;
 
   private recibo: Recibo;
+
+  @ViewChild('btnClose', { static: false }) btnClose: ElementRef;
 
   constructor(
     public dataApi: DataApiService,
     private toastr: ToastrService,
     private spinner: SpinnerService,
     private apiAuthService: AuthUserService,
-    private http: HttpClient
+    private http: HttpClient,
+    private modalService: NgbModal
   ) {
     this.usuario = this.apiAuthService.usuarioData;
   }
@@ -60,12 +64,12 @@ export class ConsultaReciboComponent implements OnInit {
   ];
 
   //Inicio del filtro del mes
-  public selectMes = this.meses[0];
+  public selectMes = this.meses[new Date().getMonth()];
 
   //Se recuperan los años con respecto al año actual
   public anios = this.recuperaAnios();
 
-  public selectAnio = this.anios[0];
+  public selectAnio = this.anios[1];
 
   public recuperaAnios() {
     var selectAnio = [];
@@ -165,5 +169,57 @@ export class ConsultaReciboComponent implements OnInit {
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
+
+   
+  }
+
+  async descargar() {
+    // var urlfinal = this.url + archivo;
+    let blob = await fetch(this.dataApi.SelectedUsuarioPDF).then((r) => r.blob());
+    var random = Math.random() * (1000 - 100) + 100;
+    var nombre = 'Recibo_' + random.toFixed(0) + '.pdf';
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display: none');
+    a.href = url;
+    a.download = nombre;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+
+    this.modalService.dismissAll();
+  }
+
+  async imprimir(){
+    // const url = request URL // e.g localhost:3000 + "/download?access_token=" + "sample access token";
+    let blob = await fetch(this.dataApi.SelectedUsuarioPDF).then((r) => r.blob());
+    const blobUrl = URL.createObjectURL(blob);
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = blobUrl;
+      document.body.appendChild(iframe);
+      iframe.contentWindow.print();
+  }
+
+  onPreUpdateVisor(reciboPathPDF) {
+     this.dataApi.SelectedUsuarioPDF = this.url + reciboPathPDF;
+    // console.log("Abrir visor")
+  }
+
+  // open(content) {
+  //   this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+  //     // this.closeResult = `Closed with: ${result}`;
+  //   }, (reason) => {
+  //     // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  //   });
+  // }
+  open(content, reciboPathPDF) {
+    this.dataApi.SelectedUsuarioPDF = this.url + reciboPathPDF;
+    this.modalService.open(content, {  size: 'lg', backdrop: 'static'}).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 }

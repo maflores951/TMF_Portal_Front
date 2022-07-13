@@ -69,7 +69,7 @@ export class CargarRecibosComponent implements OnInit {
   ];
 
   //Inicio del filtro del mes
-  public selectMes = this.meses[0];
+  public selectMes = this.meses[new Date().getMonth()];
 
   // //Lista de bimestres
   // public bimestres = [
@@ -87,7 +87,7 @@ export class CargarRecibosComponent implements OnInit {
   //Se recuperan los años con respecto al año actual
   public anios = this.recuperaAnios();
 
-  public selectAnio = this.anios[0];
+  public selectAnio = this.anios[1];
 
   public recuperaAnios() {
     var selectAnio = [];

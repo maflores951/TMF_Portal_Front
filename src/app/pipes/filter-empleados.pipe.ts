@@ -13,7 +13,7 @@ export class FilterEmpleadosPipe implements PipeTransform {
     // console.log(arg)
     const resultUser = [];
     for(const user of value){
-      console.log(value)
+      // console.log(value)
         // const userF: String = user.empleadoNoEmp.toString();
       if(user.empleadoNoEmp.toLowerCase().indexOf(arg.empleadoNoEmp.toLowerCase()) > -1)
       {

@@ -47,7 +47,7 @@ export class EnviarRecibosComponent implements OnInit {
   public empresas: Empresa[]; // = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },{ "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]
 
   //Lista de los recibos
-  public recibos: Observable<Recibo[]>; // = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },{ "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]
+  public recibos: Recibo[]; // = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },{ "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]
 
   //Inicio del filtro
   public selectEmpresa: Empresa; // = this.periodoTipos[0];
@@ -69,12 +69,12 @@ export class EnviarRecibosComponent implements OnInit {
   ];
 
   //Inicio del filtro del mes
-  public selectMes = this.meses[0];
+  public selectMes = this.meses[new Date().getMonth()];
 
   //Se recuperan los años con respecto al año actual
   public anios = this.recuperaAnios();
 
-  public selectAnio = this.anios[0];
+  public selectAnio = this.anios[1];
 
   public recuperaAnios() {
     var selectAnio = [];
@@ -115,8 +115,9 @@ export class EnviarRecibosComponent implements OnInit {
   ngOnInit(): void {
     this.cambiarEstatusSpinner(true);
     this.getCurrentUser();
-    this.RecuperaPeriodoTipo();
     this.RecuperaEmpresas();
+    this.RecuperaPeriodoTipo();
+
   }
 
   RecuperaPeriodoTipo() {
@@ -132,9 +133,11 @@ export class EnviarRecibosComponent implements OnInit {
           return 0;
         });
         this.selectPeriodoTipo = this.periodoTipos[0];
-        this.RecuperaRecibo();
+        this.cambiarEstatusSpinner(false);
+        // this.RecuperaRecibo();
       },
       (error) => {
+        this.cambiarEstatusSpinner(false);
         this.toastr.error(
           'Error en el servidor, contacte al administrador del sistema.',
           'Error',
@@ -172,32 +175,81 @@ export class EnviarRecibosComponent implements OnInit {
     );
   }
 
+  //Se recuperan todos los recibos
   RecuperaRecibo() {
-    this.dataApi.GetList('/Recibos').subscribe(
-      (recibos) => {
-        this.recibos = recibos.sort((a, b) => {
-          if (a.usuarioNoEmp > b.usuarioNoEmp) {
-            return 1;
+    // console.log("Entra recibos")
+    this.cambiarEstatusSpinner(true);
+
+    var periodoNumero = 0;
+
+    switch (this.selectPeriodoTipo.periodoTipoId) {
+      case 1:
+        periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
+        break;
+      case 2:
+        periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
+        break;
+      case 3:
+        periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
+        break;
+      default:
+        break;
+    }
+
+    this.recibo = {
+      reciboId: 0,
+      reciboPeriodoA: this.selectAnio.anioValor,
+      reciboPeriodoM: this.selectMes.mesId,
+      reciboPeriodoD: new Date().getDay(),
+      reciboPeriodoNumero: periodoNumero,
+      periodoTipoId: this.selectPeriodoTipo.periodoTipoId,
+      usuarioNoEmp: null,
+      reciboEstatus: true,
+      empresa: this.selectEmpresa,
+      empresaId: this.selectEmpresa.empresaId,
+    };
+
+    setTimeout(() => {
+      this.dataApi.Post('/Recibos/GetRecibosFiltro', this.recibo ).subscribe(
+        (recibos) => {
+          if(recibos.length > 0){
+            // if(this.recibos.pipe())
+            this.recibos = recibos.sort((a, b) => {
+              if (a.usuarioNoEmp > b.usuarioNoEmp) {
+                return 1;
+              }
+              if (a.usuarioNoEmp < b.usuarioNoEmp) {
+                return -1;
+              }
+              return 0;
+            });
+          }else{
+            this.toastr.error(
+              'No se encontraron registros para esta búsqueda.',
+              'Error',
+              {
+                timeOut: 3000,
+              }
+            );
+            this.recibos = [] ;//new Observable<Recibo[]>() 
+            // console.log("Entra borrado" + JSON.stringify(this.recibos))
           }
-          if (a.usuarioNoEmp < b.usuarioNoEmp) {
-            return -1;
-          }
-          return 0;
-        });
-        this.cambiarEstatusSpinner(false);
-        // console.log('Entra ' + this.recibos);
-      },
-      (error) => {
-        this.cambiarEstatusSpinner(false);
-        this.toastr.error(
-          'Error en el servidor, contacte al administrador del sistema.',
-          'Error',
-          {
-            timeOut: 3000,
-          }
-        );
-      }
-    );
+          
+          this.cambiarEstatusSpinner(false);
+          // console.log('Entra ' + this.recibos);
+        },
+        (error) => {
+          this.cambiarEstatusSpinner(false);
+          this.toastr.error(
+            'Error en el servidor, contacte al administrador del sistema.',
+            'Error',
+            {
+              timeOut: 3000,
+            }
+          );
+        }
+      );
+    }, 3000);
   }
 
   getCurrentUser() {

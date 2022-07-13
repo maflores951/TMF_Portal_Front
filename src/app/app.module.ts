@@ -51,6 +51,12 @@ import { FilterEnvioPipe } from './pipes/filter-envio.pipe';
 import { FilterConsultaPipe } from './pipes/filter-consulta.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CargaMasivaArchivosComponent } from './components/carga-masiva-archivos/carga-masiva-archivos.component';
+import { ModalVisorPDfComponent } from './components/modals/modal-visor-pdf/modal-visor-pdf.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+
+
 
 
 
@@ -89,6 +95,7 @@ import { CargaMasivaArchivosComponent } from './components/carga-masiva-archivos
     FilterEnvioPipe,
     FilterConsultaPipe,
     CargaMasivaArchivosComponent,
+    ModalVisorPDfComponent,
     
   ],
   imports: [
@@ -108,7 +115,9 @@ import { CargaMasivaArchivosComponent } from './components/carga-masiva-archivos
     MatTableExporterModule,
     TooltipModule,
     NgIdleKeepaliveModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
+    PdfViewerModule,
+    NgbModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

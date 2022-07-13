@@ -64,7 +64,16 @@ export class UsuariosComponent implements OnInit {
     this.dataApi.GetList('/Usuarios').subscribe(
       (users) => {
         this.cambiarEstatusSpinner(false);
-        this.users = users;
+        this.users = users.sort((a, b) => {
+          if (a.usuarioApellidoP > b.usuarioApellidoP) {
+            return 1;
+          }
+          if (a.usuarioApellidoP < b.usuarioApellidoP) {
+            return -1;
+          }
+          return 0;
+        });
+        // this.users = users.sort();
       },
       (error) => {
         console.error(error);

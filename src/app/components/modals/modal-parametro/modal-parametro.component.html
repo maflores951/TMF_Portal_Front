@@ -90,6 +90,7 @@
               maxlength="6"
               formControlName="ParametroClave"
               placeholder="Ingrese la clave del parametro"
+              disabled="false"
             />
 
             <div
@@ -132,17 +133,17 @@
           </div>
 
           <div class="form-group noRequired">
-            <label for="ParametroValorInicial">Valor inicial</label>
-            <input
+            <label for="ParametroValorInicial">Valor</label>
+            <textarea
               type="text"
               name="ParametroValorInicial"
               formControlName="ParametroValorInicial"
               class="form-control"
               [(ngModel)]="this.dataApi.SelectedParametro.parametroValorInicial"
-            />
+            ></textarea>
           </div>
 
-          <div class="form-group noRequired">
+          <!-- <div class="form-group noRequired">
             <label for="ParametroValorFinal">Valor final</label>
             <input
               type="text"
@@ -151,7 +152,7 @@
               class="form-control"
               [(ngModel)]="this.dataApi.SelectedParametro.parametroValorFinal"
             />
-          </div>
+          </div> -->
 
           <div class="modal-footer">
             <button

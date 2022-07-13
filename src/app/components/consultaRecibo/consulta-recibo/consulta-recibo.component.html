@@ -1,4 +1,68 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h2 class="modal-title" id="modal-basic-title">Recibo</h2>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <pdf-viewer
+      src="{{ this.dataApi.SelectedUsuarioPDF }}"
+      [rotation]="0"
+      [original-size]="false"
+      [show-all]="true"
+      [fit-to-page]="false"
+      [zoom]="1"
+      [zoom-scale]="'page-width'"
+      [stick-to-page]="false"
+      [render-text]="true"
+      [external-link-target]="'blank'"
+      [autoresize]="true"
+      [show-borders]="false"
+      style="width: 100%; height: 450px"
+    ></pdf-viewer>
+  </div>
+  <div class="modal-footer">
+    <!-- <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
+    >
+      Save
+    </button> -->
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
+    >
+      Cerrar
+    </button>
+
+    <button
+      type="button"
+      (click)="imprimir()"
+      class="btn btn-secondary form-actions"
+    >
+      Imprimir
+    </button>
+
+    <button
+      type="button"
+      (click)="descargar()"
+      class="btn btn-primary form-actions"
+    >
+      Descargar
+    </button>
+  </div>
+</ng-template>
+
 <section id="TMFGroup" class="mt-5">
+  <!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->
   <h1>Consulta de recibos</h1>
 
   <div class="container">
@@ -78,24 +142,44 @@
         <td>{{ recibo.periodoTipo.periodoTipoNombre }}</td>
         <td>{{ recibo.reciboPeriodoNumero }}</td>
         <td>
-          <a href="{{url + recibo.reciboPathPDF}}" 
-                target="_blank">
+          <!-- <a href="{{url + recibo.reciboPathPDF}}" 
+                target="framename">
               <img
               src="assets/icono_pdf.png"
               alt="javaTpoint"
               width="35"
               height="38"
-          /></a>
+          />
+        </a> -->
           <!-- <a href="{{url + recibo.reciboPathPDF}}" class="btn btn-default"
                 target="_blank">
           </a> -->
+
           <!-- <img
+          src="assets/icono_pdf.png"
+          alt="javaTpoint"
+          width="35"
+          height="38"
+          (click)="download(<recibo.reciboPathPDF>, '.pdf')"
+        /> -->
+
+          <img
             src="assets/icono_pdf.png"
             alt="javaTpoint"
             width="35"
             height="38"
-            (click)="download(recibo.reciboPathPDF, '.pdf')"
-          /> -->
+            (click)="open(content, recibo.reciboPathPDF)"
+          />
+
+          <!-- <img
+          src="assets/icono_pdf.png"
+          alt="javaTpoint"
+          width="35"
+          height="38"
+          data-toggle="modal"
+          data-target="#modalVisorPDF"
+          (click)="onPreUpdateVisor(recibo.reciboPathPDF)"
+        /> -->
         </td>
         <td>
           <img
@@ -109,3 +193,4 @@
     </tbody>
   </table>
 </section>
+<app-modal-visor-pdf [userUid]="userUid"></app-modal-visor-pdf>

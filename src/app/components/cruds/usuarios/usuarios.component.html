@@ -63,11 +63,12 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Id</th>
-          <th scope="col">Usuario</th>
+          <!-- <th scope="col">Id</th> -->
+         
           <th scope="col">Apellido paterno</th>
           <th scope="col">Apellido materno</th>
           <th scope="col">Nombre</th>
+          <th scope="col">Usuario</th>
           <th scope="col">Email</th>
           <th scope="col">Tipo</th>
           <th scope="col">&nbsp;</th>
@@ -93,11 +94,12 @@
           "
         >
           <th scope="row">{{ i + 1 }}</th>
-          <td>{{ user.usuarioId }}</td>
-          <td>{{ user.usuarioClave }}</td>
+          <!-- <td>{{ user.usuarioId }}</td> -->
+          
           <td>{{ user.usuarioApellidoP }}</td>
           <td>{{ user.usuarioApellidoM }}</td>
           <td>{{ user.usuarioNombre }}</td>
+          <td>{{ user.usuarioClave }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.rol.rolNombre }}</td>
           <td>
