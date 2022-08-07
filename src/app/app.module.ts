@@ -54,6 +54,8 @@ import { CargaMasivaArchivosComponent } from './components/carga-masiva-archivos
 import { ModalVisorPDfComponent } from './components/modals/modal-visor-pdf/modal-visor-pdf.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ActualizarEmailMasivoComponent } from './components/modals/Empleados/actualizar-email-masivo/actualizar-email-masivo.component';
+import { EliminarEmpleadoMasivoComponent } from './components/modals/Empleados/eliminar-empleado-masivo/eliminar-empleado-masivo.component';
 
 
 
@@ -96,6 +98,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FilterConsultaPipe,
     CargaMasivaArchivosComponent,
     ModalVisorPDfComponent,
+    ActualizarEmailMasivoComponent,
+    EliminarEmpleadoMasivoComponent,
     
   ],
   imports: [

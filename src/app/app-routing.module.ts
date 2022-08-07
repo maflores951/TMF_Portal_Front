@@ -1,3 +1,4 @@
+import { AuthAdminGuard } from './guards/auth-admin.guard';
 import { CargaMasivaArchivosComponent } from './components/carga-masiva-archivos/carga-masiva-archivos.component';
 import { EmpleadosComponent } from './components/cruds/empleados/empleados.component';
 import { BorrarRecibosComponent } from './components/borrar-recibos/borrar-recibos.component';
@@ -19,6 +20,7 @@ import { RecuperarPassComponent } from './components/users/recuperar-pass/recupe
 import { RegistroComponent } from './components/users/registro/registro.component';
 import { AuthLocalGuard } from './guards/auth-local.guard';
 import { AuthGuard } from './guards/auth.guard';
+import { AuthAdminItGuard } from './guards/auth-admin-it.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,16 +28,16 @@ const routes: Routes = [
   { path: 'user/RecuperaPass', component: RecuperarPassComponent },
   { path: 'user/AsignarPass/:token', component: AsignarPassComponent },
   // { path: 'user/registro', component: RegistroComponent },
+  { path: 'recibo/consultar-recibo', component: ConsultaReciboComponent, canActivate: [AuthLocalGuard]},
   { path: 'catalogos/catalogo-parametros', component: ParametrosComponent, canActivate: [AuthGuard]},
-  { path: 'catalogos/catalogo-usuarios', component: UsuariosComponent, canActivate: [AuthGuard] },
-  { path: 'catalogos/catalogo-empleados', component: EmpleadosComponent, canActivate: [AuthGuard] },
-  { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthGuard] },
-  { path: 'catalogos/catalogo-empresas', component: EmpresasComponent, canActivate: [AuthGuard] },
-  { path: 'recibo/enviar-recibo', component: EnviarRecibosComponent, canActivate: [AuthGuard] },
-  { path: 'recibo/consultar-recibo', component: ConsultaReciboComponent, canActivate: [AuthGuard] },
-  { path: 'recibo/cargar-recibo', component: CargarRecibosComponent, canActivate: [AuthGuard] },
-  { path: 'recibo/borrar-recibo', component: BorrarRecibosComponent, canActivate: [AuthGuard] },
-  { path: 'recibo/carga-masiva', component: CargaMasivaArchivosComponent, canActivate: [AuthGuard] },
+  { path: 'catalogos/catalogo-usuarios', component: UsuariosComponent, canActivate: [AuthAdminItGuard] },
+  { path: 'catalogos/catalogo-empleados', component: EmpleadosComponent, canActivate: [AuthAdminItGuard] },
+  { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthAdminItGuard] },
+  { path: 'catalogos/catalogo-empresas', component: EmpresasComponent, canActivate: [AuthAdminItGuard] },
+  { path: 'recibo/enviar-recibo', component: EnviarRecibosComponent, canActivate: [AuthAdminGuard] },
+  { path: 'recibo/cargar-recibo', component: CargarRecibosComponent, canActivate: [AuthAdminGuard] },
+  { path: 'recibo/borrar-recibo', component: BorrarRecibosComponent, canActivate: [AuthAdminGuard] },
+  // { path: 'recibo/carga-masiva', component: CargaMasivaArchivosComponent, canActivate: [AuthGuard] },
   { path: '**', component: Page404Component }
  
 ];

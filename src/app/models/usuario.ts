@@ -38,7 +38,7 @@ export interface Usuario {
 
   empleadoNoEmp?: string;
 
-  empleadoRFC?: string;
+  // empleadoRFC?: string;
 
   empresaId?: number;
 

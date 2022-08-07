@@ -103,7 +103,7 @@ export class EmpresasComponent implements OnInit {
   }
 
   onPreUpdateEmpresa(empresa: Empresa) {
-    console.log(JSON.stringify(empresa));
+    // console.log(JSON.stringify(empresa));
     if (empresa == null) {
       this.dataApi.SelectedEmpresa = Object.assign({}, empresa);
     } else {

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
@@ -34,12 +35,14 @@ export class ConsultaReciboComponent implements OnInit {
     private spinner: SpinnerService,
     private apiAuthService: AuthUserService,
     private http: HttpClient,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private sanitizer: DomSanitizer
   ) {
     this.usuario = this.apiAuthService.usuarioData;
   }
 
   public url = environment.baseUrl + '/';
+  safeSrc: SafeResourceUrl;
 
   //Lista de los recibos
   public recibos: Observable<Recibo[]>; // = [{ "tipoPeriodoId": 1, "tipoPeriodoNombre": "Mensual" },{ "tipoPeriodoId": 2, "tipoPeriodoNombre": "Bimestral" }]
@@ -102,7 +105,7 @@ export class ConsultaReciboComponent implements OnInit {
           return 0;
         });
 
-        // console.log('Entra ' + JSON.stringify(this.recibos));
+        //  console.log('Entra ' + JSON.stringify(this.recibos));
       },
       (error) => {
         this.toastr.error(
@@ -169,13 +172,13 @@ export class ConsultaReciboComponent implements OnInit {
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
-
-   
   }
 
   async descargar() {
     // var urlfinal = this.url + archivo;
-    let blob = await fetch(this.dataApi.SelectedUsuarioPDF).then((r) => r.blob());
+    let blob = await fetch(this.dataApi.SelectedUsuarioPDF).then((r) =>
+      r.blob()
+    );
     var random = Math.random() * (1000 - 100) + 100;
     var nombre = 'Recibo_' + random.toFixed(0) + '.pdf';
     let url = window.URL.createObjectURL(blob);
@@ -191,20 +194,22 @@ export class ConsultaReciboComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
-  async imprimir(){
+  async imprimir() {
     // const url = request URL // e.g localhost:3000 + "/download?access_token=" + "sample access token";
-    let blob = await fetch(this.dataApi.SelectedUsuarioPDF).then((r) => r.blob());
+    let blob = await fetch(this.dataApi.SelectedUsuarioPDF).then((r) =>
+      r.blob()
+    );
     const blobUrl = URL.createObjectURL(blob);
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = blobUrl;
-      document.body.appendChild(iframe);
-      iframe.contentWindow.print();
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = blobUrl;
+    document.body.appendChild(iframe);
+    iframe.contentWindow.print();
   }
 
   onPreUpdateVisor(reciboPathPDF) {
-     this.dataApi.SelectedUsuarioPDF = this.url + reciboPathPDF;
-    // console.log("Abrir visor")
+    this.dataApi.SelectedUsuarioPDF = this.url + reciboPathPDF;
+    console.log('Abrir visor' + this.dataApi.SelectedUsuarioPDF);
   }
 
   // open(content) {
@@ -215,11 +220,20 @@ export class ConsultaReciboComponent implements OnInit {
   //   });
   // }
   open(content, reciboPathPDF) {
-    this.dataApi.SelectedUsuarioPDF = this.url + reciboPathPDF;
-    this.modalService.open(content, {  size: 'lg', backdrop: 'static'}).result.then((result) => {
-      // this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    // this.dataApi.SelectedUsuarioPDF = this.url + reciboPathPDF;
+    // console.log("Abrir visor " + this.dataApi.SelectedUsuarioPDF)
+    this.safeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.url + reciboPathPDF
+    );
+    this.modalService
+      .open(content, { size: 'lg', backdrop: 'static' })
+      .result.then(
+        (result) => {
+          // this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
   }
 }

@@ -22,11 +22,11 @@ export class ModalVisorPDfComponent implements OnInit {
   
   ngOnInit(): void {
     this.src = this.dataApi.SelectedUsuarioPDF
-    console.log("Descargar")
+    // console.log("Descargar")
   }
 
   CerrarMP(): void {
-    console.log("Cerrar")
+    // console.log("Cerrar")
   }
 
   async Descargar() {
@@ -46,11 +46,11 @@ export class ModalVisorPDfComponent implements OnInit {
   }
 
   pageInitialized(e: CustomEvent) {
-    console.log('(pages-initialized)', e);
+    // console.log('(pages-initialized)', e);
   }
 
   callBackFn(pdf: PDFDocumentProxy) {
-    console.log('(callback)');
+    // console.log('(callback)');
  }
 
 }

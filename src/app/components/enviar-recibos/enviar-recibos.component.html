@@ -35,20 +35,20 @@
       </tr>
 
       <tr>
-        <td width="5%"><b>Tipo periodo</b></td>
+        <td width="5%"><b>Año</b></td>
 
         <td width="30%">
           <select
-            id="selectPeriodoTipo"
-            name="periodoTipos"
+            id="anios"
+            name="anios"
             class="form-control"
-            [(ngModel)]="selectPeriodoTipo"
+            [(ngModel)]="selectAnio"
           >
             <option
-              *ngFor="let periodoTipo of periodoTipos; let index = index"
-              [ngValue]="periodoTipo"
+              *ngFor="let anio of anios; let index = index"
+              [ngValue]="anio"
             >
-              {{ periodoTipo.periodoTipoNombre }}
+              {{ anio.anioValor }}
             </option>
           </select>
         </td>
@@ -73,80 +73,152 @@
       </tr>
 
       <tr>
-        <td width="5%"><b>Año</b></td>
-
+        <td width="5%"><b>Tipo periodo</b></td>
         <td width="30%">
           <select
-            id="anios"
-            name="anios"
+            id="selectPeriodoTipo"
+            name="periodoTipos"
             class="form-control"
-            [(ngModel)]="selectAnio"
+            [(ngModel)]="selectPeriodoTipo"
+            (change)="onChangePeriodoTipo()"
           >
             <option
-              *ngFor="let anio of anios; let index = index"
-              [ngValue]="anio"
+              *ngFor="let periodoTipo of periodoTipos; let index = index"
+              [ngValue]="periodoTipo"
             >
-              {{ anio.anioValor }}
+              {{ periodoTipo.periodoTipoNombre }}
             </option>
           </select>
         </td>
 
         <td width="5%"><b>Periodo número</b></td>
-
-        <td width="30%" *ngIf="this.selectPeriodoTipo.periodoTipoId == 1">
+        <!-- <td width="30%">
           <select
-            id="periodoNumeroM"
-            name="periodoNumeroM"
+            id="selectPeriodoTipo"
+            name="periodoTipos"
             class="form-control"
-            [(ngModel)]="selectPeriodoNumeroM"
+            [(ngModel)]="selectPeriodoTipo"
+            (change)="onChangePeriodoTipo()"
           >
             <option
-              *ngFor="let periodoNumero of periodoNumerosM; let index = index"
-              [ngValue]="periodoNumero"
+              *ngFor="let periodoTipo of periodoTipos; let index = index"
+              [ngValue]="periodoTipo"
             >
-              {{ periodoNumero.periodoNumeroNombre }}
+              {{ periodoTipo.periodoTipoNombre }}
             </option>
           </select>
-        </td>
-
-        <td width="30%" *ngIf="this.selectPeriodoTipo.periodoTipoId == 2">
-          <select
-            id="periodoNumeroQ"
-            name="periodoNumeroQ"
-            class="form-control"
-            [(ngModel)]="selectPeriodoNumeroQ"
-          >
-            <option
-              *ngFor="let periodoNumero of periodoNumerosQ; let index = index"
-              [ngValue]="periodoNumero"
+        </td> -->
+        
+        <td [ngSwitch]="this.selectPeriodoTipo.periodoTipoNombre">
+          <div *ngSwitchCase="'Mensual'">
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
             >
-              {{ periodoNumero.periodoNumeroNombre }}
-            </option>
-          </select>
-        </td>
-
-        <td width="30%" *ngIf="this.selectPeriodoTipo.periodoTipoId == 3">
-          <select
-            id="periodoNumeroS"
-            name="periodoNumeroS"
-            class="form-control"
-            [(ngModel)]="selectPeriodoNumeroS"
-          >
-            <option
-              *ngFor="let periodoNumero of periodoNumerosS; let index = index"
-              [ngValue]="periodoNumero"
+              <!-- <option
+                *ngFor="let periodoNumero of periodoNumerosM; let index = index"
+                [ngValue]="periodoNumero"
+              >
+                {{ periodoNumero.periodoNumeroNombre }}
+              </option> -->
+              <option value="1">1</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'Quincenal'">
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
             >
-              {{ periodoNumero.periodoNumeroNombre }}
-            </option>
-          </select>
+              <!-- <option
+                *ngFor="let periodoNumero of periodoNumerosQ; let index = index"
+                [ngValue]="periodoNumero"
+              >
+                {{ periodoNumero.periodoNumeroNombre }}
+              </option> -->
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'Semanal'">
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
+            >
+              <!-- <option
+                *ngFor="let periodoNumero of 5; let index = index"
+              >
+                {{ periodoNumero.periodoNumeroNombre }}
+              </option> -->
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'Catorcenal'">
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
+            >
+              <!-- <option
+                *ngFor="let periodoNumero of periodoNumerosS; let index = index"
+                [ngValue]="periodoNumero"
+              >
+                {{ periodoNumero.periodoNumeroNombre }}
+              </option> -->
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'Especial'">
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
+            >
+              <!-- <option
+                *ngFor="let periodoNumero of periodoNumerosS; let index = index"
+                [ngValue]="periodoNumero"
+              >
+                {{ periodoNumero.periodoNumeroNombre }}
+              </option> -->
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <div *ngSwitchDefault>
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
+            >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            </select>
+          </div>
         </td>
       </tr>
     </table>
   </div>
-  <button
-  class="btn btn-dark float-right mb-3 mx-4"
-    (click)="RecuperaRecibo()"
-  >
+  <button class="btn btn-dark float-right mb-3 mx-4" (click)="RecuperaRecibo()">
     Buscar
   </button>
   <p></p>
@@ -175,14 +247,12 @@
                   selectPeriodoTipo: selectPeriodoTipo.periodoTipoId,
                   selectMes: selectMes.mesId,
                   selectAnio: selectAnio.anioId,
-                  selectPeriodoNumeroM: selectPeriodoNumeroM.periodoNumeroId,
-                  selectPeriodoNumeroQ: selectPeriodoNumeroQ.periodoNumeroId,
-                  selectPeriodoNumeroS: selectPeriodoNumeroS.periodoNumeroId
+                  selectPeriodoNumero: selectPeriodoNumero
                 }
             | paginate
-              : { 
-                  itemsPerPage: 10, 
-                  currentPage: p 
+              : {
+                  itemsPerPage: 10,
+                  currentPage: p
                 };
           index as i
         "
@@ -202,22 +272,23 @@
         </td>
       </tr>
     </tbody>
-    
   </table>
-  
+
   <div class="padre">
-          <pagination-controls class="my-pagination" 
-              (pageChange)="p = $event"
-              maxSize="7"
-              directionLinks="true"
-              autoHide="true"
-              responsive="true"
-              previousLabel="Anterior"
-              nextLabel="Siguiente"
-              screenReaderPaginationLabel="Pagination"
-              screenReaderPageLabel="page"
-              screenReaderCurrentLabel="You're on page">
-          </pagination-controls>
+    <pagination-controls
+      class="my-pagination"
+      (pageChange)="p = $event"
+      maxSize="7"
+      directionLinks="true"
+      autoHide="true"
+      responsive="true"
+      previousLabel="Anterior"
+      nextLabel="Siguiente"
+      screenReaderPaginationLabel="Pagination"
+      screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page"
+    >
+    </pagination-controls>
   </div>
 
   <!-- <pagination-controls  id="some_id"
@@ -233,7 +304,6 @@
                       screenReaderPageLabel="page"
                       screenReaderCurrentLabel="You're on page">
 </pagination-controls> -->
-
 
   <button (click)="enviarMasivo()" class="btn btn-lg btn-primary btn-block">
     Enviar correos de forma masiva

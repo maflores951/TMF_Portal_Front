@@ -11,7 +11,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <pdf-viewer
+    <!-- <pdf-viewer
       src="{{ this.dataApi.SelectedUsuarioPDF }}"
       [rotation]="0"
       [original-size]="false"
@@ -25,7 +25,18 @@
       [autoresize]="true"
       [show-borders]="false"
       style="width: 100%; height: 450px"
-    ></pdf-viewer>
+    ></pdf-viewer> -->
+    <!-- <iframe width="100%" height="450px" frameBorder="0" src={{this.safeSrc}}></iframe> -->
+    <iframe
+      [class.thumbnail]="thumbnail"
+      [src]="safeSrc"
+      width="100%"
+      height="450px"
+      frameborder="0"
+      webkitallowfullscreen
+      mozallowfullscreen
+      allowfullscreen
+    ></iframe>
   </div>
   <div class="modal-footer">
     <!-- <button
@@ -43,7 +54,7 @@
       Cerrar
     </button>
 
-    <button
+    <!-- <button
       type="button"
       (click)="imprimir()"
       class="btn btn-secondary form-actions"
@@ -57,7 +68,7 @@
       class="btn btn-primary form-actions"
     >
       Descargar
-    </button>
+    </button> -->
   </div>
 </ng-template>
 
@@ -68,24 +79,6 @@
   <div class="container">
     <table cellpadding="10">
       <tr>
-        <td width="5%"><b>Mes</b></td>
-
-        <td width="30%">
-          <select
-            id="meses"
-            name="meses"
-            class="form-control"
-            [(ngModel)]="selectMes"
-          >
-            <option
-              *ngFor="let mes of meses; let index = index"
-              [ngValue]="mes"
-            >
-              {{ mes.mesNombre }}
-            </option>
-          </select>
-        </td>
-
         <td width="5%"><b>Año</b></td>
 
         <td width="30%">
@@ -100,6 +93,24 @@
               [ngValue]="anio"
             >
               {{ anio.anioValor }}
+            </option>
+          </select>
+        </td>
+
+        <td width="5%"><b>Mes</b></td>
+
+        <td width="30%">
+          <select
+            id="meses"
+            name="meses"
+            class="form-control"
+            [(ngModel)]="selectMes"
+          >
+            <option
+              *ngFor="let mes of meses; let index = index"
+              [ngValue]="mes"
+            >
+              {{ mes.mesNombre }}
             </option>
           </select>
         </td>

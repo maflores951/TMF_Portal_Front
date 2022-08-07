@@ -64,12 +64,7 @@ export class ModalEmpresaComponent implements OnInit {
       {
         type: 'minlength',
         message: 'El nombre debe de contener mínimo 3 caracteres',
-      },
-      {
-        type: 'pattern',
-        message:
-          'El nombre debe de comenzar con mayúscula y contener solamente letras',
-      },
+      }
     ],
     EmpresaColor: [],
   };
@@ -79,8 +74,7 @@ export class ModalEmpresaComponent implements OnInit {
       EmpresaId: new FormControl('', []),
       EmpresaNombre: new FormControl('', [
         Validators.required,
-        Validators.minLength(3),
-        Validators.pattern(this.nombrePattern),
+        Validators.minLength(3)
       ]),
       EmpresaColor: new FormControl('', []),
       Foto: new FormControl('', []),

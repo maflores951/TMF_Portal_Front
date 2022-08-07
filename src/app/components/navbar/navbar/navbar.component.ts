@@ -144,7 +144,7 @@ export class NavbarComponent implements OnInit {
       this.fotoEmpresa = 'assets/TMF_Logo.png';
       this.isLogged = false;
     } else {
-      // console.log( JSON.stringify(this.usuario) + ' ******')
+      //  console.log( JSON.stringify(this.usuario) + ' ******')
       //Se utiliza para iniciar el timer
       // this.iniciarTimer();
       var today = new Date().toLocaleDateString();
@@ -204,18 +204,24 @@ export class NavbarComponent implements OnInit {
         // this.foto = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
       }
 
-      if (this.usuario.empresa.empresaLogo == null) {
-        this.fotoEmpresa = 'assets/TMF_Logo.png'; //"https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
-      } else {
-        this.fotoEmpresa =
-          environment.baseUrl + '/' + this.usuario.empresa.empresaLogo;
-        // this.foto = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+      if (this.usuario.empresaId != null){
+        if (this.usuario.empresa.empresaLogo == null ) {
+          this.fotoEmpresa = 'assets/TMF_Logo.png'; //"https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+        } else {
+          this.fotoEmpresa =
+            environment.baseUrl + '/' + this.usuario.empresa.empresaLogo;
+          // this.foto = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+        }
+  
+        if (this.usuario.empresa.empresaColor !== null) {
+          this.color = this.usuario.empresa.empresaColor;
+          // console.log(this.color + ' *****');
+        }
+      }else{
+        // console.log("first")
+        this.fotoEmpresa = 'assets/TMF_Logo.png';
       }
-
-      if (this.usuario.empresa.empresaColor !== null) {
-        this.color = this.usuario.empresa.empresaColor;
-        console.log(this.color + ' *****');
-      }
+      
     }
   }
 

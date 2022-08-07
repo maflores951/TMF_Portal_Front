@@ -49,7 +49,7 @@
               >Click en la imagen para actualizar tu foto de perfil.</label
             >
             <div class="image-upload">
-              <label for="file-input">
+              <label for="file-input-Emp">
                 <img
                   [src]="imageSrc || 'assets/user.png'"
                   width="100"
@@ -58,7 +58,7 @@
                 />
               </label>
               <input
-                id="file-input"
+                id="file-input-Emp"
                 name="Foto"
                 formControlName="Foto"
                 type="file"
@@ -346,7 +346,6 @@
                 maxlength="100"
                 placeholder="Ingresa tu email"
                 formControlName="Email"
-                readonly="readonly"
               />
 
               <div

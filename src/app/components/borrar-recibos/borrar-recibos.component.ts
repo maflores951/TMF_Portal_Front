@@ -75,11 +75,11 @@ export class BorrarRecibosComponent implements OnInit {
   //Se recuperan los años con respecto al año actual
   public anios = this.recuperaAnios();
 
-  public selectAnio = this.anios[1];
+  public selectAnio = this.anios[2];
 
   public recuperaAnios() {
     var selectAnio = [];
-    var anio = new Date().getFullYear() - 1;
+    var anio = new Date().getFullYear() - 2;
     for (let index = 1; index < 5; index++) {
       var itemAnio = {
         anioId: anio,
@@ -91,27 +91,29 @@ export class BorrarRecibosComponent implements OnInit {
     return selectAnio;
   }
 
-  //Lista de los tipos de periodos
-  public periodoNumerosS = [
-    { periodoNumeroId: 1, periodoNumeroNombre: '1' },
-    { periodoNumeroId: 2, periodoNumeroNombre: '2' },
-    { periodoNumeroId: 3, periodoNumeroNombre: '3' },
-    { periodoNumeroId: 4, periodoNumeroNombre: '4' },
-  ];
+  public selectPeriodoNumero = 1;
 
-  //Lista de los tipos de periodos
-  public periodoNumerosQ = [
-    { periodoNumeroId: 1, periodoNumeroNombre: '1' },
-    { periodoNumeroId: 2, periodoNumeroNombre: '2' },
-  ];
+  // //Lista de los tipos de periodos
+  // public periodoNumerosS = [
+  //   { periodoNumeroId: 1, periodoNumeroNombre: '1' },
+  //   { periodoNumeroId: 2, periodoNumeroNombre: '2' },
+  //   { periodoNumeroId: 3, periodoNumeroNombre: '3' },
+  //   { periodoNumeroId: 4, periodoNumeroNombre: '4' },
+  // ];
 
-  //Lista de los tipos de periodos
-  public periodoNumerosM = [{ periodoNumeroId: 1, periodoNumeroNombre: '1' }];
+  // //Lista de los tipos de periodos
+  // public periodoNumerosQ = [
+  //   { periodoNumeroId: 1, periodoNumeroNombre: '1' },
+  //   { periodoNumeroId: 2, periodoNumeroNombre: '2' },
+  // ];
 
-  //Inicio del filtro
-  public selectPeriodoNumeroS = this.periodoNumerosS[0];
-  public selectPeriodoNumeroQ = this.periodoNumerosQ[0];
-  public selectPeriodoNumeroM = this.periodoNumerosM[0];
+  // //Lista de los tipos de periodos
+  // public periodoNumerosM = [{ periodoNumeroId: 1, periodoNumeroNombre: '1' }];
+
+  // //Inicio del filtro
+  // public selectPeriodoNumeroS = this.periodoNumerosS[0];
+  // public selectPeriodoNumeroQ = this.periodoNumerosQ[0];
+  // public selectPeriodoNumeroM = this.periodoNumerosM[0];
 
   //Se recuperan los datos del usuario, los tipos de periodo y las empresas
   ngOnInit(): void {
@@ -120,6 +122,10 @@ export class BorrarRecibosComponent implements OnInit {
     this.RecuperaEmpresas();
     this.RecuperaPeriodoTipo();
   }
+
+  onChangePeriodoTipo() {
+    this.selectPeriodoNumero = 1;
+ }
 
   //Se recuperan los tipos de periodo y se ordenan alfabeticamente
   RecuperaPeriodoTipo() {
@@ -185,28 +191,28 @@ export class BorrarRecibosComponent implements OnInit {
     // console.log("Entra recibos")
     this.cambiarEstatusSpinner(true);
 
-    var periodoNumero = 0;
+    // var periodoNumero = 0;
 
-    switch (this.selectPeriodoTipo.periodoTipoId) {
-      case 1:
-        periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
-        break;
-      case 2:
-        periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
-        break;
-      case 3:
-        periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
-        break;
-      default:
-        break;
-    }
+    // switch (this.selectPeriodoTipo.periodoTipoId) {
+    //   case 1:
+    //     periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
+    //     break;
+    //   case 2:
+    //     periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
+    //     break;
+    //   case 3:
+    //     periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
+    //     break;
+    //   default:
+    //     break;
+    // }
 
     this.recibo = {
       reciboId: 0,
       reciboPeriodoA: this.selectAnio.anioValor,
       reciboPeriodoM: this.selectMes.mesId,
       reciboPeriodoD: new Date().getDay(),
-      reciboPeriodoNumero: periodoNumero,
+      reciboPeriodoNumero: +this.selectPeriodoNumero,//periodoNumero,
       periodoTipoId: this.selectPeriodoTipo.periodoTipoId,
       usuarioNoEmp: null,
       reciboEstatus: true,
@@ -219,15 +225,16 @@ export class BorrarRecibosComponent implements OnInit {
         (recibos) => {
           if(recibos.length > 0){
             // if(this.recibos.pipe())
-            this.recibos = recibos.sort((a, b) => {
-              if (a.usuarioNoEmp > b.usuarioNoEmp) {
-                return 1;
-              }
-              if (a.usuarioNoEmp < b.usuarioNoEmp) {
-                return -1;
-              }
-              return 0;
-            });
+            // this.recibos = recibos.sort((a, b) => {
+            //   if (a.usuarioNoEmp > b.usuarioNoEmp) {
+            //     return 1;
+            //   }
+            //   if (a.usuarioNoEmp < b.usuarioNoEmp) {
+            //     return -1;
+            //   }
+            //   return 0;
+            // });
+            this.recibos = recibos.sort((a,b)=>a.usuarioNoEmp-b.usuarioNoEmp);
           }else{
             this.toastr.error(
               'No se encontraron registros para esta búsqueda.',
@@ -291,28 +298,28 @@ export class BorrarRecibosComponent implements OnInit {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        var periodoNumero = 0;
+        // var periodoNumero = 0;
 
-        switch (this.selectPeriodoTipo.periodoTipoId) {
-          case 1:
-            periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
-            break;
-          case 2:
-            periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
-            break;
-          case 3:
-            periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
-            break;
-          default:
-            break;
-        }
+        // switch (this.selectPeriodoTipo.periodoTipoId) {
+        //   case 1:
+        //     periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
+        //     break;
+        //   case 2:
+        //     periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
+        //     break;
+        //   case 3:
+        //     periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
+        //     break;
+        //   default:
+        //     break;
+        // }
 
         this.recibo = {
           reciboId: 0,
           reciboPeriodoA: this.selectAnio.anioValor,
           reciboPeriodoM: this.selectMes.mesId,
           reciboPeriodoD: new Date().getDay(),
-          reciboPeriodoNumero: periodoNumero,
+          reciboPeriodoNumero: +this.selectPeriodoNumero,//periodoNumero,
           periodoTipoId: this.selectPeriodoTipo.periodoTipoId,
           usuarioNoEmp: recibo.usuarioNoEmp,
           reciboEstatus: true,
@@ -374,28 +381,28 @@ export class BorrarRecibosComponent implements OnInit {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        var periodoNumero = 0;
+        // var periodoNumero = 0;
 
-        switch (this.selectPeriodoTipo.periodoTipoId) {
-          case 1:
-            periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
-            break;
-          case 2:
-            periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
-            break;
-          case 3:
-            periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
-            break;
-          default:
-            break;
-        }
+        // switch (this.selectPeriodoTipo.periodoTipoId) {
+        //   case 1:
+        //     periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
+        //     break;
+        //   case 2:
+        //     periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
+        //     break;
+        //   case 3:
+        //     periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
+        //     break;
+        //   default:
+        //     break;
+        // }
 
         this.recibo = {
           reciboId: 0,
           reciboPeriodoA: this.selectAnio.anioValor,
           reciboPeriodoM: this.selectMes.mesId,
           reciboPeriodoD: new Date().getDay(),
-          reciboPeriodoNumero: periodoNumero,
+          reciboPeriodoNumero: +this.selectPeriodoNumero,//periodoNumero,
           periodoTipoId: this.selectPeriodoTipo.periodoTipoId,
           usuarioNoEmp: null,
           reciboEstatus: true,

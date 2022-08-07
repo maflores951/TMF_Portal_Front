@@ -118,7 +118,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   onPreUpdateUser(user: Usuario) {
-    console.log(JSON.stringify(user));
+    // console.log(JSON.stringify(user));
     if (user == null) {
       this.dataApi.SelectedUsuario = Object.assign({}, user);
     } else {

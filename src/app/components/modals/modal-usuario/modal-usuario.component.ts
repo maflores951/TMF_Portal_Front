@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Empresa } from './../../../models/empresa';
 import {
   Component,
@@ -246,7 +247,7 @@ export class ModalUsuarioComponent implements OnInit {
           }
           // a must be equal to b
           return 0;
-        });
+        }).filter((u) => u.rolId != 2);
       },
       (error) => {
         this.toastr.error(

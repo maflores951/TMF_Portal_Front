@@ -38,12 +38,12 @@
           <li><a routerLink="/recibo/consultar-recibo">Consultar</a></li>
         </ul> -->
       </li>
-      <li class="nav-item" *ngIf="isLogged && (isIT || isSuper)">
+      <li class="nav-item" *ngIf="isLogged && (isIT || isSuper || isAdmin)">
         <a class="nav-link">Catálogos</a>
         <ul>
           <li><a routerLink="/catalogos/catalogo-empleados">Empleados</a></li>
           <li><a routerLink="/catalogos/catalogo-empresas">Empresas</a></li>
-          <li><a routerLink="/catalogos/catalogo-parametros">Parametros</a></li>
+          <li><a routerLink="/catalogos/catalogo-parametros" *ngIf="isIT || isSuper">Parametros</a></li>
           <li>
             <a routerLink="/catalogos/catalogo-roles">Tipos de usuario</a>
           </li>

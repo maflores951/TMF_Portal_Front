@@ -96,10 +96,16 @@
           </button>
         </td>
         <td>
-          <button
+          <!-- <button
             class="btn btn-info float-right mb-3 mx-4"
             data-toggle="modal"
             data-target="#modalCargaMasiva"
+            (click)="onPreUpdateEmpleado(null)"
+          > -->
+          <button
+            class="btn btn-info float-right mb-3 mx-4"
+            data-toggle="modal"
+            data-target="#modalActualizarMasiva"
             (click)="onPreUpdateEmpleado(null)"
           >
             Carga masiva
@@ -193,4 +199,5 @@
   </div>
 </section>
 <app-modal-empleados [userUid]="userUid"></app-modal-empleados>
-<app-modal-carga-masiva [userUid]="userUid"></app-modal-carga-masiva>
+<!-- <app-modal-carga-masiva [userUid]="userUid"></app-modal-carga-masiva> -->
+<app-actualizar-email-masivo [userUid]="userUid"></app-actualizar-email-masivo>

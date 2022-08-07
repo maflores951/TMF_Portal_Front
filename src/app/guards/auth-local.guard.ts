@@ -17,7 +17,7 @@ export class AuthLocalGuard implements CanActivate {
         const usuario = this.apiAuthService.usuarioData;
         // console.log(usuario );
         if(usuario != null){
-          if (usuario.rolId == 2 || usuario.rolId == 1 || usuario.rolId == 4){
+          if (usuario.rolId == 2 || usuario.rolId == 4){
             return true;
           }
         }

@@ -1,0 +1,64 @@
+<div
+  class="modal fade"
+  id="modalActualizarMasiva"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  data-backdrop="static"
+  data-keyboard="false"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Actualización de empleados de forma masiva
+        </h5>
+        <a href="assets/EjemploActualizacionEmp.xlsx">
+          <img
+            src="assets/icons8-ms-excel-48.png"
+            title="Puedes descargar el archivo de ejemplo para realizar una actualización masiva de los correos de los empleados."
+          />
+        </a>
+      </div>
+      <div class="modal-body">
+        <form
+          #formCarga="ngForm"
+          (ngSubmit)="onSaveEmpelados(formCarga)"
+          [formGroup]="UsuarioForm"
+        >
+          <div class="form-group required">
+            <label for="ArchivoEmpleados" class="col-form-label"
+              >Archivo para la actualización masiva:</label
+            >
+
+            <input
+              id="file-input"
+              name="ArchivoEmpleados"
+              formControlName="ArchivoEmpleados"
+              type="file"
+              (change)="readURL($event)"
+              accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              #myInput
+            />
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              (click)="CerrarMCM(formCarga)"
+              class="btn btn-secondary"
+              #btnClose
+              data-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary form-actions">
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

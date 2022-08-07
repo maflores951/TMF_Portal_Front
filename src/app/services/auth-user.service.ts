@@ -46,7 +46,7 @@ export class AuthUserService {
           if (res.exito === 1) {
             const usuario: Usuario = res.data;
             sessionStorage.setItem('Usuario', JSON.stringify(usuario));
-            // console.log(JSON.stringify(usuario));
+            //  console.log(JSON.stringify(usuario));
             this.usuarioSubject.next(usuario);
           }
           return res;

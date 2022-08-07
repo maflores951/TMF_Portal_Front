@@ -414,46 +414,75 @@ export class ModalEmpleadosComponent implements OnInit {
           this.UsuarioForm.value.RolId = parseInt(this.UsuarioForm.value.RolId);
           this.UsuarioForm.value.UsuarioEstatusSesion = false;
           this.UsuarioForm.value.RolId = 2; //TODO actualizar al id correcto
-          this.dataApi.Put(
+          this.dataApi.PutSub(
             '/Usuarios',
             this.UsuarioForm.value.UsuarioId,
             this.UsuarioForm.value
+          ).subscribe(
+            (result) => {
+              if (result.exito == 1) {
+                this.toastr.success(result.mensaje, 'Exito', {
+                  timeOut: 3000,
+                });
+                setTimeout(() => {
+                  // if (this.usuario.usuarioId == this.UsuarioForm.value.UsuarioId) {
+                  //   this.dataApi.GetListId('/Usuarios', this.usuario.usuarioId).subscribe(result => {
+        
+                  //     const usuario: Usuario = result;
+                  //     usuario.usuarioToken = this.usuario.usuarioToken;
+                  //     setTimeout(() => {
+                  //       this.authUserService.actualizarLogin(usuario);
+                  //     }, 500)
+                  //     setTimeout(() => {
+                  //       this.cambiarEstatusSpinner(false);
+                  //       formUsuario.resetForm();
+                  //       this.UsuarioForm.reset();
+                  //       UsuariosComponent.updateUsers.next(true);
+                  //       NavbarComponent.updateUserStatus.next(true);
+                  //       PerfilComponent.updateUsers.next(true);
+                  //       this.btnClose.nativeElement.click();
+                  //     }, 1000)
+                  //       , error => {
+                  //         this.toastr.error('Errores en el servidor intente más tarde.', 'Error', {
+                  //           timeOut: 3000
+                  //         });
+                  //       };
+                  //   });
+                  // } else {
+                  this.cambiarEstatusSpinner(false);
+                  formUsuario.resetForm();
+                  this.UsuarioForm.reset();
+                  EmpleadosComponent.updateEmpleados.next(true);
+                  NavbarComponent.updateUserStatus.next(true);
+                  // PerfilComponent.updateUsers.next(true);
+                  this.btnClose.nativeElement.click();
+                  // }
+                }, 500);
+                // this.cambiarEstatusSpinner(false);
+                // formUsuario.resetForm();
+                // this.UsuarioForm.reset();
+                // EmpleadosComponent.updateEmpleados.next(true);
+                // NavbarComponent.updateUserStatus.next(true);
+                // this.btnClose.nativeElement.click();
+              } else {
+                this.cambiarEstatusSpinner(false);
+                this.toastr.error(result.mensaje, 'Error', {
+                  timeOut: 3000,
+                });
+              }
+            },
+            (error) => {
+              this.cambiarEstatusSpinner(false);
+              this.toastr.error(
+                'Error en el servidor, contacte al administrador del sistema.',
+                'Error',
+                {
+                  timeOut: 3000,
+                }
+              );
+            }
           );
         }, 300);
-        setTimeout(() => {
-          // if (this.usuario.usuarioId == this.UsuarioForm.value.UsuarioId) {
-          //   this.dataApi.GetListId('/Usuarios', this.usuario.usuarioId).subscribe(result => {
-
-          //     const usuario: Usuario = result;
-          //     usuario.usuarioToken = this.usuario.usuarioToken;
-          //     setTimeout(() => {
-          //       this.authUserService.actualizarLogin(usuario);
-          //     }, 500)
-          //     setTimeout(() => {
-          //       this.cambiarEstatusSpinner(false);
-          //       formUsuario.resetForm();
-          //       this.UsuarioForm.reset();
-          //       UsuariosComponent.updateUsers.next(true);
-          //       NavbarComponent.updateUserStatus.next(true);
-          //       PerfilComponent.updateUsers.next(true);
-          //       this.btnClose.nativeElement.click();
-          //     }, 1000)
-          //       , error => {
-          //         this.toastr.error('Errores en el servidor intente más tarde.', 'Error', {
-          //           timeOut: 3000
-          //         });
-          //       };
-          //   });
-          // } else {
-          this.cambiarEstatusSpinner(false);
-          formUsuario.resetForm();
-          this.UsuarioForm.reset();
-          EmpleadosComponent.updateEmpleados.next(true);
-          NavbarComponent.updateUserStatus.next(true);
-          // PerfilComponent.updateUsers.next(true);
-          this.btnClose.nativeElement.click();
-          // }
-        }, 500);
       }
     } else {
       this.cambiarEstatusSpinner(false);

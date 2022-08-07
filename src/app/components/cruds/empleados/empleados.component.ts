@@ -127,13 +127,22 @@ export class EmpleadosComponent implements OnInit {
       }
       
     setTimeout(() => {
-      console.log(this.usuarioFiltro)
+      // console.log(this.usuarioFiltro)
       this.dataApi.Post('/Usuarios/GetEmpleadosFiltro', this.usuarioFiltro).subscribe(
         (users) => {
           this.cambiarEstatusSpinner(false);
           if(users.length > 0){
-            console.log(users)
-          this.users = users;
+            // this.users = users.sort((a, b) => {
+            //   if (a.empleadoNoEmp > b.empleadoNoEmp) {
+            //     return 1;
+            //   }
+            //   if (a.empleadoNoEmp < b.empleadoNoEmp) {
+            //     return -1;
+            //   }
+            //   return 0;
+            // });
+            this.users = users.sort((a,b)=>a.empleadoNoEmp-b.empleadoNoEmp);
+          // this.users = users;
         }else{
           this.toastr.error(
             'No se encontraron registros para esta búsqueda.',

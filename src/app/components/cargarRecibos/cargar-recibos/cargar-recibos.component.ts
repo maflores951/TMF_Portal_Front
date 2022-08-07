@@ -87,11 +87,13 @@ export class CargarRecibosComponent implements OnInit {
   //Se recuperan los años con respecto al año actual
   public anios = this.recuperaAnios();
 
-  public selectAnio = this.anios[1];
+  public selectAnio = this.anios[2];
+
+
 
   public recuperaAnios() {
     var selectAnio = [];
-    var anio = new Date().getFullYear() - 1;
+    var anio = new Date().getFullYear() - 2;
     for (let index = 1; index < 5; index++) {
       var itemAnio = {
         anioId: anio,
@@ -103,6 +105,7 @@ export class CargarRecibosComponent implements OnInit {
     return selectAnio;
   }
 
+  public selectPeriodoNumero = 1;
   //Lista de los tipos de periodos
   public periodoNumerosS = [
     { periodoNumeroId: 1, periodoNumeroNombre: '1' },
@@ -130,6 +133,10 @@ export class CargarRecibosComponent implements OnInit {
     this.RecuperaPeriodoTipo();
     this.RecuperaEmpresas();
   }
+
+  onChange() {
+   this.selectPeriodoNumero = 1;
+}
 
   RecuperaPeriodoTipo() {
     this.dataApi.GetList('/PeriodoTipos').subscribe(
@@ -231,7 +238,7 @@ export class CargarRecibosComponent implements OnInit {
 
   cargarArchivo() {
     if (this.file != null) {
-      this.cambiarEstatusSpinner(true);
+       this.cambiarEstatusSpinner(true);
       let file = this.file;
       let reader = new FileReader();
       reader.readAsDataURL(file);
@@ -244,35 +251,35 @@ export class CargarRecibosComponent implements OnInit {
         console.log('Error: ', error);
       };
 
-      var periodoNumero = 0;
+      // var periodoNumero = this.selectPeriodoNumero;
 
-      switch (this.selectPeriodoTipo.periodoTipoId) {
-        case 1:
-          periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
-          break;
-        case 2:
-          periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
-          break;
-        case 3:
-          periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
-          break;
-        default:
-          break;
-      }
+      // switch (this.selectPeriodoTipo.periodoTipoId) {
+      //   case 1:
+      //     periodoNumero = this.selectPeriodoNumeroM.periodoNumeroId;
+      //     break;
+      //   case 2:
+      //     periodoNumero = this.selectPeriodoNumeroQ.periodoNumeroId;
+      //     break;
+      //   case 3:
+      //     periodoNumero = this.selectPeriodoNumeroS.periodoNumeroId;
+      //     break;
+      //   default:
+      //     break;
+      // }
 
       this.recibo = {
         reciboId: 0,
         reciboPeriodoA: this.selectAnio.anioValor,
         reciboPeriodoM: this.selectMes.mesId,
         reciboPeriodoD: new Date().getDay(),
-        reciboPeriodoNumero: periodoNumero,
+        reciboPeriodoNumero: +this.selectPeriodoNumero, //periodoNumero,
         periodoTipoId: this.selectPeriodoTipo.periodoTipoId,
         usuarioNoEmp: null,
         reciboEstatus: true,
         empresa: this.selectEmpresa,
         empresaId: this.selectEmpresa.empresaId,
       };
-      console.log(image);
+       console.log(this.recibo);
       setTimeout(() => {
         var buscaComa: number = image.indexOf(',') + 1;
 
