@@ -54,6 +54,24 @@ export class AuthUserService {
       );
   }
 
+  loginSaml(usuario: Usuario) {
+    // console.log(this.url + " *****");
+    // return this.http
+    //   .post<Response>(this.url, { email, password }, httpOption)
+    //   .pipe(
+    //     map((res) => {
+    //       // console.log("Entra");
+    //       if (res.exito === 1) {
+    //         const usuario: Usuario = res.data;
+            sessionStorage.setItem('Usuario', JSON.stringify(usuario));
+            //  console.log(JSON.stringify(usuario));
+            this.usuarioSubject.next(usuario);
+      //     }
+      //     return res;
+      //   })
+      // );
+  }
+
   logout() {
     sessionStorage.removeItem('Usuario');
     this.usuarioSubject.next(null);

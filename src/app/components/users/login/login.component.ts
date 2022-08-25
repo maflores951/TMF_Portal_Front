@@ -1,3 +1,4 @@
+// import { LoginService } from './../../../services/login-services.service';
 import { Component, OnInit, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +11,10 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Parametro } from 'src/app/models/parametro';
 import { TimerService } from 'src/app/services/timer.service';
+import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
+declare const gapi: any;
 
 @Component({
   selector: 'app-login',
@@ -28,10 +33,30 @@ export class LoginComponent implements OnInit {
     private cifrado: CifradoDatosService,
     private spinner: SpinnerService,
     private dataApi: DataApiService,
-    private timer: TimerService
+    private timer: TimerService,
+    private http: HttpClient,
+    private sanitizer: DomSanitizer
   ) {
     this.UsuarioForm = this.createForm();
   }
+
+
+  // loginWithGoogle(): void {
+  //   // this.loginService.loginGoogle();
+  //   //  this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(() => console.log(this.socialAuthService.authState) );
+  //   // this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  //   //  console.log(this.loginService.isLoggedIn());
+  //   // this.loginService.loginForUser();
+  // }
+
+  // logOutWithGoogle(): void {
+  //   this.loginService.signOut();
+  //   //  this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(() => console.log(this.socialAuthService.authState) );
+  //   // this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  //   // console.log("ENyra")
+  //   // this.loginService.loginForUser();
+  // }
+
 
   private emailPattern: any =
     /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
@@ -88,7 +113,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('V 1.1.8 22/07/2022');
+    console.log('V 1.1.10 25/08/2022');
   }
 
   cambiarEstatusSpinner(estatus: boolean) {
@@ -159,5 +184,30 @@ export class LoginComponent implements OnInit {
   onLoginRedirect(): void {
     NavbarComponent.updateUserStatus.next(true);
     this.router.navigate(['']);
+  }
+
+   httpOption = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  };
+  
+  onLoginSAML(): void {
+    // NavbarComponent.updateUserStatus.next(true);
+    // this.router.navigate(['']);
+    this.http.post<any>('https://localhost:44369/api/Saml/login',this.httpOption).subscribe(saml => {
+      console.log(saml + "  ***");
+    },
+    (error) => {
+      console.log(error);
+      // this.toastr.error(
+      //   'Error en el servidor, contacte al administrador del sistema.',
+      //   'Error',
+      //   {
+      //     timeOut: 3000,
+      //   }
+      // );
+      // this.cambiarEstatusSpinner(false);
+    });
   }
 }

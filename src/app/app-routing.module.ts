@@ -1,3 +1,5 @@
+import { InicioSamlComponent } from './components/users/inicio-saml/inicio-saml.component';
+// import { LoginGoogleComponent } from './components/users/login-google/login-google.component';
 import { AuthAdminGuard } from './guards/auth-admin.guard';
 import { CargaMasivaArchivosComponent } from './components/carga-masiva-archivos/carga-masiva-archivos.component';
 import { EmpleadosComponent } from './components/cruds/empleados/empleados.component';
@@ -27,6 +29,8 @@ const routes: Routes = [
   { path: 'user/login', component: LoginComponent },
   { path: 'user/RecuperaPass', component: RecuperarPassComponent },
   { path: 'user/AsignarPass/:token', component: AsignarPassComponent },
+  { path: 'user/InicioSaml/:tokenUser', component: InicioSamlComponent },
+  // { path: 'user/loginGoogle', component: LoginGoogleComponent },
   // { path: 'user/registro', component: RegistroComponent },
   { path: 'recibo/consultar-recibo', component: ConsultaReciboComponent, canActivate: [AuthLocalGuard]},
   { path: 'catalogos/catalogo-parametros', component: ParametrosComponent, canActivate: [AuthGuard]},

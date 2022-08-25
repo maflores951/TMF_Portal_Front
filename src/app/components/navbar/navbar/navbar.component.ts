@@ -140,11 +140,12 @@ export class NavbarComponent implements OnInit {
 
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
+    // console.log(JSON.stringify(this.usuario) + ' NavBAR')
     if (!this.usuario) {
       this.fotoEmpresa = 'assets/TMF_Logo.png';
       this.isLogged = false;
     } else {
-      //  console.log( JSON.stringify(this.usuario) + ' ******')
+        // console.log( JSON.stringify(this.usuario) + ' ******')
       //Se utiliza para iniciar el timer
       // this.iniciarTimer();
       var today = new Date().toLocaleDateString();
@@ -179,6 +180,7 @@ export class NavbarComponent implements OnInit {
         this.fechaBandera = false;
       }
       // this.fechaPass = this.usuario.usuarioFechaLimite - new Date()
+     
       this.UserTypeId = this.usuario.rolId;
 
       // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath.substr(1);
