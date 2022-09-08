@@ -85,30 +85,55 @@
         </td>
       </tr>
       <tr>
+       
         <td>
           <button
-            class="btn btn-primary float-right mb-3"
+            class="btn btn-secondary float-right mb-3 mx-4"
+            data-toggle="modal"
+            data-target="#modalCargaMasiva"
+            (click)="onPreUpdateEmpleado(null)"
+          >
+          Carga masiva
+          </button>
+        </td>
+        <td>
+          <button
+            class="btn btn-primary float-right mb-3 mx-4"
+            data-toggle="modal"
+            data-target="#modalActualizarMasiva"
+            (click)="onPreUpdateEmpleado(null)"
+          >
+            Actualizar email
+          </button>
+        </td>
+        <td>
+          <button
+            class="btn btn-info float-right mb-3 mx-4"
+            data-toggle="modal"
+            data-target="#modalActualizarEmpresaMasiva"
+            (click)="onPreUpdateEmpleado(null)"
+          >
+            Actualizar empresa
+          </button>
+        </td>
+        <td>
+          <button
+            class="btn btn-danger float-right mb-3 mx-4"
+            data-toggle="modal"
+            data-target="#modalEliminarMasivo"
+            (click)="onPreUpdateEmpleado(null)"
+          >
+            Eliminación masiva
+          </button>
+        </td>
+        <td>
+          <button
+            class="btn btn-success float-right mb-3"
             data-toggle="modal"
             data-target="#modalEmpleados"
             (click)="onPreUpdateEmpleado(null)"
           >
             Nuevo registro
-          </button>
-        </td>
-        <td>
-          <!-- <button
-            class="btn btn-info float-right mb-3 mx-4"
-            data-toggle="modal"
-            data-target="#modalCargaMasiva"
-            (click)="onPreUpdateEmpleado(null)"
-          > -->
-          <button
-            class="btn btn-info float-right mb-3 mx-4"
-            data-toggle="modal"
-            data-target="#modalActualizarMasiva"
-            (click)="onPreUpdateEmpleado(null)"
-          >
-            Carga masiva
           </button>
         </td>
       </tr>
@@ -199,5 +224,7 @@
   </div>
 </section>
 <app-modal-empleados [userUid]="userUid"></app-modal-empleados>
-<!-- <app-modal-carga-masiva [userUid]="userUid"></app-modal-carga-masiva> -->
+<app-modal-carga-masiva [userUid]="userUid"></app-modal-carga-masiva> 
 <app-actualizar-email-masivo [userUid]="userUid"></app-actualizar-email-masivo>
+<app-eliminar-empleado-masivo [userUid]="userUid"></app-eliminar-empleado-masivo>
+<app-actualizar-empresa-masivo></app-actualizar-empresa-masivo>

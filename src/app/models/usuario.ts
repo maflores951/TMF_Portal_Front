@@ -20,6 +20,8 @@ export interface Usuario {
 
   email?: string | null;
 
+  emailSSO?: string | null;
+
   usuarioClave?: string |null;
 
   imagePath?: string | null;
