@@ -75,7 +75,7 @@ export class ActualizarEmpresaMasivoComponent implements OnInit {
 
   //Se valida que las columnas en los excel sean correctas
   public ValidarArregloColumnas(jsonExcel) {
-     console.log(jsonExcel)
+     console.log(jsonExcel + ' ****')
     for (let index = 0; index < jsonExcel.length; index++) {
       var encabezado = jsonExcel[0];
       const element = jsonExcel[index];
@@ -84,9 +84,9 @@ export class ActualizarEmpresaMasivoComponent implements OnInit {
           if (index > 0) {
             if (element.length == 3){
               var empleado = {
-                empleadoNoEmp: element[0],
-                empresaIdOld: element[1],
-                empresaIdNew: element[2],
+                empresaIdOld: element[0],
+                empresaIdNew: element[1],
+                empleadoNoEmp: element[2],
               };
               this.excelEmpleados.push(empleado);
             }

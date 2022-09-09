@@ -26,9 +26,9 @@ export class EmpleadosComponent implements OnInit {
     private toastr: ToastrService
   ) {
     EmpleadosComponent.updateEmpleados.subscribe((res) => {
-      setTimeout(() => {
-        this.getListUsers();
-      }, 100);
+      // setTimeout(() => {
+      //   this.getListUsers();
+      // }, 100);
     });
   }
 
