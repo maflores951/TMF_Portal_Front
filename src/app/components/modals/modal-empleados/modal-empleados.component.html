@@ -237,6 +237,35 @@
               </div>
             </div>
 
+            <label for="EmailSSO">Email SSO</label>
+            <input
+              type="email"
+              name="EmailSSO"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.emailSSO"
+              maxlength="100"
+              placeholder="Ingresa tu email institucional"
+              formControlName="EmailSSO"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="EmailSSO.invalid && (EmailSSO.dirty || EmailSSO.touched)"
+            >
+              <div *ngFor="let validation of user_validation_messages.EmailSSO">
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('EmailSSO').hasError(validation.type) &&
+                    (UsuarioForm.get('EmailSSO').dirty ||
+                      UsuarioForm.get('EmailSSO').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
             <label for="Email">Email</label>
             <input
               type="email"
@@ -337,6 +366,35 @@
                 </div>
               </div>
 
+              <label for="EmailSSO">Email SSO</label>
+            <input
+              type="email"
+              name="EmailSSO"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.emailSSO"
+              maxlength="100"
+              placeholder="Ingresa tu email institucional"
+              formControlName="EmailSSO"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="EmailSSO.invalid && (EmailSSO.dirty || EmailSSO.touched)"
+            >
+              <div *ngFor="let validation of user_validation_messages.EmailSSO">
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('EmailSSO').hasError(validation.type) &&
+                    (UsuarioForm.get('EmailSSO').dirty ||
+                      UsuarioForm.get('EmailSSO').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+            
               <label for="Email">Email</label>
               <input
                 type="email"

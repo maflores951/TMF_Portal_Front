@@ -70,6 +70,18 @@
           />
         </td>
       </tr>
+      <tr>
+        <td width="10%"><b>Email SSO</b></td>
+
+        <td width="40%">
+          <input
+            type="text"
+            name="emailSSO"
+            class="form-control"
+            [(ngModel)]="emailSSO"
+          />
+        </td>
+      </tr>
     </table>
 
     <table cellpadding="10" align="right">
@@ -153,7 +165,7 @@
           <th scope="col">Nombre</th>
           <th scope="col">Usuario</th>
           <th scope="col">Email</th>
-         
+          <th scope="col">EmailSSO</th>
           <th scope="col">Empresa</th>
           <th scope="col">&nbsp;</th>
           <th scope="col">&nbsp;</th>
@@ -167,6 +179,7 @@
                 : {
                     empleadoNoEmp: empleadoNoEmp,
                     email: email,
+                    emailSSO: emailSSO,
                     usuarioApellidoP: usuarioApellidoP,
                     empresaNombre: selectEmpresa.empresaNombre
                   }
@@ -186,7 +199,7 @@
           <td>{{ user.usuarioNombre }}</td>
           <td>{{ user.usuarioClave }}</td>
           <td>{{ user.email }}</td>
-          
+          <td>{{ user.emailSSO }}</td>
           <td>{{ user.empresa.empresaNombre }}</td>
           <td>
             <button

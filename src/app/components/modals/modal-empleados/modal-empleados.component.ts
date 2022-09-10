@@ -61,6 +61,9 @@ export class ModalEmpleadosComponent implements OnInit {
   get Email() {
     return this.UsuarioForm.get('Email');
   }
+  get EmailSSO() {
+    return this.UsuarioForm.get('EmailSSO');
+  }
   get RolId() {
     return this.UsuarioForm.get('RolId');
   }
@@ -171,6 +174,16 @@ export class ModalEmpleadosComponent implements OnInit {
         message: 'El email no es valido',
       },
     ],
+    EmailSSO: [
+      {
+        type: 'required',
+        message: 'El email institucional es requerido',
+      },
+      {
+        type: 'pattern',
+        message: 'El email institucional no es valido',
+      },
+    ],
     // 'RolId': [
     //   {
     //     type: 'required',
@@ -221,6 +234,10 @@ export class ModalEmpleadosComponent implements OnInit {
         Validators.minLength(3),
       ]),
       Email: new FormControl('', [
+        Validators.required,
+        Validators.pattern(this.emailPattern),
+      ]),
+      EmailSSO: new FormControl('', [
         Validators.required,
         Validators.pattern(this.emailPattern),
       ]),

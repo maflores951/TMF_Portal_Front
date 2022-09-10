@@ -34,6 +34,7 @@ export class EmpleadosComponent implements OnInit {
 
   public empleadoNoEmp = '';
   public email = '';
+  public emailSSO = '';
   public usuarioApellidoP = '';
   public empresaNombre = '';
   public usuario: Usuario;
@@ -110,6 +111,7 @@ export class EmpleadosComponent implements OnInit {
       email: this.email,
       empleadoNoEmp: this.empleadoNoEmp,
       empresaId: this.selectEmpresa.empresaId,
+      emailSSO: this.emailSSO,
       // empleadoRFC: null,
       // imageBase64:null,
       // imageFullPath: null,
