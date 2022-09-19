@@ -8,7 +8,7 @@ export class FilterEmpleadosPipe implements PipeTransform {
     if (
       arg.empleadoNoEmp === '' &&
       arg.email === '' &&
-      arg.emailSSO === '' &&
+      // arg.emailSSO === '' &&
       arg.usuarioApellidoP === '' &&
       arg.empresaNombre === ''
     )
@@ -24,9 +24,9 @@ export class FilterEmpleadosPipe implements PipeTransform {
           .indexOf(arg.empleadoNoEmp.toLowerCase()) > -1
       ) {
         if (user.email.toLowerCase().indexOf(arg.email.toLowerCase()) > -1) {
-          if (
-            user.emailSSO.toLowerCase().indexOf(arg.emailSSO.toLowerCase()) > -1
-          ) {
+          // if (
+          //   user.emailSSO.toLowerCase().indexOf(arg.emailSSO.toLowerCase()) > -1
+          // ) {
             if (
               user.usuarioApellidoP
                 .toLowerCase()
@@ -40,7 +40,7 @@ export class FilterEmpleadosPipe implements PipeTransform {
                 resultUser.push(user);
               }
             }
-          }
+          // }
         }
       }
     }

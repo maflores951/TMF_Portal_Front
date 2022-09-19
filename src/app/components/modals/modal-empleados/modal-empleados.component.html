@@ -237,7 +237,7 @@
               </div>
             </div>
 
-            <label for="EmailSSO">Email SSO</label>
+            <!-- <label for="EmailSSO">Email SSO</label>
             <input
               type="email"
               name="EmailSSO"
@@ -264,7 +264,7 @@
                   {{ validation.message }}
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <label for="Email">Email</label>
             <input
@@ -366,35 +366,6 @@
                 </div>
               </div>
 
-              <label for="EmailSSO">Email SSO</label>
-            <input
-              type="email"
-              name="EmailSSO"
-              class="form-control"
-              [(ngModel)]="this.dataApi.SelectedUsuario.emailSSO"
-              maxlength="100"
-              placeholder="Ingresa tu email institucional"
-              formControlName="EmailSSO"
-            />
-
-            <div
-              class="alert-danger"
-              *ngIf="EmailSSO.invalid && (EmailSSO.dirty || EmailSSO.touched)"
-            >
-              <div *ngFor="let validation of user_validation_messages.EmailSSO">
-                <div
-                  style="font-size: smaller !important"
-                  *ngIf="
-                    UsuarioForm.get('EmailSSO').hasError(validation.type) &&
-                    (UsuarioForm.get('EmailSSO').dirty ||
-                      UsuarioForm.get('EmailSSO').touched)
-                  "
-                >
-                  {{ validation.message }}
-                </div>
-              </div>
-            </div>
-            
               <label for="Email">Email</label>
               <input
                 type="email"
@@ -458,21 +429,52 @@
             </div>
           </ng-template>
 
-          <!-- <div class="form-group required">
-              <label for="RolId">Tipo</label>
-              <select name="RolId" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.rolId" formControlName="RolId">
-                <option [value]="i.rolId" *ngFor="let i of userTypes">{{i.rolNombre}}</option>
-              </select>
+          <div class="form-group noRequired">
+            <label for="EmailSSO">Email SSO</label>
+            <input
+              type="email"
+              name="EmailSSO"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.emailSSO"
+              maxlength="100"
+              placeholder="Ingresa tu email institucional"
+              formControlName="EmailSSO"
+            />
   
-              <div class="alert-danger" *ngIf="RolId.invalid && (RolId.dirty || RolId.touched)">
-  
-                <div *ngFor="let validation of user_validation_messages.RolId">
-                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('RolId').hasError(validation.type) && (UsuarioForm.get('RolId').dirty || UsuarioForm.get('RolId').touched)">
-                    {{validation.message}}
-                  </div>
+            <div
+              class="alert-danger"
+              *ngIf="EmailSSO.invalid && (EmailSSO.dirty || EmailSSO.touched)"
+            >
+              <div *ngFor="let validation of user_validation_messages.EmailSSO">
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('EmailSSO').hasError(validation.type) &&
+                    (UsuarioForm.get('EmailSSO').dirty ||
+                      UsuarioForm.get('EmailSSO').touched)
+                  "
+                >
+                  {{ validation.message }}
                 </div>
               </div>
-            </div> -->
+            </div>
+            <!-- <div class="form-group required">
+                <label for="RolId">Tipo</label>
+                <select name="RolId" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.rolId" formControlName="RolId">
+                  <option [value]="i.rolId" *ngFor="let i of userTypes">{{i.rolNombre}}</option>
+                </select>
+    
+                <div class="alert-danger" *ngIf="RolId.invalid && (RolId.dirty || RolId.touched)">
+    
+                  <div *ngFor="let validation of user_validation_messages.RolId">
+                    <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('RolId').hasError(validation.type) && (UsuarioForm.get('RolId').dirty || UsuarioForm.get('RolId').touched)">
+                      {{validation.message}}
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+          </div>
+         
 
           <div class="form-group required">
             <label for="EmpresaId">Empresa</label>

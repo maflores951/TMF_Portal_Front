@@ -175,10 +175,10 @@ export class ModalEmpleadosComponent implements OnInit {
       },
     ],
     EmailSSO: [
-      {
-        type: 'required',
-        message: 'El email institucional es requerido',
-      },
+      // {
+      //   type: 'required',
+      //   message: 'El email institucional es requerido',
+      // },
       {
         type: 'pattern',
         message: 'El email institucional no es valido',
@@ -238,7 +238,7 @@ export class ModalEmpleadosComponent implements OnInit {
         Validators.pattern(this.emailPattern),
       ]),
       EmailSSO: new FormControl('', [
-        Validators.required,
+        // Validators.required,
         Validators.pattern(this.emailPattern),
       ]),
       // RolId: new FormControl('',

@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('V 1.1.10 25/08/2022');
+    console.log('V 1.2.1 12/09/2022');
   }
 
   cambiarEstatusSpinner(estatus: boolean) {
@@ -195,8 +195,8 @@ export class LoginComponent implements OnInit {
   onLoginSAML(): void {
     // NavbarComponent.updateUserStatus.next(true);
     // this.router.navigate(['']);
-    this.http.post<any>('https://localhost:44369/api/Saml/login',this.httpOption).subscribe(saml => {
-      console.log(saml + "  ***");
+    this.http.post<any>('https://localhost:44319/api/Saml/login',this.httpOption).subscribe(saml => {
+      console.log(JSON.stringify(saml) + "  ***");
     },
     (error) => {
       console.log(error);

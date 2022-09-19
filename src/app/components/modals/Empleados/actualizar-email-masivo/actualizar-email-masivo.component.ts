@@ -136,7 +136,7 @@ export class ActualizarEmailMasivoComponent implements OnInit {
     this.cambiarEstatusSpinner(true);
     if (this.temporalJson.length > 0) {
       this.dataApi
-        .Post('/Usuarios/ActualizarEmpMasivo', this.excelEmpleados)
+        .Post('/Usuarios/ActualizarEmpEmailMasivo', this.excelEmpleados)
         .subscribe(
           (result) => {
             if (result.exito == 1) {

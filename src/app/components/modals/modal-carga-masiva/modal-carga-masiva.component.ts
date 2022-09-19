@@ -73,25 +73,111 @@ export class ModalCargaMasivaComponent implements OnInit {
 
   //Se valida que las columnas en los excel sean correctas
   public ValidarArregloColumnas(jsonExcel) {
-    // console.log(jsonExcel)
+     console.log(jsonExcel)
     for (let index = 0; index < jsonExcel.length; index++) {
       var encabezado = jsonExcel[0];
       const element = jsonExcel[index];
      
-      if (encabezado.length == 7) {
+      if (encabezado.length == 8) {
         if (encabezado[0] == 'Nombre') {
           if (index > 0) {
-            if (element.length == 7){
+            if (element.length == 8){
+              var indexExcel = index +1;
+              console.log(element[1] + " $$$$")
+              if (element[0] === undefined){
+                this.toastr.error(
+                  'Faltan datos en la linea ' + indexExcel + '.',
+                  'Error',
+                  {
+                    timeOut: 3000,
+                  }
+                );
+                this.myInput.nativeElement.value = '';
+                this.archivoNombre = '';
+                this.temporalJson = [];
+                break;
+              }
+
+              if (element[1] === undefined){
+                this.toastr.error(
+                  'Faltan datos en la linea ' + indexExcel  + '.',
+                  'Error',
+                  {
+                    timeOut: 3000,
+                  }
+                );
+                this.myInput.nativeElement.value = '';
+                this.archivoNombre = '';
+                this.temporalJson = [];
+                break;
+              }
+
+              if (element[3] === undefined){
+                this.toastr.error(
+                  'Faltan datos en la linea ' + indexExcel + '.',
+                  'Error',
+                  {
+                    timeOut: 3000,
+                  }
+                );
+                this.myInput.nativeElement.value = '';
+                this.archivoNombre = '';
+                this.temporalJson = [];
+                break;
+              }
+
+              if (element[5] === undefined){
+                this.toastr.error(
+                  'Faltan datos en la linea ' + indexExcel + '.',
+                  'Error',
+                  {
+                    timeOut: 3000,
+                  }
+                );
+                this.myInput.nativeElement.value = '';
+                this.archivoNombre = '';
+                this.temporalJson = [];
+                break;
+              }
+
+              if (element[6] === undefined){
+                this.toastr.error(
+                  'Faltan datos en la linea ' + indexExcel + '.',
+                  'Error',
+                  {
+                    timeOut: 3000,
+                  }
+                );
+                this.myInput.nativeElement.value = '';
+                this.archivoNombre = '';
+                this.temporalJson = [];
+                break;
+              }
+
+              if (element[7] === undefined){
+                this.toastr.error(
+                  'Faltan datos en la linea ' + indexExcel + '.',
+                  'Error',
+                  {
+                    timeOut: 3000,
+                  }
+                );
+                this.myInput.nativeElement.value = '';
+                this.archivoNombre = '';
+                this.temporalJson = [];
+                break;
+              }
               var empleado = {
                 usuarioId: 0,
                 usuarioNombre: element[0],
                 usuarioApellidoP: element[1],
                 usuarioApellidoM: element[2],
                 email: element[3],
-                usuarioClave: element[4],
+                emailSSO: element[4],
+                usuarioClave: element[5],
                 // empleadoRFC: element[5],
-                empleadoNoEmp: element[5],
-                empresaId: element[6],
+                empleadoNoEmp: element[6],
+                empresaId: element[7],
                 rolId: 2,
                 usuarioEstatusSesion: false,
               };
