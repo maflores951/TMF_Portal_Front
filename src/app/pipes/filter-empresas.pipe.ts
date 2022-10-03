@@ -13,6 +13,12 @@ export class FilterEmpresasPipe implements PipeTransform {
         {
           resultEmpresa.push(empresa);
         };
+        //Validar Id
+        // console.log(empresa.empresaId + ' ' + arg + ' Pipe Empresa')
+        // if(empresa.empresaId === arg)
+        // {
+        //    resultEmpresa.push(empresa);
+        // };
     };
   return resultEmpresa;
   }

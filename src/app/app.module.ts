@@ -71,6 +71,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { JwtInterceptor } from './security/jwt.interceptor';
 import { InicioSamlComponent } from './components/users/inicio-saml/inicio-saml.component';
 import { ActualizarEmpresaMasivoComponent } from './components/modals/Empleados/actualizar-empresa-masivo/actualizar-empresa-masivo.component';
+import { ErrorSamlComponent } from './components/users/error-saml/error-saml.component';
 // import { userInfo } from 'os';
 
 // const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
@@ -116,6 +117,7 @@ import { ActualizarEmpresaMasivoComponent } from './components/modals/Empleados/
     EliminarEmpleadoMasivoComponent,
     InicioSamlComponent,
     ActualizarEmpresaMasivoComponent,
+    ErrorSamlComponent,
     // LoginGoogleComponent,
     
   ],

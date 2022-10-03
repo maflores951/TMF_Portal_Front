@@ -73,7 +73,7 @@ export class ModalCargaMasivaComponent implements OnInit {
 
   //Se valida que las columnas en los excel sean correctas
   public ValidarArregloColumnas(jsonExcel) {
-     console.log(jsonExcel)
+    //  console.log(jsonExcel)
     for (let index = 0; index < jsonExcel.length; index++) {
       var encabezado = jsonExcel[0];
       const element = jsonExcel[index];
@@ -83,7 +83,7 @@ export class ModalCargaMasivaComponent implements OnInit {
           if (index > 0) {
             if (element.length == 8){
               var indexExcel = index +1;
-              console.log(element[1] + " $$$$")
+              // console.log(element[1] + " $$$$")
               if (element[0] === undefined){
                 this.toastr.error(
                   'Faltan datos en la linea ' + indexExcel + '.',

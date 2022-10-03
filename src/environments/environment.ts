@@ -4,11 +4,12 @@
 
 export const environment = {
   production: false,
-   baseUrl: "https://localhost:44319",
+  //  baseUrl: "https://localhost:44319",
+  baseUrl: "http://localhost:44369",
   // baseUrl: "http://legvit.ddns.me:9096/Tmf_Masivo_Back",
   // baseUrl: "http://legvit.ddns.me:81/Tmf_Back",
   //baseUrl: "https://tmfback.azurewebsites.net",
-  servicePrefix : "/api"
+  servicePrefix : "/api",
 };
 
 /*

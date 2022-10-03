@@ -10,7 +10,7 @@ export class FilterEmpleadosPipe implements PipeTransform {
       arg.email === '' &&
       // arg.emailSSO === '' &&
       arg.usuarioApellidoP === '' &&
-      arg.empresaNombre === ''
+      arg.empresaId === ''
     )
       return value;
     // console.log(arg)
@@ -32,13 +32,18 @@ export class FilterEmpleadosPipe implements PipeTransform {
                 .toLowerCase()
                 .indexOf(arg.usuarioApellidoP.toLowerCase()) > -1
             ) {
-              if (
-                user.empresa.empresaNombre
-                  .toLowerCase()
-                  .indexOf(arg.empresaNombre.toLowerCase()) > -1
-              ) {
+              // if (
+              //   user.empresa.empresaNombre
+              //     .toLowerCase()
+              //     .indexOf(arg.empresaNombre.toLowerCase()) > -1
+              // ) {
+              //   resultUser.push(user);
+              // }
+              // console.log(user.empresa.empresaId + ' ' + arg.empresaId + ' Pipe Empresa')
+              if(user.empresa.empresaId === arg.empresaId)
+              {
                 resultUser.push(user);
-              }
+              };
             }
           // }
         }

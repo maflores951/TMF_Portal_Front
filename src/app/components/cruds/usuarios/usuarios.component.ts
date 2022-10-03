@@ -111,7 +111,7 @@ export class UsuariosComponent implements OnInit {
           this.getListUsers();
         }, 500);
       } else if (result.isDenied) {
-        Swal.fire('Carga de información cancelada', '', 'error');
+        Swal.fire('Eliminación cancelada', '', 'error');
         this.cambiarEstatusSpinner(false);
       }
     });

@@ -44,78 +44,126 @@ export class InicioSamlComponent implements OnInit {
       )
     );
 
-    var empresaJson = this.usuarioJson['Empresa'];
+    // var empresaJson = this.usuarioJson['Empresa'];
 
-    let empresaParceada: Empresa = {
-      empresaId: empresaJson['EmpresaId'],
-      empresaNombre: empresaJson['EmpresaNombre'],
-      empresaLogo: empresaJson['EmpresaLogo'],
-      empresaImageBase64: empresaJson['EmpresaImageBase64'],
-      empresaColor: empresaJson['EmpresaColor'],
-      empresaEstatus: empresaJson['EmpresaEstatus'],
-    };
+    // let empresaParceada: Empresa = {
+    //   empresaId: empresaJson['EmpresaId'],
+    //   empresaNombre: empresaJson['EmpresaNombre'],
+    //   empresaLogo: empresaJson['EmpresaLogo'],
+    //   empresaImageBase64: empresaJson['EmpresaImageBase64'],
+    //   empresaColor: empresaJson['EmpresaColor'],
+    //   empresaEstatus: empresaJson['EmpresaEstatus'],
+    // };
 
-    this.usuario = {
-      usuarioId: this.usuarioJson['UsuarioId'],
-      email: this.usuarioJson['Email'],
-      usuarioNombre: this.usuarioJson['UsuarioNombre'],
-      usuarioApellidoP: this.usuarioJson['UsuarioApellidoP'],
-      usuarioApellidoM: this.usuarioJson['usuarioApellidoM'],
-      usuarioFechaLimite: this.usuarioJson['UsuarioFechaLimite'],
-      usuarioEstatusSesion: this.usuarioJson['UsuarioEstatusSesion'],
-      usuarioClave: this.usuarioJson['UsuarioClave'],
-      usuarioToken: this.usuarioJson['UsuarioToken'],
-      imagePath: this.usuarioJson['ImagePath'],
-      rolId: this.usuarioJson['RolId'],
-      empleadoNoEmp: this.usuarioJson['EmpleadoNoEmp'],
-      empresaId: this.usuarioJson['EmpleadoNoEmp'],
-      empresa: empresaParceada,
-      imageBase64: this.usuarioJson['ImageBase64'],
-      imageFullPath: this.usuarioJson['ImageFullPath'],
-      usuarioFullName: this.usuarioJson['UsuarioFullName'],
-    };
-
-    //     console.log(JSON.stringify(this.usuario) + " inicio SAML");
-
-    // // let usuarioParse : Usuario =
-    // console.log(JSON.stringify(this.usuarioJson) + ' ***')
-    this.apiAuth.loginSaml(this.usuario);
-
-    setTimeout(() => {
-      this.dataApi
-        .RecuperaParametro('/Parametros/RecuperaParametro/SETSES')
-        .subscribe((parametro) => {
-          // var usuario = this.apiAuth.usuarioData;
-          this.cambiarEstatusSpinner(false);
-          sessionStorage.setItem(
-            'tiempoSesion',
-            parametro.parametroValorInicial
-          );
-          this.timer.asignarTiempo(parseInt(parametro.parametroValorInicial));
-          this.timer.validarTimer(true);
-
-          // setTimeout(() => {
-          //   this.apiAuth.logout()
-          // }, 1000 * 60 * 60 * 8);
-          this.onLoginRedirect();
-        }),
-        (error) => {
-          this.cambiarEstatusSpinner(false);
-          this.toastr.error(error.error.error_description, 'Error', {
+    try {
+      this.usuario = {
+        usuarioId: this.usuarioJson['UsuarioId'],
+        email: this.usuarioJson['Email'],
+        // usuarioNombre: this.usuarioJson['UsuarioNombre'],
+        // usuarioApellidoP: this.usuarioJson['UsuarioApellidoP'],
+        // usuarioApellidoM: this.usuarioJson['usuarioApellidoM'],
+        usuarioFechaLimite: this.usuarioJson['UsuarioFechaLimite'],
+        // usuarioEstatusSesion: this.usuarioJson['UsuarioEstatusSesion'],
+        usuarioClave: this.usuarioJson['UsuarioClave'],
+        usuarioToken: this.usuarioJson['UsuarioToken'],
+        imagePath: this.usuarioJson['ImagePath'],
+        rolId: this.usuarioJson['RolId'],
+        empleadoNoEmp: this.usuarioJson['EmpleadoNoEmp'],
+        empresaId: this.usuarioJson['EmpresaId'],
+        // empresa: empresaParceada,
+        // imageBase64: this.usuarioJson['ImageBase64'],
+        // imageFullPath: this.usuarioJson['ImageFullPath'],
+        // usuarioFullName: this.usuarioJson['UsuarioFullName'],
+      };
+  
+          
+  
+      // // let usuarioParse : Usuario =
+      // console.log(JSON.stringify(this.usuarioJson) + ' ***')
+      if (
+        new Date(this.usuario.usuarioFechaLimite) < new Date() ||
+        this.usuario.usuarioFechaLimite === null ||
+        this.usuario.usuarioFechaLimite == ''
+      ) {
+        this.toastr.error(
+          'El token de seguridad ha expirado, por favor inicie sesión de nuevo',
+          'Error',
+          {
             timeOut: 3000,
-          });
-          this.timer.validarTimer(false);
-          this.apiAuth.logout();
-        };
+          }
+        );
+        this.cambiarEstatusSpinner(false);
+        this.onLoginRedirectError()
+        return
+      } 
 
-      this.cambiarEstatusSpinner(false);
-    }, 2000);
-  }
+       this.apiAuth.loginSaml(this.usuario);
 
-  public onLoginRedirect(): void {
-    NavbarComponent.updateUserStatus.next(true);
-    this.router.navigate(['']);
+      setTimeout(() => {
+        this.dataApi.GetListId('/Empresas', this.usuario.empresaId)
+          .subscribe((empresa) => {
+            // var usuario = this.apiAuth.usuarioData;
+            // this.cambiarEstatusSpinner(false);
+            this.usuario.empresa = empresa;
+            console.log(JSON.stringify(this.usuario) + " inicio SAML");
+      
+            this.apiAuth.loginSaml(this.usuario);
+        
+          }),
+          (error) => {
+            this.cambiarEstatusSpinner(false);
+            this.toastr.error(error.error.error_description, 'Error', {
+              timeOut: 3000,
+            });
+            this.cambiarEstatusSpinner(false);
+            this.onLoginRedirectError()
+          };
+      }, 2000);
+
+    
+      setTimeout(() => {
+        this.dataApi
+          .RecuperaParametro('/Parametros/RecuperaParametro/SETSES')
+          .subscribe((parametro) => {
+            // var usuario = this.apiAuth.usuarioData;
+            this.cambiarEstatusSpinner(false);
+            sessionStorage.setItem(
+              'tiempoSesion',
+              parametro.parametroValorInicial
+            );
+            this.timer.asignarTiempo(parseInt(parametro.parametroValorInicial));
+            this.timer.validarTimer(true);
+  
+            // setTimeout(() => {
+            //   this.apiAuth.logout()
+            // }, 1000 * 60 * 60 * 8);
+            this.onLoginRedirect();
+          }),
+          (error) => {
+            this.cambiarEstatusSpinner(false);
+            this.toastr.error(error.error.error_description, 'Error', {
+              timeOut: 3000,
+            });
+            this.timer.validarTimer(false);
+            this.apiAuth.logout();
+          };
+  
+        this.cambiarEstatusSpinner(false);
+      }, 3000);
+    } catch (error) {
+      this.onLoginRedirectError()
+    }
   }
+    
+    public onLoginRedirect(): void {
+      NavbarComponent.updateUserStatus.next(true);
+      this.router.navigate(['']);
+    }
+
+    public onLoginRedirectError(): void {
+      NavbarComponent.updateUserStatus.next(true);
+      this.router.navigate(['errorLogin']);
+    }
 
   // get PasswordLogin() {
   //   return this.UsuarioForm.get('PasswordLogin');

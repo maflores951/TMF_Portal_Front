@@ -90,13 +90,44 @@ export class EmpresasComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         empresa.empresaEstatus = true;
-        this.dataApi.Put('/Empresas', empresa.empresaId, empresa);
-        this.cambiarEstatusSpinner(false);
-        setTimeout(() => {
-          this.getListEmpresas();
-        }, 500);
+        this.dataApi.PutSub('/Empresas', empresa.empresaId, empresa).subscribe(
+          (emp) => {
+            this.cambiarEstatusSpinner(false);
+            if (emp.empresaEstatus == true){
+              this.toastr.success(
+                'La eliminación se realizó con éxito.',
+                'Error',
+                {
+                  timeOut: 3000,
+                }
+              );
+              setTimeout(() => {
+                this.getListEmpresas();
+              }, 500);
+            }else{
+              this.toastr.error(
+                'No se puede eliminar la empresa porque cuenta con usuarios activos registrados.',
+                'Error',
+                {
+                  timeOut: 3000,
+                }
+              );
+            }
+          },
+          (error) => {
+            console.error(error);
+            this.cambiarEstatusSpinner(false);
+            this.toastr.error(
+              'Error en el servidor, contacte al administrador del sistema.',
+              'Error',
+              {
+                timeOut: 3000,
+              }
+            );
+          }
+        );
       } else if (result.isDenied) {
-        Swal.fire('Carga de información cancelada', '', 'error');
+        Swal.fire('Eliminación cancelada', '', 'error');
         this.cambiarEstatusSpinner(false);
       }
     });

@@ -207,7 +207,7 @@ export class NavbarComponent implements OnInit {
       }
 
       if (this.usuario.empresaId != null){
-        if (this.usuario.empresa.empresaLogo == null ) {
+        if (this.usuario.empresa.empresaLogo == null || this.usuario.empresa.empresaLogo == 'undefined') {
           this.fotoEmpresa = 'assets/TMF_Logo.png'; //"https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
         } else {
           this.fotoEmpresa =

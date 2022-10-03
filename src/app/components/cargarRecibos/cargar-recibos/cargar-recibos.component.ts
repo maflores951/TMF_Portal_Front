@@ -279,7 +279,7 @@ export class CargarRecibosComponent implements OnInit {
         empresa: this.selectEmpresa,
         empresaId: this.selectEmpresa.empresaId,
       };
-       console.log(this.recibo);
+      //  console.log(this.recibo);
       setTimeout(() => {
         var buscaComa: number = image.indexOf(',') + 1;
 

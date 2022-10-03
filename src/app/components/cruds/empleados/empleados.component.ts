@@ -26,9 +26,9 @@ export class EmpleadosComponent implements OnInit {
     private toastr: ToastrService
   ) {
     EmpleadosComponent.updateEmpleados.subscribe((res) => {
-      // setTimeout(() => {
-      //   this.getListUsers();
-      // }, 100);
+      setTimeout(() => {
+        this.getListUsers();
+      }, 100);
     });
   }
 
@@ -189,7 +189,7 @@ export class EmpleadosComponent implements OnInit {
           this.getListUsers();
         }, 500);
       } else if (result.isDenied) {
-        Swal.fire('Carga de información cancelada', '', 'error');
+        Swal.fire('Eliminación cancelada', '', 'error');
         this.cambiarEstatusSpinner(false);
       }
     });

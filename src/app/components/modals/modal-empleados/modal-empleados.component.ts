@@ -503,8 +503,68 @@ export class ModalEmpleadosComponent implements OnInit {
       }
     } else {
       this.cambiarEstatusSpinner(false);
+      if (this.UsuarioForm.controls["UsuarioNombre"].errors != null){
+        this.toastr.error(
+          'Errores en el nombre del empleado, debe de comenzar con mayúscula, tener minimos 3 caracteres y contener solo caracteres.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+
+      if (this.UsuarioForm.controls["UsuarioApellidoP"].errors != null){
+        this.toastr.error(
+          'Errores en el apellido del empleado, debe de comenzar con mayúscula, tener minimos 3 caracteres y contener solo caracteres.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+
+      if (this.UsuarioForm.controls["UsuarioClave"].errors != null){
+        this.toastr.error(
+          'Errores en el usuario del empleado, debe tener minimos 3 caracteres.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+
+      if (this.UsuarioForm.controls["Email"].errors != null){
+        this.toastr.error(
+          'Errores en el email del empleado, valide que sea un email válido.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+
+      if (this.UsuarioForm.controls["Password"].errors != null){
+        this.toastr.error(
+          'Errores en el password del empleado, valide que sea un password válido.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+
+      if (this.UsuarioForm.controls["EmailSSO"].errors != null){
+        this.toastr.error(
+          'Errores en el email SSO del empleado, valide que sea un email válido.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+
       this.toastr.error(
-        'Errores en el formulario, revise la información ingresada".',
+        'Errores en el formulario, revise que los campos obligatorios estén completos.',
         'Error',
         {
           timeOut: 3000,

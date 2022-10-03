@@ -209,7 +209,7 @@ export class ConsultaReciboComponent implements OnInit {
 
   onPreUpdateVisor(reciboPathPDF) {
     this.dataApi.SelectedUsuarioPDF = this.url + reciboPathPDF;
-    console.log('Abrir visor' + this.dataApi.SelectedUsuarioPDF);
+    // console.log('Abrir visor' + this.dataApi.SelectedUsuarioPDF);
   }
 
   // open(content) {

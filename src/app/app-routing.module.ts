@@ -1,3 +1,4 @@
+import { ErrorSamlComponent } from './components/users/error-saml/error-saml.component';
 import { InicioSamlComponent } from './components/users/inicio-saml/inicio-saml.component';
 // import { LoginGoogleComponent } from './components/users/login-google/login-google.component';
 import { AuthAdminGuard } from './guards/auth-admin.guard';
@@ -26,6 +27,7 @@ import { AuthAdminItGuard } from './guards/auth-admin-it.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'errorLogin', component: ErrorSamlComponent },
   { path: 'user/login', component: LoginComponent },
   { path: 'user/RecuperaPass', component: RecuperarPassComponent },
   { path: 'user/AsignarPass/:token', component: AsignarPassComponent },
