@@ -1,3 +1,4 @@
+import { Empresa } from './empresa';
 import { Rol } from "./rol";
 
 export interface Usuario {
@@ -19,6 +20,8 @@ export interface Usuario {
 
   email?: string | null;
 
+  emailSSO?: string | null;
+
   usuarioClave?: string |null;
 
   imagePath?: string | null;
@@ -35,4 +38,15 @@ export interface Usuario {
 
   usuarioFullName?: string;
 
+  empleadoNoEmp?: string;
+
+  // empleadoRFC?: string;
+
+  empresaId?: number;
+
+  empresa?: Empresa;
 }
+
+
+
+

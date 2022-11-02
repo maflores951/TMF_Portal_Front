@@ -1,14 +1,21 @@
+import { ErrorSamlComponent } from './components/users/error-saml/error-saml.component';
+import { InicioSamlComponent } from './components/users/inicio-saml/inicio-saml.component';
+// import { LoginGoogleComponent } from './components/users/login-google/login-google.component';
+import { AuthAdminGuard } from './guards/auth-admin.guard';
+import { CargaMasivaArchivosComponent } from './components/carga-masiva-archivos/carga-masiva-archivos.component';
+import { EmpleadosComponent } from './components/cruds/empleados/empleados.component';
+import { BorrarRecibosComponent } from './components/borrar-recibos/borrar-recibos.component';
+import { CargarRecibosComponent } from './components/cargarRecibos/cargar-recibos/cargar-recibos.component';
+import { ConsultaReciboComponent } from './components/consultaRecibo/consulta-recibo/consulta-recibo.component';
+import { EnviarRecibosComponent } from './components/enviar-recibos/enviar-recibos.component';
+import { EmpresasComponent } from './components/cruds/empresas/empresas.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ConfiguracionSuaComponent } from './components/configuracionSua/configuracion-sua/configuracion-sua.component';
-import { ConfigSuaComponent } from './components/cruds/config-sua/config-sua.component';
 import { ParametrosComponent } from './components/cruds/parametros/parametros.component';
 import { RolesComponent } from './components/cruds/roles/roles.component';
 import { UsuariosComponent } from './components/cruds/usuarios/usuarios.component';
-import { CargarExcelComponent } from './components/excel/cargar-excel/cargar-excel.component';
 import { HomeComponent } from './components/home/home/home.component';
 import { Page404Component } from './components/page404/page404.component';
-import { ReporteCompararSuaComponent } from './components/reportes/reporte-comparar-sua/reporte-comparar-sua.component';
 import { AsignarPassComponent } from './components/users/asignar-pass/asignar-pass.component';
 import { LoginComponent } from './components/users/login/login.component';
 import { PerfilComponent } from './components/users/perfil/perfil.component';
@@ -16,19 +23,27 @@ import { RecuperarPassComponent } from './components/users/recuperar-pass/recupe
 import { RegistroComponent } from './components/users/registro/registro.component';
 import { AuthLocalGuard } from './guards/auth-local.guard';
 import { AuthGuard } from './guards/auth.guard';
+import { AuthAdminItGuard } from './guards/auth-admin-it.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'errorLogin', component: ErrorSamlComponent },
   { path: 'user/login', component: LoginComponent },
   { path: 'user/RecuperaPass', component: RecuperarPassComponent },
   { path: 'user/AsignarPass/:token', component: AsignarPassComponent },
+  { path: 'user/InicioSaml/:tokenUser', component: InicioSamlComponent },
+  // { path: 'user/loginGoogle', component: LoginGoogleComponent },
   // { path: 'user/registro', component: RegistroComponent },
+  { path: 'recibo/consultar-recibo', component: ConsultaReciboComponent, canActivate: [AuthLocalGuard]},
   { path: 'catalogos/catalogo-parametros', component: ParametrosComponent, canActivate: [AuthGuard]},
-  { path: 'catalogos/catalogo-usuarios', component: UsuariosComponent, canActivate: [AuthGuard] },
-  { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthGuard] },
-  { path: 'configuracion/catalogo-sua', component: ConfigSuaComponent, canActivate: [AuthLocalGuard] },
-  { path: 'configuracion/cargarDatos', component: CargarExcelComponent, canActivate: [AuthLocalGuard] },
-  { path: 'reportes/reporteSua', component: ReporteCompararSuaComponent, canActivate: [AuthLocalGuard] },
+  { path: 'catalogos/catalogo-usuarios', component: UsuariosComponent, canActivate: [AuthAdminItGuard] },
+  { path: 'catalogos/catalogo-empleados', component: EmpleadosComponent, canActivate: [AuthAdminItGuard] },
+  { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthAdminItGuard] },
+  { path: 'catalogos/catalogo-entidades', component: EmpresasComponent, canActivate: [AuthAdminItGuard] },
+  { path: 'recibo/enviar-recibo', component: EnviarRecibosComponent, canActivate: [AuthAdminGuard] },
+  { path: 'recibo/cargar-recibo', component: CargarRecibosComponent, canActivate: [AuthAdminGuard] },
+  { path: 'recibo/borrar-recibo', component: BorrarRecibosComponent, canActivate: [AuthAdminGuard] },
+  // { path: 'recibo/carga-masiva', component: CargaMasivaArchivosComponent, canActivate: [AuthGuard] },
   { path: '**', component: Page404Component }
  
 ];

@@ -1,0 +1,635 @@
+<div
+  class="modal fade"
+  id="modalEmpleados"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  data-backdrop="static"
+  data-keyboard="false"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{
+            !this.dataApi.SelectedUsuario.usuarioId
+              ? "Nuevo registro"
+              : "Actualizar registro"
+          }}
+        </h5>
+
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <form
+          #formUsuario="ngForm"
+          [formGroup]="UsuarioForm"
+          (ngSubmit)="onSaveEmpleado(formUsuario)"
+        >
+          <input
+            type="hidden"
+            name="UsuarioId"
+            [(ngModel)]="this.dataApi.SelectedUsuario.usuarioId"
+            formControlName="UsuarioId"
+          />
+          <input type="hidden" name="userUid" [value]="userUid" />
+
+          <div
+            class="form-group noRequired"
+            *ngIf="this.dataApi.SelectedUsuario.usuarioId == null; else noPhoto"
+          >
+            <label class="col-form-label"
+              >Click en la imagen para actualizar tu foto de perfil.</label
+            >
+            <div class="image-upload">
+              <label for="file-input-Emp">
+                <img
+                  [src]="imageSrc || 'assets/user.png'"
+                  width="100"
+                  alt="Click aquí para subir tu foto"
+                  title="Click aquí para subir tu foto"
+                />
+              </label>
+              <input
+                id="file-input-Emp"
+                name="Foto"
+                formControlName="Foto"
+                type="file"
+                (change)="readURL($event)"
+                accept=".png, .jpg"
+              />
+            </div>
+          </div>
+
+          <ng-template #noPhoto>
+            <div class="form-group noRequired">
+              <label class="col-form-label"
+                >Click en la imagen para actualizar tu foto de perfil.</label
+              >
+              <div class="image-upload">
+                <label for="file-input">
+                  <img
+                    [src]="
+                      imageSrc || this.dataApi.SelectedUsuario.imageFullPath
+                    "
+                    width="100"
+                    alt="Click aquí para subir tu foto"
+                    title="Click aquí para subir tu foto"
+                  />
+                </label>
+                <input
+                  id="file-input"
+                  name="Foto"
+                  formControlName="Foto"
+                  type="file"
+                  (change)="readURL($event)"
+                  accept=".png, .jpg"
+                />
+              </div>
+            </div>
+          </ng-template>
+
+          <div class="form-group required">
+            <label for="UsuarioNombre" class="col-form-label">Nombre:</label>
+
+            <input
+              type="text"
+              class="form-control"
+              name="UsuarioNombre"
+              [(ngModel)]="this.dataApi.SelectedUsuario.usuarioNombre"
+              maxlength="70"
+              formControlName="UsuarioNombre"
+              placeholder="Ingrese su nombre"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="
+                UsuarioNombre.invalid &&
+                (UsuarioNombre.dirty || UsuarioNombre.touched)
+              "
+            >
+              <div
+                *ngFor="
+                  let validation of user_validation_messages.UsuarioNombre
+                "
+              >
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('UsuarioNombre').hasError(
+                      validation.type
+                    ) &&
+                    (UsuarioForm.get('UsuarioNombre').dirty ||
+                      UsuarioForm.get('UsuarioNombre').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label for="UsuarioApellidoP">Apellido paterno:</label>
+            <input
+              type="text"
+              name="UsuarioApellidoP"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.usuarioApellidoP"
+              maxlength="50"
+              formControlName="UsuarioApellidoP"
+              placeholder="Ingrese su apellido paterno"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="
+                UsuarioApellidoP.invalid &&
+                (UsuarioApellidoP.dirty || UsuarioApellidoP.touched)
+              "
+            >
+              <div
+                *ngFor="
+                  let validation of user_validation_messages.UsuarioApellidoP
+                "
+              >
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('UsuarioApellidoP').hasError(
+                      validation.type
+                    ) &&
+                    (UsuarioForm.get('UsuarioApellidoP').dirty ||
+                      UsuarioForm.get('UsuarioApellidoP').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group noRequired">
+            <label for="UsuarioApellidoM">Apellido materno:</label>
+            <input
+              type="text"
+              name="UsuarioApellidoM"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.usuarioApellidoM"
+              maxlength="50"
+              formControlName="UsuarioApellidoM"
+              placeholder="Ingresa tu apellido materno"
+            />
+
+            <!-- <div class="alert-danger" *ngIf="UsuarioApellidoM.invalid && (UsuarioApellidoM.dirty || UsuarioApellidoM.touched)">
+  
+                <div *ngFor="let validation of user_validation_messages.UsuarioApellidoM">
+                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('UsuarioApellidoM').hasError(validation.type) && (UsuarioForm.get('UsuarioApellidoM').dirty || UsuarioForm.get('UsuarioApellidoM').touched)">
+                    {{validation.message}}
+                  </div>
+                </div>
+              </div> -->
+          </div>
+
+          <div
+            class="form-group required"
+            *ngIf="this.dataApi.SelectedUsuario.usuarioId == null; else noOwner"
+          >
+            <label for="UsuarioClave">Usuario:</label>
+            <input
+              type="text"
+              name="UsuarioClave"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.usuarioClave"
+              maxlength="50"
+              formControlName="UsuarioClave"
+              placeholder="Ingresa tu clave de usuario"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="
+                UsuarioClave.invalid &&
+                (UsuarioClave.dirty || UsuarioClave.touched)
+              "
+            >
+              <div
+                *ngFor="let validation of user_validation_messages.UsuarioClave"
+              >
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('UsuarioClave').hasError(validation.type) &&
+                    (UsuarioForm.get('UsuarioClave').dirty ||
+                      UsuarioForm.get('UsuarioClave').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+            <!-- <label for="EmailSSO">Email SSO</label>
+            <input
+              type="email"
+              name="EmailSSO"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.emailSSO"
+              maxlength="100"
+              placeholder="Ingresa tu email institucional"
+              formControlName="EmailSSO"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="EmailSSO.invalid && (EmailSSO.dirty || EmailSSO.touched)"
+            >
+              <div *ngFor="let validation of user_validation_messages.EmailSSO">
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('EmailSSO').hasError(validation.type) &&
+                    (UsuarioForm.get('EmailSSO').dirty ||
+                      UsuarioForm.get('EmailSSO').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div> -->
+
+            <label for="Email">Email</label>
+            <input
+              type="email"
+              name="Email"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.email"
+              maxlength="100"
+              placeholder="Ingresa tu email"
+              formControlName="Email"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="Email.invalid && (Email.dirty || Email.touched)"
+            >
+              <div *ngFor="let validation of user_validation_messages.Email">
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('Email').hasError(validation.type) &&
+                    (UsuarioForm.get('Email').dirty ||
+                      UsuarioForm.get('Email').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+            <label for="Password">Password:</label>
+            <input
+              type="password"
+              name="Password"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.password"
+              maxlength="50"
+              formControlName="Password"
+              placeholder="Ingresa tu password"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="Password.invalid && (Password.dirty || Password.touched)"
+            >
+              <div *ngFor="let validation of user_validation_messages.Password">
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('Password').hasError(validation.type) &&
+                    (UsuarioForm.get('Password').dirty ||
+                      UsuarioForm.get('Password').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #noOwner>
+            <div class="form-group required">
+              <label for="UsuarioClave">Usuario:</label>
+              <input
+                type="text"
+                name="UsuarioClave"
+                class="form-control"
+                [(ngModel)]="this.dataApi.SelectedUsuario.usuarioClave"
+                maxlength="50"
+                formControlName="UsuarioClave"
+                placeholder="Ingresa tu clave de usuario"
+                readonly="readonly"
+              />
+
+              <div
+                class="alert-danger"
+                *ngIf="
+                  UsuarioClave.invalid &&
+                  (UsuarioClave.dirty || UsuarioClave.touched)
+                "
+              >
+                <div
+                  *ngFor="
+                    let validation of user_validation_messages.UsuarioClave
+                  "
+                >
+                  <div
+                    style="font-size: smaller !important"
+                    *ngIf="
+                      UsuarioForm.get('UsuarioClave').hasError(
+                        validation.type
+                      ) &&
+                      (UsuarioForm.get('UsuarioClave').dirty ||
+                        UsuarioForm.get('UsuarioClave').touched)
+                    "
+                  >
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <label for="Email">Email</label>
+              <input
+                type="email"
+                name="Email"
+                class="form-control"
+                [(ngModel)]="this.dataApi.SelectedUsuario.email"
+                maxlength="100"
+                placeholder="Ingresa tu email"
+                formControlName="Email"
+              />
+
+              <div
+                class="alert-danger"
+                *ngIf="Email.invalid && (Email.dirty || Email.touched)"
+              >
+                <div *ngFor="let validation of user_validation_messages.Email">
+                  <div
+                    style="font-size: smaller !important"
+                    *ngIf="
+                      UsuarioForm.get('Email').hasError(validation.type) &&
+                      (UsuarioForm.get('Email').dirty ||
+                        UsuarioForm.get('Email').touched)
+                    "
+                  >
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <label for="Password">Password:</label>
+              <input
+                type="password"
+                name="Password"
+                readonly="readonly"
+                class="form-control"
+                [(ngModel)]="this.dataApi.SelectedUsuario.password"
+                maxlength="50"
+                formControlName="Password"
+                placeholder="Ingresa tu password"
+              />
+
+              <div
+                class="alert-danger"
+                *ngIf="Password.invalid && (Password.dirty || Password.touched)"
+              >
+                <div
+                  *ngFor="let validation of user_validation_messages.Password"
+                >
+                  <div
+                    style="font-size: smaller !important"
+                    *ngIf="
+                      UsuarioForm.get('Password').hasError(validation.type) &&
+                      (UsuarioForm.get('Password').dirty ||
+                        UsuarioForm.get('Password').touched)
+                    "
+                  >
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+          <div class="form-group noRequired">
+            <label for="EmailSSO">Email SSO</label>
+            <input
+              type="email"
+              name="EmailSSO"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.emailSSO"
+              maxlength="100"
+              placeholder="Ingresa tu email institucional"
+              formControlName="EmailSSO"
+            />
+  
+            <div
+              class="alert-danger"
+              *ngIf="EmailSSO.invalid && (EmailSSO.dirty || EmailSSO.touched)"
+            >
+              <div *ngFor="let validation of user_validation_messages.EmailSSO">
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('EmailSSO').hasError(validation.type) &&
+                    (UsuarioForm.get('EmailSSO').dirty ||
+                      UsuarioForm.get('EmailSSO').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+            <!-- <div class="form-group required">
+                <label for="RolId">Tipo</label>
+                <select name="RolId" class="form-control" [(ngModel)]="this.dataApi.SelectedUsuario.rolId" formControlName="RolId">
+                  <option [value]="i.rolId" *ngFor="let i of userTypes">{{i.rolNombre}}</option>
+                </select>
+    
+                <div class="alert-danger" *ngIf="RolId.invalid && (RolId.dirty || RolId.touched)">
+    
+                  <div *ngFor="let validation of user_validation_messages.RolId">
+                    <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('RolId').hasError(validation.type) && (UsuarioForm.get('RolId').dirty || UsuarioForm.get('RolId').touched)">
+                      {{validation.message}}
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+          </div>
+         
+
+          <div class="form-group required">
+            <label for="EmpresaId">Entidad</label>
+            <select
+              name="EmpresaId"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.empresaId"
+              formControlName="EmpresaId"
+            >
+              <option [value]="i.empresaId" *ngFor="let i of empresas">
+                {{ i.empresaNombre }}
+              </option>
+            </select>
+
+            <div
+              class="alert-danger"
+              *ngIf="
+                EmpresaId.invalid && (EmpresaId.dirty || EmpresaId.touched)
+              "
+            >
+              <div
+                *ngFor="let validation of user_validation_messages.EmpresaId"
+              >
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('EmpresaId').hasError(validation.type) &&
+                    (UsuarioForm.get('EmpresaId').dirty ||
+                      UsuarioForm.get('EmpresaId').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label for="EmpleadoNoEmp">Número de empleado:</label>
+            <input
+              type="text"
+              name="EmpleadoNoEmp"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.empleadoNoEmp"
+              maxlength="50"
+              formControlName="EmpleadoNoEmp"
+              placeholder="Ingresa el número de empleado"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="
+                EmpleadoNoEmp.invalid &&
+                (EmpleadoNoEmp.dirty || EmpleadoNoEmp.touched)
+              "
+            >
+              <div
+                *ngFor="
+                  let validation of user_validation_messages.EmpleadoNoEmp
+                "
+              >
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('UsuarioClave').hasError(validation.type) &&
+                    (UsuarioForm.get('EmpleadoNoEmp').dirty ||
+                      UsuarioForm.get('EmpleadoNoEmp').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="form-group required">
+            <label for="EmpleadoRFC">Empleado RFC:</label>
+            <input
+              type="text"
+              name="EmpleadoRFC"
+              class="form-control"
+              [(ngModel)]="this.dataApi.SelectedUsuario.empleadoRFC"
+              maxlength="20"
+              formControlName="EmpleadoRFC"
+              placeholder="Ingresa el RFC del empleado"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="
+                EmpleadoRFC.invalid &&
+                (EmpleadoRFC.dirty || EmpleadoRFC.touched)
+              "
+            >
+              <div
+                *ngFor="let validation of user_validation_messages.EmpleadoRFC"
+              >
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('UsuarioClave').hasError(validation.type) &&
+                    (UsuarioForm.get('EmpleadoRFC').dirty ||
+                      UsuarioForm.get('EmpleadoRFC').touched)
+                  "
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <!--<div>Click en la imagen para subir el archivo.</div>
+    <div class="image-upload">
+      <label for="file-input">
+        <img src="http://files.softicons.com/download/toolbar-icons/mono-general-icons-3-by-custom-icon-design/png/256x256/camera.png" alt="Click aquí para subir tu foto" title="Click aquí para subir tu foto">
+      </label>
+      <input id="file-input" name="foto" type="file" />
+    </div>-->
+          <!--<div class="form-group noRequired">
+      <h5>Seleccionar imagen:</h5>
+      <input name="Foto" formControlName="Foto" type='file' (change)="readURL($event);" accept=".png, .jpg" />
+      <img id="blah" [src]="imageSrc || 'http://placehold.it/180'" alt="your image" width="100" />
+    </div>-->
+          <!--<div class="form-group noRequired">
+      <h5>Seleccionar imagen:</h5>
+      <input name="Foto" formControlName="Foto" type="file" accept=".png, .jpg" (change)="onUpload($event)" style=" color:transparent;  width:155px;">
+    </div>-->
+          <!--<ngx-file-drop dropZoneLabel="Seleccionar imagen:" (onFileDrop)="dropped($event)"
+                   (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+      <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+        Optional custom content that replaces the the entire default content.
+        <button type="button" (click)="openFileSelector()">Seleccionar imagen:</button>
+      </ng-template>
+    </ngx-file-drop>-->
+          <!--<div class="progress">
+      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadPercent |async) + '%'">
+      </div>
+    </div>
+    <br>-->
+          <!--<input #imageUser type="hidden" [value]="urlImage | async">-->
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              (click)="CerrarME(formUsuario)"
+              class="btn btn-secondary"
+              #btnClose
+              data-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

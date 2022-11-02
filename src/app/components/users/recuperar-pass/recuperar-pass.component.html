@@ -1,40 +1,68 @@
 <section id="RecuperaPass" class="mb-5 mt-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 mx-auto main-section">
-          <div class="card_login">
-            <div class="card">
-              <div class="card-body text-center">
-                <form #formLogin="ngForm" [formGroup]="UsuarioForm"  (submit)="RecuperaPass()">
-                  <h1 class="h3 mb-3 font-weight-normal">Recuperar contraseña</h1>
-                  <!--<div class="alert alert-danger" role="alert" *ngIf="isError">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-4 mx-auto main-section">
+        <div class="card_login">
+          <div class="card">
+            <div class="card-body text-center">
+              <form
+                #formLogin="ngForm"
+                [formGroup]="UsuarioForm"
+                (submit)="RecuperaPass()"
+              >
+                <h1 class="h3 mb-3 font-weight-normal">Recuperar contraseña</h1>
+                <!--<div class="alert alert-danger" role="alert" *ngIf="isError">
       Something is wrong!
     </div>-->
 
-  
+                <a>Ingresa tu correo electronico</a>
+                <p></p>
+                <div class="form-group">
+                  <input
+                    formControlName="EmailLogin"
+                    type="email"
+                    id="EmailLogin"
+                    name="EmailLogin"
+                    class="form-control"
+                    placeholder="Email"
+                    required
+                  />
 
-                  <a>Ingresa tu correo electronico</a>
-                  <p></p>
-                  <div class="form-group">
-                    <input  formControlName="EmailLogin" type="email" id="EmailLogin" name="EmailLogin" class="form-control" placeholder="Email" required>
-  
-                    <div class="alert-danger" *ngIf="EmailLogin.invalid && (EmailLogin.dirty || EmailLogin.touched)">
-  
-                      <div *ngFor="let validation of user_validation_messages.EmailLogin">
-                        <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('EmailLogin').hasError(validation.type) && (UsuarioForm.get('EmailLogin').dirty || UsuarioForm.get('EmailLogin').touched)">
-                          {{validation.message}}
-                        </div>
+                  <div
+                    class="alert-danger"
+                    *ngIf="
+                      EmailLogin.invalid &&
+                      (EmailLogin.dirty || EmailLogin.touched)
+                    "
+                  >
+                    <div
+                      *ngFor="
+                        let validation of user_validation_messages.EmailLogin
+                      "
+                    >
+                      <div
+                        style="font-size: smaller !important"
+                        *ngIf="
+                          UsuarioForm.get('EmailLogin').hasError(
+                            validation.type
+                          ) &&
+                          (UsuarioForm.get('EmailLogin').dirty ||
+                            UsuarioForm.get('EmailLogin').touched)
+                        "
+                      >
+                        {{ validation.message }}
                       </div>
                     </div>
                   </div>
-                  <button type="submit" class="btn btn-lg btn-primary btn-block">Enviar</button>
-                </form>
-              </div>
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">
+                  Enviar
+                </button>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
-  
-  
+  </div>
+</section>

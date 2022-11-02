@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { DataApiService } from 'src/app/services/data-api.service';
-// import { SpinnerService } from 'angular-spinners';
 import { Rol } from 'src/app/models/rol';
 import { Usuario } from 'src/app/models/usuario';
 import { AuthUserService } from 'src/app/services/auth-user.service';
@@ -12,18 +11,22 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
-  styleUrls: ['./roles.component.css']
+  styleUrls: ['./roles.component.css'],
 })
 export class RolesComponent implements OnInit {
-
   public static updateUserType: Subject<boolean> = new Subject();
 
-  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService, private toastr: ToastrService) {
-    RolesComponent.updateUserType.subscribe(res => {
+  constructor(
+    private dataApi: DataApiService,
+    private apiAuthService: AuthUserService,
+    private spinner: SpinnerService,
+    private toastr: ToastrService
+  ) {
+    RolesComponent.updateUserType.subscribe((res) => {
       setTimeout(() => {
         this.getListUserType();
-      }, 300)
-    })
+      }, 300);
+    });
   }
 
   public rolNombre = '';
@@ -38,7 +41,7 @@ export class RolesComponent implements OnInit {
     this.getCurrentUser();
   }
 
-  cambiarEstatusSpinner(estatus : boolean){
+  cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
 
@@ -55,16 +58,23 @@ export class RolesComponent implements OnInit {
   }
 
   getListUserType() {
-    this.dataApi.GetList('/Roles').subscribe(userTypes => {
-      this.userTypes = userTypes;
-      this.cambiarEstatusSpinner(false);
-    }, error => {
-      console.error(error);
-      this.cambiarEstatusSpinner(false);
-      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
-        timeOut: 3000
-      });
-    });
+    this.dataApi.GetList('/Roles').subscribe(
+      (userTypes) => {
+        this.userTypes = userTypes;
+        this.cambiarEstatusSpinner(false);
+      },
+      (error) => {
+        console.error(error);
+        this.cambiarEstatusSpinner(false);
+        this.toastr.error(
+          'Error en el servidor, contacte al administrador del sistema.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+    );
   }
 
   onDeleteUserType(userType: Rol): void {
@@ -75,20 +85,20 @@ export class RolesComponent implements OnInit {
       denyButtonText: `Cancelar`,
       showDenyButton: true,
       icon: 'question',
-      reverseButtons: true
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         userType.rolEstatus = true;
-      this.dataApi.Put('/Roles', userType.rolId, userType)
+        this.dataApi.Put('/Roles', userType.rolId, userType);
         this.cambiarEstatusSpinner(false);
         setTimeout(() => {
           this.getListUserType();
         }, 500);
       } else if (result.isDenied) {
-        Swal.fire('Carga de información cancelada', '', 'error')
+        Swal.fire('Carga de información cancelada', '', 'error');
         this.cambiarEstatusSpinner(false);
       }
-    })
+    });
   }
 
   onPreUpdateUserType(userType: Rol) {

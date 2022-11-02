@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
   public inicioTiempo: number;
@@ -21,21 +21,22 @@ export class NavbarComponent implements OnInit {
 
   public repe: number;
 
-
-
   public static updateUserStatus: Subject<boolean> = new Subject();
 
-  constructor(private dataApi: DataApiService, private apiAuthService: AuthUserService, private timer: TimerService) {
+  constructor(
+    private dataApi: DataApiService,
+    private apiAuthService: AuthUserService,
+    private timer: TimerService
+  ) {
     setTimeout(() => {
-      NavbarComponent.updateUserStatus.subscribe(res => {
-
+      NavbarComponent.updateUserStatus.subscribe((res) => {
         this.getCurrentUser();
       });
-    }, 100)
+    }, 100);
   }
 
   public usuario: Usuario;
-  public app_name: string = "Fintech";
+  public app_name: string = 'Fintech';
   public isLogged: boolean = false;
   public isAdmin: boolean = false;
   public isIT: boolean = false;
@@ -51,6 +52,10 @@ export class NavbarComponent implements OnInit {
   public fechaMensaje: string;
   public fechaBandera: boolean;
 
+  //Variables para configurar la empresa
+  public fotoEmpresa: string;
+  public color: string;
+
   _second = 1000;
   _minute = this._second * 60;
   _hour = this._minute * 60;
@@ -61,7 +66,6 @@ export class NavbarComponent implements OnInit {
   hours: any;
   minutes: any;
   seconds: any;
-
 
   public clock: any;
 
@@ -83,8 +87,6 @@ export class NavbarComponent implements OnInit {
     //     // this.terminar();
     //   }
     // });
-
-
   }
 
   iniciarTimer() {
@@ -92,7 +94,8 @@ export class NavbarComponent implements OnInit {
     if (this.repeticiones < 1) {
       this.repeticiones = 10 * 60;
     }
-    this.inicioTiempo = parseInt(sessionStorage.getItem('tiempoSesion')) * 60000;
+    this.inicioTiempo =
+      parseInt(sessionStorage.getItem('tiempoSesion')) * 60000;
     if (this.repeticiones < 1) {
       this.repeticiones = 10 * 60000;
     }
@@ -101,14 +104,13 @@ export class NavbarComponent implements OnInit {
 
     const source = numbers.pipe(take(this.repeticiones));
 
-    this.clock = source.subscribe(t => {
+    this.clock = source.subscribe((t) => {
       this.showDate(t);
     });
-
   }
 
   showDate(t) {
-    let distance = this.inicioTiempo - t * 1000//this.end - this.now;
+    let distance = this.inicioTiempo - t * 1000; //this.end - this.now;
     this.minutes = Math.floor((distance % this._hour) / this._minute);
     this.seconds = Math.floor((distance % this._minute) / this._second);
   }
@@ -138,9 +140,12 @@ export class NavbarComponent implements OnInit {
 
   getCurrentUser() {
     this.usuario = this.apiAuthService.usuarioData;
+    // console.log(JSON.stringify(this.usuario) + ' NavBAR')
     if (!this.usuario) {
+      this.fotoEmpresa = 'assets/TMF_Logo.png';
       this.isLogged = false;
     } else {
+        // console.log( JSON.stringify(this.usuario) + ' ******')
       //Se utiliza para iniciar el timer
       // this.iniciarTimer();
       var today = new Date().toLocaleDateString();
@@ -149,23 +154,33 @@ export class NavbarComponent implements OnInit {
       //  var month = today.getMonth();
       //  var year = today.getFullYear();
       // console.log(day +"/"+month+"/"+year + " ***");
-      var usuarioFecha = new Date(this.usuario.usuarioFechaLimite).toLocaleDateString();
+      var usuarioFecha = new Date(
+        this.usuario.usuarioFechaLimite
+      ).toLocaleDateString();
       //  console.log(usuarioFecha);
 
       this.fechaPass = this.recuperaDias(today, usuarioFecha);
 
-      //  console.log(this.fechaPass + " Dias****");
-      if (this.fechaPass <= 10) {
-        if(this.fechaPass > 1){
-        this.fechaBandera = true;
-        this.fechaMensaje = "Su contraseña expira en " + this.fechaPass + " días, solicite una nueva desde el Login de la aplicación."
-      }else{
-        this.fechaBandera = true;
-        this.fechaMensaje = "Su contraseña expira en " + this.fechaPass + " día, solicite una nueva desde el Login de la aplicación."
-      }} else {
+      // console.log(this.fechaPass + " Dias****");
+      if (this.fechaPass <= 10 && this.fechaPass >= 1) {
+        if (this.fechaPass > 1) {
+          this.fechaBandera = true;
+          this.fechaMensaje =
+            'Su contraseña expira en ' +
+            this.fechaPass +
+            ' días, solicite una nueva desde el Login de la aplicación.';
+        } else {
+          this.fechaBandera = true;
+          this.fechaMensaje =
+            'Su contraseña expira en ' +
+            this.fechaPass +
+            ' día, solicite una nueva desde el Login de la aplicación.';
+        }
+      } else {
         this.fechaBandera = false;
       }
       // this.fechaPass = this.usuario.usuarioFechaLimite - new Date()
+     
       this.UserTypeId = this.usuario.rolId;
 
       // this.foto = 'http://legvit.ddns.me/Fintech_Api/' + this.usuario.imagePath.substr(1);
@@ -173,11 +188,11 @@ export class NavbarComponent implements OnInit {
       if (this.UserTypeId == 1) {
         this.isAdmin = true;
       } else if (this.UserTypeId == 2) {
-        this.isLocal = true
+        this.isLocal = true;
       } else if (this.UserTypeId == 3) {
-        this.isIT = true
+        this.isIT = true;
       } else if (this.UserTypeId == 4) {
-        this.isSuper = true
+        this.isSuper = true;
       }
 
       this.isLogged = true;
@@ -185,12 +200,30 @@ export class NavbarComponent implements OnInit {
 
       // console.log(this.usuario.imagePath + " ***** NAVBAR" );
       if (this.usuario.imagePath == null) {
-        this.foto = "assets/user.png"//"https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+        this.foto = 'assets/user.png'; //"https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
       } else {
-        this.foto = environment.baseUrl + "/" + this.usuario.imagePath;
+        this.foto = environment.baseUrl + '/' + this.usuario.imagePath;
         // this.foto = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
-
       }
+
+      if (this.usuario.empresaId != null){
+        if (this.usuario.empresa.empresaLogo == null || this.usuario.empresa.empresaLogo == 'undefined') {
+          this.fotoEmpresa = 'assets/TMF_Logo.png'; //"https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+        } else {
+          this.fotoEmpresa =
+            environment.baseUrl + '/' + this.usuario.empresa.empresaLogo;
+          // this.foto = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"
+        }
+  
+        if (this.usuario.empresa.empresaColor !== null) {
+          this.color = this.usuario.empresa.empresaColor;
+          // console.log(this.color + ' *****');
+        }
+      }else{
+        // console.log("first")
+        this.fotoEmpresa = 'assets/TMF_Logo.png';
+      }
+      
     }
   }
 
@@ -199,7 +232,5 @@ export class NavbarComponent implements OnInit {
     this.fechaBandera = false;
     this.timer.validarTimer(false);
     this.apiAuthService.logout();
-
   }
-
 }

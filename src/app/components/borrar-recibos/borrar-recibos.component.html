@@ -1,0 +1,282 @@
+<section id="TMFGroup" class="mt-5">
+  <h1>Eliminar recibos</h1>
+
+  <div class="container">
+    <table cellpadding="10">
+      <tr>
+        <td width="5%"><b>Entidad</b></td>
+
+        <td width="30%">
+          <select
+            id="selectEmpresa"
+            name="empresas"
+            class="form-control"
+            [(ngModel)]="selectEmpresa"
+          >
+            <option
+              *ngFor="let empresa of empresas; let index = index"
+              [ngValue]="empresa"
+            >
+              {{ empresa.empresaNombre }}
+            </option>
+          </select>
+        </td>
+
+        <td width="5%"><b>No Empleado</b></td>
+
+        <td width="30%">
+          <input
+            type="text"
+            name="empleadoNoEmp"
+            class="form-control"
+            [(ngModel)]="empleadoNoEmp"
+          />
+        </td>
+      </tr>
+
+      <tr>
+        <td width="5%"><b>Año</b></td>
+
+        <td width="30%">
+          <select
+            id="anios"
+            name="anios"
+            class="form-control"
+            [(ngModel)]="selectAnio"
+          >
+            <option
+              *ngFor="let anio of anios; let index = index"
+              [ngValue]="anio"
+            >
+              {{ anio.anioValor }}
+            </option>
+          </select>
+        </td>
+
+        <td width="5%"><b>Mes</b></td>
+
+        <td width="30%">
+          <select
+            id="meses"
+            name="meses"
+            class="form-control"
+            [(ngModel)]="selectMes"
+          >
+            <option
+              *ngFor="let mes of meses; let index = index"
+              [ngValue]="mes"
+            >
+              {{ mes.mesNombre }}
+            </option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td width="5%"><b>Tipo periodo</b></td>
+
+        <td width="30%">
+          <select
+            id="selectPeriodoTipo"
+            name="periodoTipos"
+            class="form-control"
+            [(ngModel)]="selectPeriodoTipo"
+            (change)="onChangePeriodoTipo()"
+          >
+            <option
+              *ngFor="let periodoTipo of periodoTipos; let index = index"
+              [ngValue]="periodoTipo"
+            >
+              {{ periodoTipo.periodoTipoNombre }}
+            </option>
+          </select>
+        </td>
+        <td width="5%"><b>Periodo número</b></td>
+
+        <td [ngSwitch]="this.selectPeriodoTipo.periodoTipoNombre">
+          <div *ngSwitchCase="'Mensual'">
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
+            >
+              <!-- <option
+                *ngFor="let periodoNumero of periodoNumerosM; let index = index"
+                [ngValue]="periodoNumero"
+              >
+                {{ periodoNumero.periodoNumeroNombre }}
+              </option> -->
+              <option value="1">1</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'Quincenal'">
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
+            >
+              <!-- <option
+                *ngFor="let periodoNumero of periodoNumerosQ; let index = index"
+                [ngValue]="periodoNumero"
+              >
+                {{ periodoNumero.periodoNumeroNombre }}
+              </option> -->
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'Semanal'">
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
+            >
+              <!-- <option
+                *ngFor="let periodoNumero of 5; let index = index"
+              >
+                {{ periodoNumero.periodoNumeroNombre }}
+              </option> -->
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'Catorcenal'">
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
+            >
+              <!-- <option
+                *ngFor="let periodoNumero of periodoNumerosS; let index = index"
+                [ngValue]="periodoNumero"
+              >
+                {{ periodoNumero.periodoNumeroNombre }}
+              </option> -->
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'Especial'">
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
+            >
+              <!-- <option
+                *ngFor="let periodoNumero of periodoNumerosS; let index = index"
+                [ngValue]="periodoNumero"
+              >
+                {{ periodoNumero.periodoNumeroNombre }}
+              </option> -->
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <div *ngSwitchDefault>
+            <select
+              id="periodoNumero"
+              name="periodoNumero"
+              class="form-control"
+              [(ngModel)]="selectPeriodoNumero"
+            >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <button
+  class="btn btn-dark float-right mb-3 mx-4"
+    (click)="RecuperaRecibo()"
+  >
+    Buscar
+  </button>
+  <p></p>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Empleado No.</th>
+        <th scope="col">Apellido paterno</th>
+        <th scope="col">Apellido materno</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Email</th>
+        <th scope="col">Entidad</th>
+        <th scope="col">&nbsp;</th>
+        <th scope="col">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let recibo of recibos
+            | filterEnvio
+              : {
+                  empleadoNoEmp: empleadoNoEmp,
+                  empresaNombre: selectEmpresa.empresaNombre,
+                  selectPeriodoTipo: selectPeriodoTipo.periodoTipoId,
+                  selectMes: selectMes.mesId,
+                  selectAnio: selectAnio.anioId,
+                  selectPeriodoNumero: selectPeriodoNumero
+                }
+            | paginate
+                : { 
+                    itemsPerPage: 10, 
+                    currentPage: p 
+                  };
+          index as i
+        "
+      >
+        <th scope="row">{{ i + 1 }}</th>
+        <td align="center">{{ recibo.usuarioNoEmp }}</td>
+        <td>{{ recibo.usuario.usuarioApellidoP }}</td>
+        <td>{{ recibo.usuario.usuarioApellidoM }}</td>
+        <td>{{ recibo.usuario.usuarioNombre }}</td>
+        <td>{{ recibo.usuario.email }}</td>
+        <td>{{ recibo.empresa.empresaNombre }}</td>
+
+        <td>
+          <button class="btn btn-danger" (click)="onBorradoIndividual(recibo)">
+            Borrar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="padre">
+    <pagination-controls class="my-pagination" 
+        (pageChange)="p = $event"
+        maxSize="7"
+        directionLinks="true"
+        autoHide="true"
+        responsive="true"
+        previousLabel="Anterior"
+        nextLabel="Siguiente"
+        screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+</div>
+
+  <button (click)="borradoMasivo()" class="btn btn-lg btn-danger btn-block">
+    Borrar recibos de forma masiva
+  </button>
+</section>

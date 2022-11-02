@@ -1,69 +1,96 @@
-  <section id="TMFGroup" class=" mt-5">
-    <p>
-    </p>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 col-md-4 mx-auto main-section"> 
-          <div class="card_login">
-            <div class="card">
-              <div class="card-body text-center">
-    <table class="table  ">
-      <tr>
-        <th scope="col">
-          <!-- <div class="container">
-            <div class="row">
+<section id="TMFGroup" class="mt-5">
+  <p></p>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-4 mx-auto main-section">
+        <div class="card_login">
+          <div class="card">
+            <div class="card-body text-center">
+              <table class="table">
+                <tr>
+                  <th scope="col">
+                  </th>
 
-              <div class="card_book">
-                <div class="card">
-                  <div class="card-body text-center">
-                    <p>
-
-                    </p>
-                    <h4 class="card-title">Descargar reporte</h4>
-                    <p class="card-text">
-                      En este módulo podrá descargar reportes con respecto a las configuraciones previamente cargadas.
-                    </p>
-                    <a routerLink="reportes/reporteSua" class="btn btn-block btn-primary">Descargar</a>
+                  <div [ngSwitch]="userTypeId">
+                    <div *ngSwitchCase="1">
+                      <th scope="col" ngs>
+                        <p></p>
+                        <h4 class="card-title">Cargar recibos</h4>
+                        <p class="card-text">
+                          En este módulo podrá cargar recibos de forma masiva.
+                        </p>
+                        <a
+                          routerLink="/recibo/cargar-recibo"
+                          class="btn btn-block btn-primary"
+                          >Cargar</a
+                        >
+                      </th>
+                    </div>
+                    <div *ngSwitchCase="2">
+                      <th scope="col" ngs>
+                        <p></p>
+                        <h4 class="card-title">Consultar recibos</h4>
+                        <p class="card-text">
+                          En este módulo podrá encontrar sus recibos de nómina.
+                        </p>
+                        <a
+                          routerLink="/recibo/consultar-recibo"
+                          class="btn btn-block btn-primary"
+                          >Consultar</a
+                        >
+                      </th>
+                    </div>
+                    <div *ngSwitchCase="3">
+                      <th scope="col" ngs>
+                        <p></p>
+                        <h4 class="card-title">Configuracón de parámetros</h4>
+                        <p class="card-text">
+                          En este módulo podrá configurar funciones del sistema.
+                        </p>
+                        <a
+                          routerLink="/catalogos/catalogo-parametros"
+                          class="btn btn-block btn-primary"
+                          >Configurar</a
+                        >
+                      </th>
+                    </div>
+                    <div *ngSwitchCase="4">
+                      <th scope="col" ngs>
+                        <p></p>
+                        <h4 class="card-title">Configuracón de parámetros</h4>
+                        <p class="card-text">
+                          En este módulo podrá configurar funciones del sistema.
+                        </p>
+                        <a
+                          routerLink="/catalogos/catalogo-parametros"
+                          class="btn btn-block btn-primary"
+                          >Configurar</a
+                        >
+                      </th>
+                    </div>
+                    <div *ngSwitchDefault>
+                      <th scope="col" ngs>
+                        <p></p>
+                        <h4 class="card-title">Login</h4>
+                        <p class="card-text">
+                          Inicie sesión para poder acceder a las funciones del sistema.
+                        </p>
+                        <a
+                          routerLink="/user/login"
+                          class="btn btn-block btn-primary"
+                          >Login</a
+                        >
+                      </th>
+                    </div>
                   </div>
-                </div>
-              </div>
+                  
+                </tr>
+              </table>
             </div>
           </div>
-        </th> -->
-
-        <th scope="col">
-         
-                    <p>
-
-                    </p>
-                    <h4 class="card-title">Descargar reporte</h4>
-                    <p class="card-text">
-                      En este módulo podrá descargar reportes con respecto a las configuraciones previamente cargadas.
-                    </p>
-                    <a routerLink="reportes/reporteSua" class="btn btn-block btn-primary">Descargar</a>
-
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-  </section>
+</section>
 
-
-  <!-- <hello name="{{ name }}"></hello>
-  <li *ngFor="let hero of data">
-        {{ hero.format }}
-        <ul>
-        <li *ngFor="let subform of hero.subFormats">
-            {{subform.name}}
-            <ul>
-              <li *ngFor="let subform of hero.subFormats">
-                {{subform.name}}
-            </li>
-            </ul>
-        </li>
-        </ul>
-  </li> -->

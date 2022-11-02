@@ -11,17 +11,22 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-parametros',
   templateUrl: './parametros.component.html',
-  styleUrls: ['./parametros.component.css']
+  styleUrls: ['./parametros.component.css'],
 })
 export class ParametrosComponent implements OnInit {
   public static updateParametros: Subject<boolean> = new Subject();
 
-  constructor(private dataApi: DataApiService,private apiAuthService: AuthUserService, private spinner: SpinnerService, private toastr: ToastrService) {
-    ParametrosComponent.updateParametros.subscribe(res => {
+  constructor(
+    private dataApi: DataApiService,
+    private apiAuthService: AuthUserService,
+    private spinner: SpinnerService,
+    private toastr: ToastrService
+  ) {
+    ParametrosComponent.updateParametros.subscribe((res) => {
       setTimeout(() => {
         this.getListParametros();
-      }, 300)
-    })
+      }, 300);
+    });
   }
 
   public parametroNombre = '';
@@ -36,8 +41,8 @@ export class ParametrosComponent implements OnInit {
     this.getCurrentUser();
     this.getListParametros();
   }
-  
-  cambiarEstatusSpinner(estatus : boolean){
+
+  cambiarEstatusSpinner(estatus: boolean) {
     this.spinner.validarEspera(estatus);
   }
 
@@ -54,16 +59,23 @@ export class ParametrosComponent implements OnInit {
   }
 
   getListParametros() {
-    this.dataApi.GetList('/Parametros').subscribe(parametrost => {
-       this.parametros = parametrost;
-       this.cambiarEstatusSpinner(false);
-    }, error => {
-      console.error(error);
-      this.toastr.error('Error en el servidor, contacte al administrador del sistema.', 'Error', {
-        timeOut: 3000
-      });
-      this.cambiarEstatusSpinner(false);
-    });
+    this.dataApi.GetList('/Parametros').subscribe(
+      (parametrost) => {
+        this.parametros = parametrost;
+        this.cambiarEstatusSpinner(false);
+      },
+      (error) => {
+        console.error(error);
+        this.toastr.error(
+          'Error en el servidor, contacte al administrador del sistema.',
+          'Error',
+          {
+            timeOut: 3000,
+          }
+        );
+        this.cambiarEstatusSpinner(false);
+      }
+    );
   }
 
   onDeleteParametro(parametro: Parametro): void {
@@ -74,7 +86,7 @@ export class ParametrosComponent implements OnInit {
       denyButtonText: `Cancelar`,
       showDenyButton: true,
       icon: 'question',
-      reverseButtons: true
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         parametro.parametroEstatusDelete = true;
@@ -84,14 +96,13 @@ export class ParametrosComponent implements OnInit {
           this.getListParametros();
         }, 500);
       } else if (result.isDenied) {
-        Swal.fire('Carga de información cancelada', '', 'error')
+        Swal.fire('Carga de información cancelada', '', 'error');
         this.cambiarEstatusSpinner(false);
       }
-    })
+    });
   }
 
   onPreUpdateParametro(parametro: Parametro) {
-     this.dataApi.SelectedParametro = Object.assign({}, parametro);
+    this.dataApi.SelectedParametro = Object.assign({}, parametro);
   }
-
- }
+}

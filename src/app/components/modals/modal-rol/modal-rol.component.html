@@ -1,42 +1,92 @@
-<div class="modal fade" id="modalRol" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-            {{!this.dataApi.SelectedRol.rolId ? 'Nuevo registro' : 'Actualizar registro'}}
-          </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-  
-          <form #formUserType="ngForm" [formGroup]="UsuarioForm" (ngSubmit)="onSaveUserType(formUserType)">
-            <input type="hidden" name="RolId" formControlName="RolId" [(ngModel)]="this.dataApi.SelectedRol.rolId">
-  
-            <div class="form-group required">
-              <label for="Name" class="col-form-label">Name:</label>
-              <input type="text" class="form-control" name="RolNombre" [(ngModel)]="this.dataApi.SelectedRol.rolNombre" maxlength="50" formControlName="RolNombre" placeholder="Ingrese el nombre del tipo de usuario">
-  
-              <div class="alert-danger" *ngIf="RolNombre.invalid && (RolNombre.dirty || RolNombre.touched)">
-  
-                <div *ngFor="let validation of user_validation_messages.Name">
-                  <div style="font-size: smaller !important;" *ngIf="UsuarioForm.get('RolNombre').hasError(validation.type) && (UsuarioForm.get('RolNombre').dirty || UsuarioForm.get('RolNombre').touched)">
-                    {{validation.message}}
-                  </div>
+<div
+  class="modal fade"
+  id="modalRol"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  data-backdrop="static"
+  data-keyboard="false"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{
+            !this.dataApi.SelectedRol.rolId
+              ? "Nuevo registro"
+              : "Actualizar registro"
+          }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          #formUserType="ngForm"
+          [formGroup]="UsuarioForm"
+          (ngSubmit)="onSaveUserType(formUserType)"
+        >
+          <input
+            type="hidden"
+            name="RolId"
+            formControlName="RolId"
+            [(ngModel)]="this.dataApi.SelectedRol.rolId"
+          />
+
+          <div class="form-group required">
+            <label for="Name" class="col-form-label">Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="RolNombre"
+              [(ngModel)]="this.dataApi.SelectedRol.rolNombre"
+              maxlength="50"
+              formControlName="RolNombre"
+              placeholder="Ingrese el nombre del tipo de usuario"
+            />
+
+            <div
+              class="alert-danger"
+              *ngIf="
+                RolNombre.invalid && (RolNombre.dirty || RolNombre.touched)
+              "
+            >
+              <div *ngFor="let validation of user_validation_messages.Name">
+                <div
+                  style="font-size: smaller !important"
+                  *ngIf="
+                    UsuarioForm.get('RolNombre').hasError(validation.type) &&
+                    (UsuarioForm.get('RolNombre').dirty ||
+                      UsuarioForm.get('RolNombre').touched)
+                  "
+                >
+                  {{ validation.message }}
                 </div>
               </div>
             </div>
-  
-            <div class="modal-footer">
-              <button type="button" (click)="CerrarMUT(formUserType)" class="btn btn-secondary" #btnClose data-dismiss="modal">Cerrar</button>
-              <button type="submit" class="btn btn-primary">Guardar</button>
-            </div>
-  
-          </form>
-        </div>
-  
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              (click)="CerrarMUT(formUserType)"
+              class="btn btn-secondary"
+              #btnClose
+              data-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-  
+</div>

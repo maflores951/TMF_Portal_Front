@@ -1,61 +1,96 @@
 <section class="row mt-5">
-    <div class="col">
-      <p></p>
-      <p></p>
-      <h1 class="h3 mb-3 font-weight-normal">Parametros</h1>
-      <table cellpadding="10" >
-  
+  <div class="col">
+    <p></p>
+    <p></p>
+    <h1 class="h3 mb-3 font-weight-normal">Parámetros</h1>
+    <table cellpadding="10">
+      <tr>
+        <td width="10%"><b>Nombre </b></td>
+
+        <td width="40%">
+          <input
+            type="text"
+            name="parametroNombre"
+            class="form-control"
+            [(ngModel)]="parametroNombre"
+          />
+        </td>
+
+        <td width="10%"><b>Clave </b></td>
+
+        <td width="40%">
+          <input
+            type="text"
+            name="parametroClave"
+            class="form-control"
+            [(ngModel)]="parametroClave"
+          />
+        </td>
+      </tr>
+    </table>
+    <!-- <button
+      class="btn btn-primary float-right mb-3"
+      data-toggle="modal"
+      data-target="#modalParametro"
+      (click)="onPreUpdateParametro(null)"
+    >
+      Nuevo registro
+    </button> -->
+    <table class="table table-hover" style="width:100%">
+      <thead>
         <tr>
-  
-          <td width="10%"><b>Nombre  </b></td>
-  
-          <td width="40%"><input type="text" name="parametroNombre" class="form-control" [(ngModel)]="parametroNombre"/></td>
-  
-          <td width="10%"><b>Clave  </b></td>
-  
-          <td width="40%"><input type="text" name="parametroClave" class="form-control" [(ngModel)]="parametroClave"/></td>
-  
+          <th scope="col">#</th>
+          <th scope="col">Id</th>
+          <th scope="col">Nombre</th>
+          <th scope="col" >Descripción</th>
+          <th scope="col">Clave</th>
+          <th scope="col">Valor</th>
+          <!-- <th scope="col">Valor final</th> -->
+          <th scope="col">&nbsp;</th>
+          <!-- <th scope="col">&nbsp;</th> -->
         </tr>
-  
-      </table>
-      <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#modalParametro" (click)="onPreUpdateParametro(null)">
-        Nuevo
-        registro
-      </button>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Id</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Clave</th>
-            <th scope="col">Valor inicial</th>
-            <th scope="col">Valor final</th>
-            <th scope="col">&nbsp;</th>
-            <th scope="col">&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let parametro of parametros| filterParametro:{ parametroNombre : parametroNombre, parametroClave : parametroClave } ; index as i">
-            <th scope="row">{{i+1}}</th>
-            <td>{{parametro.parametroId}}</td>
-            <td>{{parametro.parametroNombre}}</td>
-            <td>{{parametro.parametroClave}}</td>
-            <td>{{parametro.parametroValorInicial}}</td>
-            <td>{{parametro.parametroValorFinal}}</td>
-            <td >
-              <button class="btn btn-primary" data-toggle="modal" data-target="#modalParametro" (click)="onPreUpdateParametro(parametro)">Actualizar</button>
-            </td>
-           
-  
-            <td >
-              <button class="btn btn-danger" (click)="onDeleteParametro(parametro)">Eliminar</button>
-            </td>
-           
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-  <app-modal-parametro  [userUid]='userUid'></app-modal-parametro>
-  
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let parametro of parametros
+              | filterParametro
+                : {
+                    parametroNombre: parametroNombre,
+                    parametroClave: parametroClave
+                  };
+            index as i
+          "
+        >
+          <th scope="row">{{ i + 1 }}</th>
+          <td >{{ parametro.parametroId }}</td>
+          <td>{{ parametro.parametroNombre }}</td>
+          <td >{{ parametro.parametroDescripcion }}</td>
+          <td>{{ parametro.parametroClave }}</td>
+          <td>{{ parametro.parametroValorInicial }}</td>
+          <!-- <td>{{ parametro.parametroValorFinal }}</td> -->
+          <td>
+            <button
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#modalParametro"
+              (click)="onPreUpdateParametro(parametro)"
+            >
+              Actualizar
+            </button>
+          </td>
+
+          <!-- <td>
+            <button
+              class="btn btn-danger"
+              (click)="onDeleteParametro(parametro)"
+            >
+              Eliminar
+            </button>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<app-modal-parametro [userUid]="userUid"></app-modal-parametro>
