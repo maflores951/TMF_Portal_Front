@@ -106,7 +106,7 @@ export class EmpresasComponent implements OnInit {
               }, 500);
             }else{
               this.toastr.error(
-                'No se puede eliminar la empresa porque cuenta con usuarios activos registrados.',
+                'No se puede eliminar la entidad porque cuenta con usuarios activos registrados.',
                 'Error',
                 {
                   timeOut: 3000,

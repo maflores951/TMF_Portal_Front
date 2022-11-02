@@ -52,15 +52,15 @@
             *ngIf="this.dataApi.SelectedEmpresa.empresaId == null; else noPhoto"
           >
             <label class="col-form-label"
-              >Click en la imagen para actualizar el logo de la empresa.</label
+              >Click en la imagen para actualizar el logo de la entidad.</label
             >
             <div class="image-upload">
               <label for="file-input">
                 <img
                   [src]="imageSrc || 'assets/user.png'"
                   width="100"
-                  alt="Click aquí para subir el logo de la empresa"
-                  title="Click aquí para subir el logo de la empresa"
+                  alt="Click aquí para subir el logo de la entidad"
+                  title="Click aquí para subir el logo de la entidad"
                 />
               </label>
               <input
@@ -78,7 +78,7 @@
             <div class="form-group noRequired">
               <label class="col-form-label"
                 >Click en la imagen para actualizar el logo de la
-                empresa.</label
+                entidad.</label
               >
               <div class="image-upload">
                 <label for="file-input">
@@ -88,8 +88,8 @@
                       this.dataApi.SelectedEmpresa.empresaLogoFullPath
                     "
                     width="100"
-                    alt="Click aquí para subir el logo de la empresa"
-                    title="Click aquí para subir el logo de la emrpesa"
+                    alt="Click aquí para subir el logo de la entidad"
+                    title="Click aquí para subir el logo de la entidad"
                   />
                 </label>
                 <input
@@ -114,7 +114,7 @@
               [(ngModel)]="this.dataApi.SelectedEmpresa.empresaNombre"
               maxlength="70"
               formControlName="EmpresaNombre"
-              placeholder="Ingrese el nombre de la emrpesa"
+              placeholder="Ingrese el nombre de la entidad"
             />
 
             <div

@@ -141,7 +141,7 @@ export class EliminarEmpleadoMasivoComponent implements OnInit {
         .subscribe(
           (result) => {
             if (result.exito == 1) {
-              this.toastr.success('Datos registrados con éxito.', 'Exito', {
+              this.toastr.success('La eliminación se realizó con éxito.', 'Exito', {
                 timeOut: 10000,
               });
             } else {

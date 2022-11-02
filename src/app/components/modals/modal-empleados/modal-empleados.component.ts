@@ -199,7 +199,7 @@ export class ModalEmpleadosComponent implements OnInit {
     EmpresaId: [
       {
         type: 'required',
-        message: 'La empresa es requerida',
+        message: 'La entidad es requerida',
       },
     ],
     // EmpleadoRFC: [

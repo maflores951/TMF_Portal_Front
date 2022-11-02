@@ -38,7 +38,7 @@ export class EmpleadosComponent implements OnInit {
   public usuarioApellidoP = '';
   public empresaNombre = '';
   public usuario: Usuario;
-  public users: Observable<Usuario[]>;
+  public users: Usuario[];
   public isAdmin: any = null;
   public userUid: number = null;
 
@@ -146,6 +146,7 @@ export class EmpleadosComponent implements OnInit {
             this.users = users.sort((a,b)=>a.empleadoNoEmp-b.empleadoNoEmp);
           // this.users = users;
         }else{
+          this.users = [];
           this.toastr.error(
             'No se encontraron registros para esta búsqueda.',
             'Error',

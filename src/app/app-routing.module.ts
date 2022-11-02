@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'catalogos/catalogo-usuarios', component: UsuariosComponent, canActivate: [AuthAdminItGuard] },
   { path: 'catalogos/catalogo-empleados', component: EmpleadosComponent, canActivate: [AuthAdminItGuard] },
   { path: 'catalogos/catalogo-roles', component: RolesComponent, canActivate: [AuthAdminItGuard] },
-  { path: 'catalogos/catalogo-empresas', component: EmpresasComponent, canActivate: [AuthAdminItGuard] },
+  { path: 'catalogos/catalogo-entidades', component: EmpresasComponent, canActivate: [AuthAdminItGuard] },
   { path: 'recibo/enviar-recibo', component: EnviarRecibosComponent, canActivate: [AuthAdminGuard] },
   { path: 'recibo/cargar-recibo', component: CargarRecibosComponent, canActivate: [AuthAdminGuard] },
   { path: 'recibo/borrar-recibo', component: BorrarRecibosComponent, canActivate: [AuthAdminGuard] },

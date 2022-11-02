@@ -80,7 +80,7 @@ export class ActualizarEmpresaMasivoComponent implements OnInit {
       var encabezado = jsonExcel[0];
       const element = jsonExcel[index];
       if (encabezado.length == 3) {
-        if (encabezado[0] == 'EmpresaId') {
+        if (encabezado[0] == 'EntidadId') {
           if (index > 0) {
             if (element.length == 3){
               var empleado = {
